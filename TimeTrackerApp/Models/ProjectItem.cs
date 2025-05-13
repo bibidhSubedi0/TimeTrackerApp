@@ -5,9 +5,11 @@ namespace TimeTrackerApp.Models
 {
     public class ProjectItem : INotifyPropertyChanged
     {
+        // Project properties
         private string _name;
-        private string _timeSpent;
-
+        private string _timeElapsed;
+        private string _estimatedTime;
+        
         public string Name
         {
             get => _name;
@@ -23,13 +25,26 @@ namespace TimeTrackerApp.Models
 
         public string TimeSpent
         {
-            get => _timeSpent;
+            get => _timeElapsed;
             set
             {
-                if (_timeSpent != value)
+                if (_timeElapsed != value)
                 {
-                    _timeSpent = value;
+                    _timeElapsed = value;
                     OnPropertyChanged(nameof(TimeSpent));
+                }
+            }
+        }
+
+        public string TimeElapsed
+        {
+            get => _estimatedTime;
+            set
+            {
+                if (_estimatedTime != value)
+                {
+                    _estimatedTime = value;
+                    OnPropertyChanged(nameof(TimeElapsed));
                 }
             }
         }

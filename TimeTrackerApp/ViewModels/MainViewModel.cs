@@ -11,22 +11,25 @@ namespace TimeTrackerApp.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {
+        // Data saving and loading
         private readonly DataService _dataService = new();
         private readonly string _userId = "default_user";
+        private UserData _userData = new();
 
+        // Timer purposes
         private DispatcherTimer _timer;
         private TimeSpan _timeLeft;
-
-        private UserData _userData = new();
         private bool _isTimerRunning;
-        private ProjectItem _selectedProject;
-        private ObservableCollection<ProjectItem> _projects = new();
-        private ObservableCollection<TaskItem> _tasks = new();
         private string _timerCountdown;
         private string _timerTaskName;
         private string _timerProjectName;
 
+        // Other stuff
+        private ProjectItem _selectedProject;
+        private ObservableCollection<ProjectItem> _projects = new();
+        private ObservableCollection<TaskItem> _tasks = new();
         public event PropertyChangedEventHandler PropertyChanged;
+
 
         public bool IsTimerRunning
         {
@@ -40,7 +43,6 @@ namespace TimeTrackerApp.ViewModels
                 }
             }
         }
-
         public ObservableCollection<ProjectItem> Projects
         {
             get => _projects;
@@ -53,7 +55,6 @@ namespace TimeTrackerApp.ViewModels
                 }
             }
         }
-
         public ObservableCollection<TaskItem> Tasks
         {
             get => _tasks;
@@ -66,7 +67,6 @@ namespace TimeTrackerApp.ViewModels
                 }
             }
         }
-
         public ProjectItem SelectedProject
         {
             get => _selectedProject;
@@ -80,7 +80,6 @@ namespace TimeTrackerApp.ViewModels
                 }
             }
         }
-
         public string TimerCountdown
         {
             get => _timerCountdown;
@@ -93,7 +92,6 @@ namespace TimeTrackerApp.ViewModels
                 }
             }
         }
-
         public string TimerTaskName
         {
             get => _timerTaskName;
@@ -106,7 +104,6 @@ namespace TimeTrackerApp.ViewModels
                 }
             }
         }
-
         public string TimerProjectName
         {
             get => _timerProjectName;
@@ -120,13 +117,18 @@ namespace TimeTrackerApp.ViewModels
             }
         }
 
+
+        // UI Operations
         public ICommand AddProjectCommand { get; }
         public ICommand AddTaskCommand { get; }
+        public ICommand DeleteTaskCommand { get; }
         public ICommand StartTaskCommand { get; }
         public ICommand StopTimerCommand { get; }
-
         public IAsyncRelayCommand SaveTasksCommand { get; }
         public IAsyncRelayCommand LoadTasksCommand { get; }
+
+
+
 
         public MainViewModel()
         {
@@ -135,15 +137,18 @@ namespace TimeTrackerApp.ViewModels
 
             AddProjectCommand = new RelayCommand(AddProject);
             AddTaskCommand = new RelayCommand(AddTask);
+            DeleteTaskCommand = new RelayCommand<TaskItem>(DeleteTask);
+
             StartTaskCommand = new RelayCommand<TaskItem>(StartTask);
             StopTimerCommand = new RelayCommand(StopTimer);
+
 
             SaveTasksCommand = new AsyncRelayCommand(SaveAsync);
             LoadTasksCommand = new AsyncRelayCommand(LoadAsync);
 
             _ = LoadAsync();
-        }
 
+        }
         private void Timer_Tick(object sender, EventArgs e)
         {
             _timeLeft = _timeLeft.Add(TimeSpan.FromSeconds(-1));
@@ -156,7 +161,13 @@ namespace TimeTrackerApp.ViewModels
                 IsTimerRunning = false;
             }
         }
-
+        private void StopTimer()
+        {
+            _timer.Stop();
+            TimerCountdown = "Timer Stopped";
+            IsTimerRunning = false;
+        }
+        
         private async void AddProject()
         {
             var newProject = new ProjectItem
@@ -169,7 +180,6 @@ namespace TimeTrackerApp.ViewModels
             Projects.Add(newProject);
             await AutoSaveAsync();
         }
-
         private async void AddTask()
         {
             if (SelectedProject == null)
@@ -183,14 +193,28 @@ namespace TimeTrackerApp.ViewModels
                 Name = $"Task {SelectedProject.Tasks.Count + 1}",
                 ExpectedTime = "00:25:00",
                 IsCompleted = false,
-                TimeSpent = "00:00:00"
+                TimeElapsed = "00:00:00"
             };
 
             HookTaskEvents(newTask);
             SelectedProject.Tasks.Add(newTask);
             await AutoSaveAsync();
         }
+        private async void DeleteTask(TaskItem task)
+        {
+            if (task == null || SelectedProject == null)
+                return;
 
+            foreach(var t in SelectedProject.Tasks)
+            {
+                if(t.Name == task.Name)
+                {
+                    SelectedProject.Tasks.Remove(t);
+                    break;
+                }
+            }
+            await AutoSaveAsync();
+        }
         private void StartTask(TaskItem task)
         {
             if (task == null || SelectedProject == null)
@@ -206,13 +230,8 @@ namespace TimeTrackerApp.ViewModels
                 _timer.Start();
             }
         }
-
-        private void StopTimer()
-        {
-            _timer.Stop();
-            TimerCountdown = "Timer Stopped";
-            IsTimerRunning = false;
-        }
+        
+        
 
         private async Task SaveAsync()
         {
@@ -220,7 +239,6 @@ namespace TimeTrackerApp.ViewModels
             _userData.Projects = Projects.ToList();
             await _dataService.SaveUserDataAsync(_userData);
         }
-
         private async Task LoadAsync()
         {
             _userData = await _dataService.LoadUserDataAsync(_userId);
@@ -231,8 +249,9 @@ namespace TimeTrackerApp.ViewModels
                 HookProjectEvents(project);
                 Projects.Add(project);
             }
-        }
 
+            SelectedProject = Projects?.FirstOrDefault() ?? new ProjectItem();
+        }
         private async Task AutoSaveAsync()
         {
             var data = new UserData
@@ -243,12 +262,13 @@ namespace TimeTrackerApp.ViewModels
 
             await _dataService.SaveUserDataAsync(data);
         }
+        
+        
 
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
         private void HookProjectEvents(ProjectItem project)
         {
             project.PropertyChanged += async (sender, e) =>
@@ -269,7 +289,6 @@ namespace TimeTrackerApp.ViewModels
                 }
             };
         }
-
         private void HookTaskEvents(TaskItem task)
         {
             task.PropertyChanged += async (sender, e) =>

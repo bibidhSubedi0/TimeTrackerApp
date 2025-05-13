@@ -5,9 +5,10 @@ namespace TimeTrackerApp.Models
     public class TaskItem : INotifyPropertyChanged
     {
         private string _name;
-        private string _expectedTime;
+        private string _estimatedTime;
         private bool _isCompleted;
-        private string _timeSpent;
+        private string _timeElapsed;
+        private int _priority;
 
         public string Name
         {
@@ -24,12 +25,12 @@ namespace TimeTrackerApp.Models
 
         public string ExpectedTime
         {
-            get => _expectedTime;
+            get => _estimatedTime;
             set
             {
-                if (_expectedTime != value)
+                if (_estimatedTime != value)
                 {
-                    _expectedTime = value;
+                    _estimatedTime = value;
                     OnPropertyChanged(nameof(ExpectedTime));
                 }
             }
@@ -48,15 +49,28 @@ namespace TimeTrackerApp.Models
             }
         }
 
-        public string TimeSpent
+        public string TimeElapsed
         {
-            get => _timeSpent;
+            get => _timeElapsed;
             set
             {
-                if (_timeSpent != value)
+                if (_timeElapsed != value)
                 {
-                    _timeSpent = value;
-                    OnPropertyChanged(nameof(TimeSpent));
+                    _timeElapsed = value;
+                    OnPropertyChanged(nameof(TimeElapsed));
+                }
+            }
+        }
+
+        public int Priority
+        {
+            get => _priority;
+            set
+            {
+                if(_priority != value)
+                {
+                    _priority = value;
+                    OnPropertyChanged(nameof(Priority));
                 }
             }
         }
