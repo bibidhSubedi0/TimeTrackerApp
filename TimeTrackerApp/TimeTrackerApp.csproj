@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Blazicons.MaterialDesignIcons" Version="2.1.23" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="MaterialDesignColors" Version="5.2.1" />
     <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
   </ItemGroup>

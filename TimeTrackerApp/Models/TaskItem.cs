@@ -17,7 +17,7 @@ namespace TimeTrackerApp.Models
                 if (_name != value)
                 {
                     _name = value;
-                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Name));
                 }
             }
         }

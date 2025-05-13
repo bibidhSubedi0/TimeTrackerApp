@@ -51,9 +51,9 @@
                              Background="Transparent">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Name}"
-                                           Padding="8"
-                                           Style="{DynamicResource MaterialDesignBody1TextBlock}"/>
+                            <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Padding="8"
+                             Style="{DynamicResource MaterialDesignTextBox}"/>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
@@ -63,6 +63,7 @@
                             Style="{DynamicResource MaterialDesignRaisedButton}" Height="35" Width="256"/>
                 </StackPanel>
             </material:Card>
+            
 
             <!-- Tasks Panel -->
             <material:Card Grid.Column="1" Padding="24" Margin="0">
@@ -92,10 +93,10 @@
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <TextBox Text="{Binding Name}"
-                                                 Style="{DynamicResource MaterialDesignOutlinedTextBox}"
-                                                 Margin="4"
-                                                 Grid.Column="0"/>
+                                        <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Style="{DynamicResource MaterialDesignOutlinedTextBox}"
+                                         Margin="4"
+                                         Grid.Column="0"/>
 
                                         <TextBox Text="{Binding ExpectedTime}"
                                                  Style="{DynamicResource MaterialDesignOutlinedTextBox}"

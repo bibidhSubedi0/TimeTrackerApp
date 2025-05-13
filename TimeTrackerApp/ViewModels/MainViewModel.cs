@@ -5,11 +5,18 @@ using TimeTrackerApp.Models;
 using System.Windows;
 using System.Windows.Threading;
 using System.ComponentModel;
+using TimeTrackerApp.Utils;
+using CommunityToolkit.Mvvm.Input;
 
 namespace TimeTrackerApp.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {
+
+        private readonly DataService _dataService = new();
+        private UserData _userData = new();
+        private const string _userId = "default_user";
+
         private bool _isTimerRunning = false;
         public bool IsTimerRunning
         {
@@ -40,6 +47,8 @@ namespace TimeTrackerApp.ViewModels
                 OnPropertyChanged();
             }
         }
+
+
 
         public ObservableCollection<TaskItem> Tasks
         {
@@ -97,6 +106,9 @@ namespace TimeTrackerApp.ViewModels
         public ICommand StartTaskCommand { get; set; }
         public ICommand StopTimerCommand { get; set; }
 
+        public IAsyncRelayCommand SaveTasksCommand { get; }
+        public IAsyncRelayCommand LoadTasksCommand { get; }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
 
@@ -106,16 +118,18 @@ namespace TimeTrackerApp.ViewModels
             _tasks = new ObservableCollection<TaskItem>();
             _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
             _timer.Tick += Timer_Tick;
+            
+
 
             // Relay the ICommand to the actual methods
             AddProjectCommand = new RelayCommand(AddProject);
             AddTaskCommand = new RelayCommand(AddTask);
             StartTaskCommand = new RelayCommand<TaskItem>(StartTask);
             StopTimerCommand = new RelayCommand(StopTimer);
+            SaveTasksCommand = new AsyncRelayCommand(SaveAsync);
+            LoadTasksCommand = new AsyncRelayCommand(LoadAsync);
 
-            AddProject();
-            SelectedProject = Projects.FirstOrDefault();
-            AddTask();
+            LoadAsync().ConfigureAwait(false);
 
         }
 
@@ -131,16 +145,21 @@ namespace TimeTrackerApp.ViewModels
             }
         }
 
-        private void AddProject()
+        private async void AddProject()
         {
-            var newProject = new ProjectItem {
+            var newProject = new ProjectItem
+            {
                 Name = "Project " + (Projects.Count + 1),
                 TimeSpent = "00:00:00"
             };
+
+            HookProjectEvents(newProject);
             Projects.Add(newProject);
+            await AutoSaveAsync();
         }
 
-        private void AddTask()
+
+        private async void AddTask()
         {
             if (SelectedProject == null)
             {
@@ -155,8 +174,9 @@ namespace TimeTrackerApp.ViewModels
                 IsCompleted = false,
                 TimeSpent = "00:00:00"
             };
-
+            HookTaskEvents(newTask);
             SelectedProject.Tasks.Add(newTask);
+            await AutoSaveAsync();
         }
 
         private void StartTask(TaskItem task)
@@ -179,11 +199,80 @@ namespace TimeTrackerApp.ViewModels
             TimerCountdown = "Timer Stopped";
             IsTimerRunning = false; 
         }
+        private async Task SaveAsync()
+        {
+            _userData.UserId = _userId;
+            _userData.Projects = Projects.ToList(); // Convert to list to store
+            await _dataService.SaveUserDataAsync(_userData);
+        }
 
+        private async Task LoadAsync()
+        {
+            _userData = await _dataService.LoadUserDataAsync(_userId);
+            Projects.Clear();
+
+            foreach (var project in _userData.Projects)
+            {
+                HookProjectEvents(project);
+                Projects.Add(project);
+            }
+        }
+
+        private async Task AutoSaveAsync()
+        {
+            var data = new UserData
+            {
+                UserId = _userId,
+                Projects = Projects.ToList()
+            };
+
+            await _dataService.SaveUserDataAsync(data);
+        }
 
         protected void OnPropertyChanged(string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        private void HookProjectEvents(ProjectItem project)
+        {
+            project.PropertyChanged += async (sender, e) =>
+            {
+                if (e.PropertyName == nameof(ProjectItem.Name))
+                {
+                    await AutoSaveAsync();
+                }
+            };
+
+            // Hook all existing tasks in this project
+            foreach (var task in project.Tasks)
+            {
+                HookTaskEvents(task);
+            }
+
+            // Optional: handle future task additions if Tasks is an ObservableCollection
+            project.Tasks.CollectionChanged += (s, e) =>
+            {
+                if (e.NewItems != null)
+                {
+                    foreach (TaskItem newTask in e.NewItems)
+                    {
+                        HookTaskEvents(newTask);
+                    }
+                }
+            };
+        }
+
+        private void HookTaskEvents(TaskItem task)
+        {
+            task.PropertyChanged += async (sender, e) =>
+            {
+                if (e.PropertyName == nameof(TaskItem.Name))
+                {
+                    await AutoSaveAsync();
+                }
+            };
+        }
+
     }
 }

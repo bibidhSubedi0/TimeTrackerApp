@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace TimeTrackerApp.Models
 {
@@ -16,7 +17,8 @@ namespace TimeTrackerApp.Models
                 if (_name != value)
                 {
                     _name = value;
-                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Name));
+                    
                 }
             }
         }
@@ -29,7 +31,7 @@ namespace TimeTrackerApp.Models
                 if (_timeSpentOnProject != value)
                 {
                     _timeSpentOnProject = value;
-                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(TimeSpent));
                 }
             }
         }
