@@ -7,7 +7,7 @@ namespace TimeTrackerApp.Models
         private string _name;
         private string _expectedTime;
         private bool _isCompleted;
-        private string _timeSpentOnTask;
+        private string _timeSpent;
 
         public string Name
         {
@@ -30,7 +30,7 @@ namespace TimeTrackerApp.Models
                 if (_expectedTime != value)
                 {
                     _expectedTime = value;
-                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(ExpectedTime));
                 }
             }
         }
@@ -43,27 +43,27 @@ namespace TimeTrackerApp.Models
                 if (_isCompleted != value)
                 {
                     _isCompleted = value;
-                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(IsCompleted));
                 }
             }
         }
 
         public string TimeSpent
         {
-            get => _timeSpentOnTask;
+            get => _timeSpent;
             set
             {
-                if (_timeSpentOnTask != value)
+                if (_timeSpent != value)
                 {
-                    _timeSpentOnTask = value;
-                    OnPropertyChanged();
+                    _timeSpent = value;
+                    OnPropertyChanged(nameof(TimeSpent));
                 }
             }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged(string propertyName = "")
+        protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

@@ -20,7 +20,8 @@ namespace TimeTrackerApp
             remove => CommandManager.RequerySuggested -= value;
         }
 
-        public bool CanExecute(object parameter) => _canExecute == null || _canExecute();
+        public bool CanExecute(object parameter) => _canExecute?.Invoke() ?? true;
+
         public void Execute(object parameter) => _execute();
     }
 
@@ -41,7 +42,20 @@ namespace TimeTrackerApp
             remove => CommandManager.RequerySuggested -= value;
         }
 
-        public bool CanExecute(object parameter) => _canExecute == null || _canExecute((T)parameter);
-        public void Execute(object parameter) => _execute((T)parameter);
+        public bool CanExecute(object parameter)
+        {
+            if (parameter == null && typeof(T).IsValueType)
+                return _canExecute == null;
+
+            return _canExecute?.Invoke((T)parameter) ?? true;
+        }
+
+        public void Execute(object parameter)
+        {
+            if (parameter == null && typeof(T).IsValueType)
+                throw new ArgumentNullException(nameof(parameter), $"Parameter of type {typeof(T)} cannot be null.");
+
+            _execute((T)parameter);
+        }
     }
 }

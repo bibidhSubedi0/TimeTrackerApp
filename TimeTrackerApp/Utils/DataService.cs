@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using TimeTrackerApp.Models;
@@ -11,7 +8,9 @@ namespace TimeTrackerApp.Utils
 {
     public class DataService
     {
-        private readonly string _basePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "TimeTrackerApp");
+        private readonly string _basePath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            "TimeTrackerApp");
 
         public async Task<UserData> LoadUserDataAsync(string userId)
         {
@@ -27,13 +26,17 @@ namespace TimeTrackerApp.Utils
         public async Task SaveUserDataAsync(UserData userData)
         {
             var filePath = GetUserFilePath(userData.UserId);
+
             Directory.CreateDirectory(Path.GetDirectoryName(filePath)!);
-            var json = JsonSerializer.Serialize(userData, new JsonSerializerOptions { WriteIndented = true });
+
+            var json = JsonSerializer.Serialize(
+                userData,
+                new JsonSerializerOptions { WriteIndented = true });
+
             await File.WriteAllTextAsync(filePath, json);
         }
 
         private string GetUserFilePath(string userId) =>
             Path.Combine(_basePath, $"user_{userId}.json");
     }
-
 }
