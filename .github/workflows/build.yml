@@ -1,0 +1,35 @@
+name: Build TimeTrackerApp
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.2.0
+
+    - name: Restore NuGet packages
+      run: nuget restore TimeTrackerApp.sln
+
+    - name: Build solution
+      run: msbuild TimeTrackerApp.sln /p:Configuration=Release
+
+    - name: Publish artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: TimeTrackerApp-build
+        path: |
+          **\bin\Release\
