@@ -321,9 +321,15 @@ namespace TimeTrackerApp.ViewModels
                     await AutoSaveAsync();
                 if (e.PropertyName == nameof(TaskItem.ExpectedTime))
                 {
-                    await AutoSaveAsync();
                     RecalculateProjectTime();
+                    await AutoSaveAsync();
                 }
+                if(e.PropertyName == nameof(TaskItem.IsCompleted))
+                {
+                    UpdateCompletedTasks();
+                    await AutoSaveAsync();
+                }
+
             };
         }
 
@@ -340,7 +346,18 @@ namespace TimeTrackerApp.ViewModels
             SelectedProject.EstimatedTime = total.ToString(@"hh\:mm\:ss");
         }
 
-
+        private void UpdateCompletedTasks()
+        {
+            foreach (var task in SelectedProject.Tasks)
+            {
+                if (task.IsCompleted)
+                {
+                    SelectedProject.CompletedTasks.Add(task);
+                    SelectedProject.Tasks.Remove(task);
+                    break;
+                }
+            }
+        }
 
     }
 }
