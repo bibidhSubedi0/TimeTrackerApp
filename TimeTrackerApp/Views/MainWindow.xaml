@@ -12,16 +12,59 @@
         MinWidth="1250" MinHeight="700"
         WindowStyle="SingleBorderWindow"
         AllowsTransparency="False"
-        Background="White"
+        Background="#FFF8F3"
         FontFamily="Segoe UI">
 
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Blue.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Secondary/MaterialDesignColor.Lime.xaml"/>
+                <!-- Using warm browns and terracotta colors -->
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Brown.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Secondary/MaterialDesignColor.DeepOrange.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <!-- Custom Colors -->
+            <Color x:Key="WarmBackground">#FFF8F3</Color>
+            <Color x:Key="CozyBrown">#8B7355</Color>
+            <Color x:Key="SoftTerracotta">#E8B4A2</Color>
+            <Color x:Key="WarmGrey">#A69B97</Color>
+            <Color x:Key="CreamWhite">#FDF5E6</Color>
+
+            <!-- Custom Brushes -->
+            <SolidColorBrush x:Key="WarmBackgroundBrush" Color="{StaticResource WarmBackground}"/>
+            <SolidColorBrush x:Key="CozyBrownBrush" Color="{StaticResource CozyBrown}"/>
+            <SolidColorBrush x:Key="SoftTerracottaBrush" Color="{StaticResource SoftTerracotta}"/>
+            <SolidColorBrush x:Key="WarmGreyBrush" Color="{StaticResource WarmGrey}"/>
+            <SolidColorBrush x:Key="CreamWhiteBrush" Color="{StaticResource CreamWhite}"/>
+
+            <!-- Custom Styles -->
+            <Style x:Key="CozyCard" TargetType="material:Card">
+                <Setter Property="material:ElevationAssist.Elevation" Value="Dp1"/>
+                <Setter Property="Background" Value="{StaticResource CreamWhiteBrush}"/>
+                <Setter Property="Margin" Value="8"/>
+                <Setter Property="UniformCornerRadius" Value="16"/>
+            </Style>
+
+            <Style x:Key="CozyTextBlock" TargetType="TextBlock">
+                <Setter Property="FontWeight" Value="Medium"/>
+                <Setter Property="FontSize" Value="13"/>
+                <Setter Property="Foreground" Value="{StaticResource CozyBrownBrush}"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+            </Style>
+
+            <Style x:Key="CozyValueBlock" TargetType="TextBlock" BasedOn="{StaticResource CozyTextBlock}">
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="Margin" Value="0,4,0,0"/>
+            </Style>
+
+            <Style x:Key="CozyButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
+                <Setter Property="Background" Value="{StaticResource SoftTerracottaBrush}"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="material:ButtonAssist.CornerRadius" Value="8"/>
+                <Setter Property="Height" Value="40"/>
+            </Style>
         </ResourceDictionary>
     </Window.Resources>
 
@@ -30,121 +73,130 @@
     </Window.DataContext>
 
     <Grid>
-        <!-- Main Background -->
-        <Grid Background="#FFF5F5F5"/>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#FFF8F3" Offset="0"/>
+                <GradientStop Color="#FFF1E6" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
 
-        <!-- Main Grid Layout -->
-        <Grid Margin="12">
+        <Grid Margin="16">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="320"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <!-- Projects Panel -->
-            <material:Card Grid.Column="0" Margin="0,0,8,0" Padding="16" Background="#F0F0F0">
-                <Grid>
+            <material:Card Grid.Column="0" 
+                          Style="{StaticResource CozyCard}"
+                          Margin="0,0,8,0">
+                <Grid Margin="16">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <StackPanel>
+                    <TextBlock Text="PROJECTS"
+                             Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                             FontWeight="Medium"
+                             Foreground="{StaticResource CozyBrownBrush}"
+                             Margin="0,0,0,16"/>
 
+                    <Border Grid.Row="1" 
+                            Background="#FFF8F3" 
+                            CornerRadius="12"
+                            Padding="8">
+                        <ListBox ItemsSource="{Binding Projects}"
+                                SelectedItem="{Binding SelectedProject}"
+                                BorderThickness="0"
+                                Background="Transparent">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Padding="12,8"
+                                            BorderThickness="0"
+                                            Background="{StaticResource CreamWhiteBrush}"
+                                            Foreground="{StaticResource CozyBrownBrush}"
+                                            Style="{StaticResource MaterialDesignTextBox}"
+                                            FontSize="14"/>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Border>
 
-                        <TextBlock Grid.Column="1" Text="PROJECTS"
-                                   Style="{DynamicResource MaterialDesignSubtitle1TextBlock}"
-                                   Margin="0,0,0,12"/>
-
-                        <Border Grid.Column="2" Background="White" Padding="12" CornerRadius="12" Margin="0,10,0,16">
-                            <ListBox Grid.Column="2" ItemsSource="{Binding Projects}"
-                                 SelectedItem="{Binding SelectedProject}"
-         
-                                 BorderThickness="0"
-                                 Background="White">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                             Padding="8"
-                                             BorderThickness="0"
-                                             Style="{DynamicResource MaterialDesignTextBox}"/>
-
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                        </Border>
-                        
-                        
-                        <!-- Task Name Input -->
-                        <Border Grid.Row="1" Background="White" Padding="12" CornerRadius="12" Margin="0,10,0,16">
-                            <TextBox Grid.Column="3" Text="{Binding NewProjectName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 Style="{DynamicResource MaterialDesignOutlinedTextBox}"
-                                 Margin="0,0,0,0"
-                                 FontSize="12"
-                                 Padding="0,0,0,0"
-                                 Background="White"
-                                 BorderThickness="0"
-                                 
-                                 material:HintAssist.Hint="+ Add a new Project, press enter to save"
-                                 KeyDown="ProjectNameTextBox_KeyDown" Height="20"/>
-                        </Border>
-
-                    </StackPanel>
+                    <TextBox Grid.Row="2"
+                             Text="{Binding NewProjectName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                             Margin="0,16,0,0"
+                             Background="{StaticResource CreamWhiteBrush}"
+                             Foreground="{StaticResource CozyBrownBrush}"
+                             material:HintAssist.Hint="+ Add a new Project"
+                             material:TextFieldAssist.HasClearButton="True"
+                             KeyDown="ProjectNameTextBox_KeyDown"/>
                 </Grid>
             </material:Card>
 
             <!-- Tasks Panel -->
-            <material:Card Grid.Column="1" Padding="24" Margin="0" Background="#F0F0F0">
-                <Grid>
+            <material:Card Grid.Column="1" 
+                          Style="{StaticResource CozyCard}">
+                <Grid Margin="24">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <!-- Header -->
                         <RowDefinition Height="Auto"/>
-                        <!-- Summary Bar -->
-                        <RowDefinition Height="7.42"/>
-                        <RowDefinition Height="78.58"/>
-                        <!-- Task List -->
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
-                        <!-- Add Task Button -->
-                        <RowDefinition Height="Auto"/>
-                        <!-- Timer Panel -->
                     </Grid.RowDefinitions>
 
+                    <!-- Header -->
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <!-- Tasks Header -->
-                        <TextBlock Grid.Column="0" Text="{Binding SelectedProject.Name, UpdateSourceTrigger=PropertyChanged}"
-                                   Style="{DynamicResource MaterialDesignSubtitle1TextBlock}"
-                                   Margin="0,0,0,16"/>
+                        <TextBlock Text="{Binding SelectedProject.Name}"
+                                 Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                 FontWeight="Medium"
+                                 Foreground="{StaticResource CozyBrownBrush}"
+                                 Margin="0,0,0,24"/>
 
-                        <Expander Grid.Column="1" Header="Completed Tasks"
-                                  IsExpanded="False"
-                                  Margin="0,12,0,12"
-                                  Background="#FFF"
-                                  Style="{StaticResource MaterialDesignExpander}">
-                            <ItemsControl ItemsSource="{Binding SelectedProject.CompletedTasks}">
+                        <Expander Grid.Column="1" 
+                                 Header="Completed Tasks"
+                                 Style="{StaticResource MaterialDesignExpander}"
+                                 BorderThickness="0"
+                                 Foreground="{StaticResource CozyBrownBrush}"
+                                 Background="Transparent">
+                            <ItemsControl ItemsSource="{Binding SelectedProject.CompletedTasks}"
+                                        Margin="0,8">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Border Margin="10,10,10,10" Padding="8" Background="LightGray" CornerRadius="12">
+                                        <Border Margin="0,4" 
+                                                Padding="12,8" 
+                                                Background="{StaticResource WarmBackgroundBrush}"
+                                                CornerRadius="8">
                                             <StackPanel>
-                                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="14"/>
-                                                <TextBlock Text="{Binding ExpectedTime}" FontSize="12" Foreground="DarkSlateGray"/>
+                                                <TextBlock Text="{Binding Name}" 
+                                                         FontWeight="Medium"
+                                                         Foreground="{StaticResource CozyBrownBrush}"/>
+                                                <TextBlock Text="{Binding ExpectedTime}" 
+                                                         Foreground="{StaticResource WarmGreyBrush}"
+                                                         FontSize="12"
+                                                         Margin="0,4,0,0"/>
                                             </StackPanel>
                                         </Border>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                         </Expander>
-
                     </Grid>
 
                     <!-- Summary Bar -->
-                    <Border Grid.Row="1" Background="White" Padding="12" CornerRadius="12" Margin="0,0,0,16">
-                        <Grid>
+                    <material:Card Grid.Row="1" 
+                                 Style="{StaticResource CozyCard}"
+                                 Margin="0,0,0,24"
+                                 Background="{StaticResource WarmBackgroundBrush}">
+                        <Grid Margin="16">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
@@ -152,121 +204,120 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <StackPanel Grid.Column="0" HorizontalAlignment="Center">
-                                <TextBlock Text="Estimated Time" FontWeight="Bold" FontSize="12" Foreground="Gray" HorizontalAlignment="Center"/>
-                                <TextBlock Text="{Binding SelectedProject.EstimatedTime}" FontSize="14" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Estimated Time"
+                                         Style="{StaticResource CozyTextBlock}"/>
+                                <TextBlock Text="{Binding SelectedProject.EstimatedTime}"
+                                         Style="{StaticResource CozyValueBlock}"/>
                             </StackPanel>
 
-                            <StackPanel Grid.Column="1" HorizontalAlignment="Center">
-                                <TextBlock Text="Tasks To Complete" FontWeight="Bold" FontSize="12" Foreground="Gray" HorizontalAlignment="Center"/>
-                                <TextBlock Text="{Binding SelectedProject.Tasks.Count}" FontSize="14" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="Tasks To Complete"
+                                         Style="{StaticResource CozyTextBlock}"/>
+                                <TextBlock Text="{Binding SelectedProject.Tasks.Count}"
+                                         Style="{StaticResource CozyValueBlock}"/>
                             </StackPanel>
 
-                            <StackPanel Grid.Column="2" HorizontalAlignment="Center">
-                                <TextBlock Text="Elapsed Time" FontWeight="Bold" FontSize="12" Foreground="Gray" HorizontalAlignment="Center"/>
-                                <TextBlock Text="{Binding SelectedProject.TimeSpent}" FontSize="14" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Elapsed Time"
+                                         Style="{StaticResource CozyTextBlock}"/>
+                                <TextBlock Text="{Binding SelectedProject.TimeSpent}"
+                                         Style="{StaticResource CozyValueBlock}"/>
                             </StackPanel>
 
-                            <StackPanel Grid.Column="3" HorizontalAlignment="Center">
-                                <TextBlock Text="Completed Tasks" FontWeight="Bold" FontSize="12" Foreground="Gray" HorizontalAlignment="Center"/>
-                                <TextBlock Text="{Binding SelectedProject.CompletedTasks.Count}" FontSize="14" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                            <StackPanel Grid.Column="3">
+                                <TextBlock Text="Completed Tasks"
+                                         Style="{StaticResource CozyTextBlock}"/>
+                                <TextBlock Text="{Binding SelectedProject.CompletedTasks.Count}"
+                                         Style="{StaticResource CozyValueBlock}"/>
                             </StackPanel>
                         </Grid>
-                    </Border>
+                    </material:Card>
 
-                    <!-- Inline Add Task Panel -->
-                    <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,17,0,12" HorizontalAlignment="Center">
-                        <!-- Task Name Input -->
+                    <!-- Add Task Panel -->
+                    <Grid Grid.Row="2" Margin="0,0,0,16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="160"/>
+                        </Grid.ColumnDefinitions>
+
                         <TextBox Text="{Binding NewTaskName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 Width="687"
-                                 Style="{DynamicResource MaterialDesignOutlinedTextBox}"
-                                 Margin="0,0,12,0"
-                                 VerticalAlignment="Center"
-                                 material:HintAssist.Hint="+ Add a task, press enter to save"
-                                 KeyDown="TaskNameTextBox_KeyDown"/>
+                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                Background="{StaticResource CreamWhiteBrush}"
+                                Foreground="{StaticResource CozyBrownBrush}"
+                                material:HintAssist.Hint="+ Add a task"
+                                material:TextFieldAssist.HasClearButton="True"
+                                Margin="0,0,8,0"
+                                KeyDown="TaskNameTextBox_KeyDown"/>
 
-                        <!-- Expected Time Input -->
-                        <TextBox Text="{Binding NewTaskExpectedTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 Width="120"
-                                 Style="{DynamicResource MaterialDesignOutlinedTextBox}"
-                                 VerticalAlignment="Center"
-                                 material:HintAssist.Hint="Expected Time"
-                                 KeyDown="TaskNameTextBox_KeyDown"/>
-                    </StackPanel>
+                        <TextBox Grid.Column="1"
+                                Text="{Binding NewTaskExpectedTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                Background="{StaticResource CreamWhiteBrush}"
+                                Foreground="{StaticResource CozyBrownBrush}"
+                                material:HintAssist.Hint="Expected Time"
+                                KeyDown="TaskNameTextBox_KeyDown"/>
+                    </Grid>
 
                     <!-- Task List -->
-                    <ScrollViewer Grid.Row="4" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden">
+                    <ScrollViewer Grid.Row="3" 
+                                VerticalScrollBarVisibility="Auto" 
+                                HorizontalScrollBarVisibility="Disabled">
                         <ItemsControl ItemsSource="{Binding Tasks}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Border Margin="0,4" Padding="8" Background="White" CornerRadius="12" SnapsToDevicePixels="True">
-                                        <Grid VerticalAlignment="Center">
+                                    <material:Card Style="{StaticResource CozyCard}"
+                                                 Margin="0,4">
+                                        <Grid Margin="16,8">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto"/>
-                                                <!-- Start Button -->
-                                                <ColumnDefinition Width="3*"/>
-                                                <!-- Task Name -->
+                                                <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
-                                                <!-- Expected Time -->
                                                 <ColumnDefinition Width="Auto"/>
-                                                <!-- Completed -->
                                                 <ColumnDefinition Width="Auto"/>
-                                                <!-- Delete -->
                                             </Grid.ColumnDefinitions>
 
-                                            <!-- Start Button -->
-                                            <Button Content="▶"
-                                                    FontSize="10"
-                                                    Width="30"
-                                                    Height="24"
-                                                    Padding="0"
-                                                    Background="LightPink"
-                                                    BorderBrush="LightPink"
+                                            <Button Grid.Column="0"
+                                                    Style="{StaticResource CozyButton}"
                                                     Command="{Binding DataContext.StartTaskCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                     CommandParameter="{Binding}"
-                                                    Style="{DynamicResource MaterialDesignFlatDarkBgButton}"
-                                                    ToolTip="Start Task"
-                                                    Margin="4"
-                                                    Grid.Column="0" />
+                                                    Width="32" Height="32">
+                                                <material:PackIcon Kind="Play" Width="16" Height="16"/>
+                                            </Button>
 
-                                            <!-- Task Name -->
-                                            <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                     Background="Transparent"
-                                                     BorderBrush="Transparent"
-                                                     BorderThickness="0"
-                                                     Margin="4,0"
-                                                     FontSize="14"
-                                                     VerticalAlignment="Center"
-                                                     Grid.Column="1"
-                                                     FocusVisualStyle="{x:Null}"
-                                                     HorizontalAlignment="Left"
-                                                     Padding="0"
-                                                     TextWrapping="Wrap"/>
+                                            <TextBox Grid.Column="1"
+                                                    Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    Style="{StaticResource MaterialDesignTextBox}"
+                                                    BorderThickness="0"
+                                                    Background="Transparent"
+                                                    Foreground="{StaticResource CozyBrownBrush}"
+                                                    FontSize="14"
+                                                    Margin="16,0"/>
 
-                                            <!-- Expected Time -->
-                                            <TextBox Text="{Binding ExpectedTime}"
-                                                     Background="Transparent"
-                                                     BorderThickness="0"
-                                                     Margin="4,0"
-                                                     Width="80"
-                                                     FontSize="14"
-                                                     VerticalAlignment="Center"
-                                                     Grid.Column="2"/>
+                                            <TextBox Grid.Column="2"
+                                                    Text="{Binding ExpectedTime}"
+                                                    Style="{StaticResource MaterialDesignTextBox}"
+                                                    BorderThickness="0"
+                                                    Background="Transparent"
+                                                    Foreground="{StaticResource CozyBrownBrush}"
+                                                    Width="100"
+                                                    FontSize="14"
+                                                    Margin="8,0"/>
 
-                                            <!-- Completed Checkbox -->
-                                            <CheckBox IsChecked="{Binding IsCompleted}"
-                                                      VerticalAlignment="Center"
-                                                      Margin="8,0"
-                                                     Grid.Column="3"/>
-                                            <!-- Delete Button -->
-                                            <Button Content="Delete"
-                                                Command="{Binding DataContext.DeleteTaskCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                CommandParameter="{Binding}"
-                                                Style="{DynamicResource MaterialDesignToolButton}"
-                                                Margin="8,0"
-                                                Grid.Column="4"/>
+                                            <CheckBox Grid.Column="3"
+                                                     IsChecked="{Binding IsCompleted}"
+                                                     Style="{StaticResource MaterialDesignCheckBox}"
+                                                     Margin="16,0"/>
+
+                                            <Button Grid.Column="4"
+                                                    Style="{StaticResource MaterialDesignIconButton}"
+                                                    Command="{Binding DataContext.DeleteTaskCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                    CommandParameter="{Binding}"
+                                                    Foreground="{StaticResource WarmGreyBrush}">
+                                                <material:PackIcon Kind="Delete" Width="20" Height="20"/>
+                                            </Button>
                                         </Grid>
-                                    </Border>
+                                    </material:Card>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
@@ -274,28 +325,60 @@
                 </Grid>
             </material:Card>
 
-            <!-- Fullscreen Timer Overlay -->
+            <!-- Timer Overlay (Fixed) -->
             <Grid Grid.ColumnSpan="2"
-              Visibility="{Binding IsTimerRunning, Converter={StaticResource BooleanToVisibilityConverter}}"
-              Background="#AA000000"
-              Panel.ZIndex="999">
-                <material:Card VerticalAlignment="Center" HorizontalAlignment="Center" Padding="48" Background="{DynamicResource PrimaryHueDarkBrush}">
-                    <StackPanel>
-                        <TextBlock Text="{Binding TimerCountdown}"
-                               Style="{DynamicResource MaterialDesignHeadline2TextBlock}"
-                               Foreground="White"
-                               HorizontalAlignment="Center"/>
-                        <TextBlock Text="{Binding TimerTaskName}"
-                               Style="{DynamicResource MaterialDesignSubtitle1TextBlock}"
-                               Foreground="White"
-                               HorizontalAlignment="Center"
-                               Margin="0,12"/>
-                        <Button Content="Stop"
-                            Command="{Binding StopTimerCommand}"
-                            Style="{DynamicResource MaterialDesignRaisedButton}"
-                            Margin="0,24,0,0"
-                            HorizontalAlignment="Center"/>
-                    </StackPanel>
+                  Visibility="{Binding IsTimerRunning, Converter={StaticResource BooleanToVisibilityConverter}}"
+                  Panel.ZIndex="999">
+                <Grid.Background>
+                    <SolidColorBrush Color="#BF8B7355"/> <!-- Semi-transparent warm brown -->
+                </Grid.Background>
+
+                <material:Card VerticalAlignment="Center"
+                             HorizontalAlignment="Center"
+                             UniformCornerRadius="24"
+                             Background="{StaticResource SoftTerracottaBrush}"
+                             material:ElevationAssist.Elevation="Dp8">
+                    <Grid Margin="48">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Width="300" Height="300">
+                            <Ellipse Fill="Transparent"
+                                    Stroke="#44FFFFFF"
+                                    StrokeThickness="8"/>
+
+                            <ProgressBar Value="{Binding TimerProgress}"
+                                       Maximum="100"
+                                       Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                       IsIndeterminate="False"
+                                       Foreground="White"/>
+
+                            <TextBlock Text="{Binding TimerCountdown}"
+                                     Style="{StaticResource MaterialDesignHeadline2TextBlock}"
+                                     Foreground="White"
+                                     HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"/>
+                        </Grid>
+
+                        <TextBlock Grid.Row="1"
+                                 Text="{Binding TimerTaskName}"
+                                 Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                 Foreground="White"
+                                 TextAlignment="Center"
+                                 Margin="0,32"/>
+
+                        <Button Grid.Row="2"
+                                Content="STOP TIMER"
+                                Command="{Binding StopTimerCommand}"
+                                Style="{StaticResource MaterialDesignFlatButton}"
+                                Background="White"
+                                Foreground="{StaticResource CozyBrownBrush}"
+                                Height="48"
+                                material:ButtonAssist.CornerRadius="24"/>
+                    </Grid>
                 </material:Card>
             </Grid>
         </Grid>
