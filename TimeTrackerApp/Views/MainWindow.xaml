@@ -354,6 +354,8 @@
                                        Maximum="100"
                                        Style="{StaticResource MaterialDesignCircularProgressBar}"
                                        IsIndeterminate="False"
+                                         Width="300"
+                                        Height="300"
                                        Foreground="White"/>
 
                             <TextBlock Text="{Binding TimerCountdown}"
