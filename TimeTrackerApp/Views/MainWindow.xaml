@@ -22,6 +22,8 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Secondary/MaterialDesignColor.Lime.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
+        
+        
     </Window.Resources>
 
     <Window.DataContext>
@@ -70,18 +72,90 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
+                        <!-- Header -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Summary Bar -->
                         <RowDefinition Height="*"/>
+                        <!-- Task List -->
                         <RowDefinition Height="Auto"/>
+                        <!-- Add Task Button -->
                         <RowDefinition Height="Auto"/>
+                        <!-- Timer Panel -->
+
                     </Grid.RowDefinitions>
 
                     <!-- Tasks Header -->
-                    <TextBlock Text="TASKS"
+                    <TextBlock Text="{Binding SelectedProject.Name, UpdateSourceTrigger=PropertyChanged}"
                                Style="{DynamicResource MaterialDesignSubtitle1TextBlock}"
                                Margin="0,0,0,16"/>
+                    
+                    <Border Grid.Row="1"
+                            Background="#E3F2FD"
+                            Padding="12"
+                            CornerRadius="6"
+                            Margin="0,0,0,16">      
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" HorizontalAlignment="Center">
+                                    <TextBlock Text="Estimated Time"
+                               FontWeight="Bold"
+                               FontSize="12"
+                               Foreground="Gray"
+                               HorizontalAlignment="Center"/>
+
+                                <TextBlock Text="{Binding SelectedProject.EstimatedTime}" 
+                               FontSize="14"
+                               FontWeight="SemiBold"
+                               HorizontalAlignment="Center"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                                        <TextBlock Text="Tasks To Complete"
+                               FontWeight="Bold"
+                               FontSize="12"
+                               Foreground="Gray"
+                               HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding SelectedProject.Tasks.Count}" 
+                               FontSize="14"
+                               FontWeight="SemiBold"
+                               HorizontalAlignment="Center"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2" HorizontalAlignment="Center">
+                                        <TextBlock Text="Elapsed Time"
+                               FontWeight="Bold"
+                               FontSize="12"
+                               Foreground="Gray"
+                               HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding SelectedProject.TimeSpent}" 
+                               FontSize="14"
+                               FontWeight="SemiBold"
+                               HorizontalAlignment="Center"/>   
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="3" HorizontalAlignment="Center">
+                                <TextBlock Text="Completed Tasks"
+                                   FontWeight="Bold"
+                                   FontSize="12"
+                                   Foreground="Gray"
+                                   HorizontalAlignment="Center"/>
+                                        <TextBlock Text="{Binding SelectedProject.CompletedTasks.Count}" 
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
 
                     <!-- Task List -->          
-                    <ItemsControl Grid.Row="1" ItemsSource="{Binding Tasks}">
+                    <ItemsControl Grid.Row="2" ItemsSource="{Binding Tasks}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border Margin="0,4"
@@ -89,6 +163,7 @@
                                         Background="LightCyan"  
                                         CornerRadius="6"
                                         SnapsToDevicePixels="True">
+                                    
                                     <Grid VerticalAlignment="Center">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto"/>  <!-- Start Button -->
@@ -124,7 +199,7 @@
                                                  Grid.Column="1"/>
 
                                         <!-- Expected Time (borderless look) -->
-                                        <TextBox Text="{Binding ExpectedTime}"
+                                        <TextBox Text="{Binding ExpectedTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  Background="Transparent"
                                                  BorderThickness="0"
                                                  Margin="4,0"
@@ -151,9 +226,9 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-
+            
                     <!-- Add Task Button -->
-                    <Button Grid.Row="2"
+                    <Button Grid.Row="3"
                             Content="Add Task"
                             Command="{Binding AddTaskCommand}"
                             Style="{DynamicResource MaterialDesignRaisedButton}"
@@ -161,7 +236,7 @@
                             HorizontalAlignment="Center" Grid.RowSpan="2" Width="274"/>
 
                     <!-- Timer Panel -->
-                    <material:Card Grid.Row="3"
+                    <material:Card Grid.Row="4"
                                    Margin="0,24,0,0"
                                    Padding="24"
                                    Background="{DynamicResource PrimaryHueLightBrush}">

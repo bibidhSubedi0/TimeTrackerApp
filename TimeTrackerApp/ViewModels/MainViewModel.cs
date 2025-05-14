@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 using CommunityToolkit.Mvvm.Input;
@@ -23,11 +25,14 @@ namespace TimeTrackerApp.ViewModels
         private string _timerCountdown;
         private string _timerTaskName;
         private string _timerProjectName;
+        private TaskItem _currentTask;
 
         // Other stuff
         private ProjectItem _selectedProject;
         private ObservableCollection<ProjectItem> _projects = new();
         private ObservableCollection<TaskItem> _tasks = new();
+        
+
         public event PropertyChangedEventHandler PropertyChanged;
 
 
@@ -152,22 +157,28 @@ namespace TimeTrackerApp.ViewModels
         private void Timer_Tick(object sender, EventArgs e)
         {
             _timeLeft = _timeLeft.Add(TimeSpan.FromSeconds(-1));
-            TimerCountdown = _timeLeft.ToString(@"hh\:mm\:ss");
 
+            TimerCountdown = _timeLeft.ToString(@"hh\:mm\:ss");
+            _currentTask.ExpectedTime = TimerCountdown;
             if (_timeLeft <= TimeSpan.Zero)
             {
                 _timer.Stop();
                 TimerCountdown = "Time's up!";
-                IsTimerRunning = false;
+                //IsTimerRunning = false;
             }
         }
         private void StopTimer()
         {
             _timer.Stop();
+            if (TimerCountdown == "Time's up!" || TimerCountdown == "Timer Stopped")
+            {
+                IsTimerRunning = false;
+            }
             TimerCountdown = "Timer Stopped";
-            IsTimerRunning = false;
+
+            //IsTimerRunning = false;
         }
-        
+
         private async void AddProject()
         {
             var newProject = new ProjectItem
@@ -198,6 +209,10 @@ namespace TimeTrackerApp.ViewModels
 
             HookTaskEvents(newTask);
             SelectedProject.Tasks.Add(newTask);
+
+            RecalculateProjectTime();
+
+
             await AutoSaveAsync();
         }
         private async void DeleteTask(TaskItem task)
@@ -205,14 +220,18 @@ namespace TimeTrackerApp.ViewModels
             if (task == null || SelectedProject == null)
                 return;
 
-            foreach(var t in SelectedProject.Tasks)
+            
+
+            foreach (var t in SelectedProject.Tasks)
             {
-                if(t.Name == task.Name)
+                if (t.Name == task.Name)
                 {
                     SelectedProject.Tasks.Remove(t);
                     break;
                 }
             }
+            RecalculateProjectTime();
+
             await AutoSaveAsync();
         }
         private void StartTask(TaskItem task)
@@ -225,13 +244,13 @@ namespace TimeTrackerApp.ViewModels
                 TimerProjectName = $"Project: {SelectedProject.Name}";
                 TimerTaskName = task.Name;
                 TimerCountdown = _timeLeft.ToString(@"hh\:mm\:ss");
-
                 IsTimerRunning = true;
+                _currentTask = task;
                 _timer.Start();
             }
         }
-        
-        
+
+
 
         private async Task SaveAsync()
         {
@@ -262,8 +281,8 @@ namespace TimeTrackerApp.ViewModels
 
             await _dataService.SaveUserDataAsync(data);
         }
-        
-        
+
+
 
         protected void OnPropertyChanged(string propertyName)
         {
@@ -295,7 +314,28 @@ namespace TimeTrackerApp.ViewModels
             {
                 if (e.PropertyName == nameof(TaskItem.Name))
                     await AutoSaveAsync();
+                if (e.PropertyName == nameof(TaskItem.ExpectedTime))
+                {
+                    await AutoSaveAsync();
+                    RecalculateProjectTime();
+                }
             };
         }
+
+
+        private void RecalculateProjectTime()
+        {
+            TimeSpan total = TimeSpan.Zero;
+            foreach (var task in SelectedProject.Tasks)
+            {
+                if (TimeSpan.TryParse(task.ExpectedTime, out TimeSpan t))
+                    total += t;
+            }
+
+            SelectedProject.EstimatedTime = total.ToString(@"hh\:mm\:ss");
+        }
+
+
+
     }
 }

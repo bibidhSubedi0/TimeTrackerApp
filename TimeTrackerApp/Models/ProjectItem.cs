@@ -36,7 +36,7 @@ namespace TimeTrackerApp.Models
             }
         }
 
-        public string TimeElapsed
+        public string EstimatedTime
         {
             get => _estimatedTime;
             set
@@ -44,12 +44,14 @@ namespace TimeTrackerApp.Models
                 if (_estimatedTime != value)
                 {
                     _estimatedTime = value;
-                    OnPropertyChanged(nameof(TimeElapsed));
+                    OnPropertyChanged(nameof(EstimatedTime));
                 }
             }
         }
 
         public ObservableCollection<TaskItem> Tasks { get; set; } = new();
+        public ObservableCollection<TaskItem> CompletedTasks { get; set; } = new();
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
