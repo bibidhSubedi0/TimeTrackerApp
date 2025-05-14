@@ -9,4 +9,5 @@ A WPF-based application for managing projects and tasks, with a built-in timer t
 3. Select a task to begin tracking time with the timer.
 
    
-![image](https://github.com/user-attachments/assets/684641df-9026-488c-9733-b9ea2f74e73b)
+![image](https://github.com/user-attachments/assets/37946b4b-d664-491c-ba64-38739356cf41)
+
