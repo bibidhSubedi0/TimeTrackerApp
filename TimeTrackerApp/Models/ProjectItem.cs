@@ -9,6 +9,7 @@ namespace TimeTrackerApp.Models
         private string _name;
         private string _timeElapsed;
         private string _estimatedTime;
+        private float _completionPercentage = 25;
         
         public string Name
         {
@@ -36,6 +37,24 @@ namespace TimeTrackerApp.Models
             }
         }
 
+        public float CompletionPercentage
+        {
+            get
+            {
+                if (Tasks == null || Tasks.Count == 0)
+                    return 0;
+
+                return CompletedTasks.Count / (Tasks.Count + CompletedTasks.Count) * 100;
+            }
+            set
+            {
+                if (_completionPercentage != value)
+                {
+                    _completionPercentage = value;
+                    OnPropertyChanged(nameof(CompletionPercentage));
+                }
+            }
+        }
         public string EstimatedTime
         {
             get => _estimatedTime;

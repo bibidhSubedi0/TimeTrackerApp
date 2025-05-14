@@ -159,7 +159,7 @@ namespace TimeTrackerApp.ViewModels
         private void Timer_Tick(object sender, EventArgs e)
         {
             _timeLeft = _timeLeft.Add(TimeSpan.FromSeconds(-1));
-            
+
             TimeSpan _temp = TimeSpan.Zero;
             TimeSpan.TryParse(SelectedProject.TimeSpent, out _temp);
             _temp = _temp.Add(TimeSpan.FromSeconds(1));
@@ -167,11 +167,18 @@ namespace TimeTrackerApp.ViewModels
 
             TimerCountdown = _timeLeft.ToString(@"hh\:mm\:ss");
             _currentTask.ExpectedTime = TimerCountdown;
+
+            // Calculate and update progress
+            double elapsedSeconds = (_totalTime - _timeLeft).TotalSeconds;
+            double totalSeconds = _totalTime.TotalSeconds;
+            TimerProgress = (elapsedSeconds / totalSeconds) * 100;
+
             if (_timeLeft <= TimeSpan.Zero)
             {
                 _timer.Stop();
                 TimerCountdown = "Time's up!";
-                //IsTimerRunning = false;
+                TimerProgress = 100; // Ensure progress is complete
+                                     //IsTimerRunning = false;
             }
         }
         private void StopTimer()
@@ -305,10 +312,12 @@ namespace TimeTrackerApp.ViewModels
 
             if (TimeSpan.TryParse(task.ExpectedTime, out _timeLeft))
             {
+                _totalTime = _timeLeft;
                 TimerProjectName = $"Project: {SelectedProject.Name}";
                 TimerTaskName = task.Name;
                 TimerCountdown = _timeLeft.ToString(@"hh\:mm\:ss");
                 IsTimerRunning = true;
+                TimerProgress = 0;
                 _currentTask = task;
                 _timer.Start();
             }
@@ -420,7 +429,20 @@ namespace TimeTrackerApp.ViewModels
 
 
 
-
+        private double _timerProgress;
+        private TimeSpan _totalTime;
+        public double TimerProgress
+        {
+            get => _timerProgress;
+            set
+            {
+                if (_timerProgress != value)
+                {
+                    _timerProgress = value;
+                    OnPropertyChanged(nameof(TimerProgress));
+                }
+            }
+        }
 
     }
 }
