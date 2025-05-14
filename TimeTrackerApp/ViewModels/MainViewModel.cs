@@ -157,6 +157,11 @@ namespace TimeTrackerApp.ViewModels
         private void Timer_Tick(object sender, EventArgs e)
         {
             _timeLeft = _timeLeft.Add(TimeSpan.FromSeconds(-1));
+            
+            TimeSpan _temp = TimeSpan.Zero;
+            TimeSpan.TryParse(SelectedProject.TimeSpent, out _temp);
+            _temp = _temp.Add(TimeSpan.FromSeconds(1));
+            SelectedProject.TimeSpent = _temp.ToString(@"hh\:mm\:ss");
 
             TimerCountdown = _timeLeft.ToString(@"hh\:mm\:ss");
             _currentTask.ExpectedTime = TimerCountdown;
