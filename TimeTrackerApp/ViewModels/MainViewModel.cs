@@ -348,16 +348,17 @@ namespace TimeTrackerApp.ViewModels
 
         private void UpdateCompletedTasks()
         {
-            foreach (var task in SelectedProject.Tasks)
+            var completed = SelectedProject.Tasks
+                .Where(t => t.IsCompleted)
+                .ToList(); // Materialize the list before modifying
+
+            foreach (var task in completed)
             {
-                if (task.IsCompleted)
-                {
-                    SelectedProject.CompletedTasks.Add(task);
-                    SelectedProject.Tasks.Remove(task);
-                    break;
-                }
+                SelectedProject.CompletedTasks.Add(task);
+                SelectedProject.Tasks.Remove(task);
             }
         }
+
 
     }
 }

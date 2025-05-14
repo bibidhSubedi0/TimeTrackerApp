@@ -84,11 +84,43 @@
 
                     </Grid.RowDefinitions>
 
-                    <!-- Tasks Header -->
-                    <TextBlock Text="{Binding SelectedProject.Name, UpdateSourceTrigger=PropertyChanged}"
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <!-- Tasks Header -->
+                    <TextBlock Grid.Column="0" Text="{Binding SelectedProject.Name, UpdateSourceTrigger=PropertyChanged}"
                                Style="{DynamicResource MaterialDesignSubtitle1TextBlock}"
                                Margin="0,0,0,16"/>
-                    
+
+                        <Expander Grid.Column="1" Header="Completed Tasks"
+                          IsExpanded="False"
+                          Margin="0,12,0,0"
+                          Background="#FFF"
+                          Style="{StaticResource MaterialDesignExpander}">
+                            <ItemsControl ItemsSource="{Binding SelectedProject.CompletedTasks}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border Margin="0,4"
+                        Padding="8"
+                        Background="LightGray"
+                        CornerRadius="6">
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding Name}"
+                                   FontWeight="SemiBold"
+                                   FontSize="14"/>
+                                                <TextBlock Text="{Binding ExpectedTime}"
+                                   FontSize="12"
+                                   Foreground="DarkSlateGray"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Expander>
+
+                    </Grid>
                     <Border Grid.Row="1"
                             Background="#E3F2FD"
                             Padding="12"
@@ -199,7 +231,7 @@
                                                  Grid.Column="1"/>
 
                                         <!-- Expected Time (borderless look) -->
-                                        <TextBox Text="{Binding ExpectedTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        <TextBox Text="{Binding ExpectedTime}"
                                                  Background="Transparent"
                                                  BorderThickness="0"
                                                  Margin="4,0"
