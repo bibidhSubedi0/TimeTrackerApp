@@ -137,6 +137,8 @@ namespace TimeTrackerApp.ViewModels
 
         public MainViewModel()
         {
+            NewTaskExpectedTime = "00:30:00";
+
             _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
             _timer.Tick += Timer_Tick;
 
@@ -184,18 +186,57 @@ namespace TimeTrackerApp.ViewModels
             //IsTimerRunning = false;
         }
 
+
+        private string _newProjectName;
+        public string NewProjectName
+        {
+            get => _newProjectName;
+            set
+            {
+                _newProjectName = value;
+                OnPropertyChanged(nameof(_newProjectName));
+            }
+        }
+
+
         private async void AddProject()
         {
             var newProject = new ProjectItem
             {
-                Name = $"Project {Projects.Count + 1}",
+                Name = NewProjectName,
                 TimeSpent = "00:00:00"
             };
 
             HookProjectEvents(newProject);
             Projects.Add(newProject);
+            NewProjectName = string.Empty;
+            OnPropertyChanged(nameof(NewProjectName));
             await AutoSaveAsync();
         }
+
+
+        private string _newTaskName;
+        public string NewTaskName
+        {
+            get => _newTaskName;
+            set
+            {
+                _newTaskName = value;
+                OnPropertyChanged(nameof(NewTaskName));
+            }
+        }
+
+        private string _newTaskExpectedTime;
+        public string NewTaskExpectedTime
+        {
+            get => _newTaskExpectedTime;
+            set
+            {
+                _newTaskExpectedTime = value;
+                OnPropertyChanged(nameof(NewTaskExpectedTime));
+            }
+        }
+
         private async void AddTask()
         {
             if (SelectedProject == null)
@@ -204,10 +245,23 @@ namespace TimeTrackerApp.ViewModels
                 return;
             }
 
+            // Validate input
+            if (string.IsNullOrWhiteSpace(NewTaskName))
+            {
+                MessageBox.Show("Please enter a task name.");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(NewTaskExpectedTime))
+            {
+                MessageBox.Show("Please enter an expected time.");
+                return;
+            }
+
             var newTask = new TaskItem
             {
-                Name = $"Task {SelectedProject.Tasks.Count + 1}",
-                ExpectedTime = "00:25:00",
+                Name = NewTaskName,
+                ExpectedTime = NewTaskExpectedTime,
                 IsCompleted = false,
                 TimeElapsed = "00:00:00"
             };
@@ -215,8 +269,13 @@ namespace TimeTrackerApp.ViewModels
             HookTaskEvents(newTask);
             SelectedProject.Tasks.Add(newTask);
 
-            RecalculateProjectTime();
+            // Clear input fields
+            NewTaskName = string.Empty;
+            NewTaskExpectedTime = "00:30:00";
+            OnPropertyChanged(nameof(NewTaskName));
+            OnPropertyChanged(nameof(NewTaskExpectedTime));
 
+            RecalculateProjectTime();
 
             await AutoSaveAsync();
         }
@@ -358,6 +417,9 @@ namespace TimeTrackerApp.ViewModels
                 SelectedProject.Tasks.Remove(task);
             }
         }
+
+
+
 
 
     }
