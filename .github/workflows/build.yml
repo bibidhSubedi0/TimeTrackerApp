@@ -1,0 +1,45 @@
+name: Build TimeTrackerApp
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write  
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x  
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build project
+        run: dotnet build --configuration Release
+
+      - name: Publish artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: TimeTrackerApp-build
+          path: '**/bin/Release/'
+
+      - name: Zip the build output
+        run: Compress-Archive -Path "TimeTrackerApp/bin/Release/*" -DestinationPath TimeTrackerApp.zip
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: "Release v1.0.${{ github.run_number }}"
+          files: TimeTrackerApp.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
