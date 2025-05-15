@@ -6,7 +6,7 @@ namespace TimeTrackerApp.Models
     {
         private string _name;
         private string _estimatedTime;
-        private bool _isCompleted;
+        
         private string _timeElapsed;
         private int _priority;
 
@@ -36,6 +36,9 @@ namespace TimeTrackerApp.Models
             }
         }
 
+        private bool _isCompleted;
+        private DateTime? _completedDate;
+
         public bool IsCompleted
         {
             get => _isCompleted;
@@ -44,10 +47,34 @@ namespace TimeTrackerApp.Models
                 if (_isCompleted != value)
                 {
                     _isCompleted = value;
+                    if (value)
+                    {
+                        CompletedDate = DateTime.UtcNow;
+                    }
+                    else
+                    {
+                        CompletedDate = null;
+                    }
                     OnPropertyChanged(nameof(IsCompleted));
+                    OnPropertyChanged(nameof(CompletedDate));
+                    OnPropertyChanged(nameof(CompletedDateFormatted));
                 }
             }
         }
+
+        public DateTime? CompletedDate
+        {
+            get => _completedDate;
+            set
+            {
+                _completedDate = value;
+                OnPropertyChanged(nameof(CompletedDate));
+                OnPropertyChanged(nameof(CompletedDateFormatted));
+            }
+        }
+
+        public string CompletedDateFormatted =>
+            CompletedDate?.ToString("yyyy-MM-dd HH:mm:ss") ?? "";
 
         public string TimeElapsed
         {

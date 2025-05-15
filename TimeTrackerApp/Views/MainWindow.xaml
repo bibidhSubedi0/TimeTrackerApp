@@ -76,408 +76,450 @@
             </LinearGradientBrush>
         </Grid.Background>
 
-        <Grid Margin="16">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+            <Grid Margin="16">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-            <!-- Header Bar -->
-            <material:Card Style="{StaticResource ForestCard}"
+                <!-- Header Bar -->
+                <material:Card Style="{StaticResource ForestCard}"
                           Margin="0,0,0,16"
                           Background="{StaticResource ForestGreenBrush}">
-                <Grid Margin="16,8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+                    <Grid Margin="16,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-                    <!-- App Logo/Name -->
-                    <StackPanel Orientation="Horizontal">
-                        <material:PackIcon Kind="Clock" 
+                        <!-- App Logo/Name -->
+                        <StackPanel Orientation="Horizontal">
+                            <material:PackIcon Kind="Clock" 
                                          Width="24" 
                                          Height="24" 
                                          Foreground="{StaticResource BirchBrush}"
                                          VerticalAlignment="Center"/>
-                        <TextBlock Text="Gatilo Time Tracker" 
+                            <TextBlock Text="Gatilo Time Tracker" 
                                  Margin="8,0,0,0"
                                  Style="{StaticResource MaterialDesignHeadline6TextBlock}"
                                  Foreground="{StaticResource BirchBrush}"
                                  VerticalAlignment="Center"/>
-                    </StackPanel>
+                        </StackPanel>
+
+                    <!-- Navigation -->
+                    <material:ColorZone Grid.Column="1" 
+                   Mode="Standard" 
+                   Margin="8" 
+                   CornerRadius="2" 
+                   Panel.ZIndex="1"
+                   Background="Transparent"
+                   HorizontalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
+                    Margin="4"
+                    IsChecked="{Binding ShowActiveTasks}"
+                    Content="ACTIVE TASKS"
+                    Foreground="{StaticResource BirchBrush}"/>
+                            <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
+                    Margin="4"
+                    IsChecked="{Binding ShowCompletedTasks}"
+                    Content="COMPLETED &amp; STATS"
+                    Foreground="{StaticResource BirchBrush}"/>
+                        </StackPanel>
+                    </material:ColorZone>
 
                     <!-- User Info -->
-                    <StackPanel Orientation="Horizontal" 
-                              Grid.Column="1"
+                        <StackPanel Grid.Column="2" 
+                              Orientation="Horizontal"
                               Margin="16,0,0,0">
-                        <material:PackIcon Kind="Account" 
+                            <material:PackIcon Kind="Account" 
                                          Width="24" 
                                          Height="24"
                                          Foreground="{StaticResource BirchBrush}"
                                          VerticalAlignment="Center"/>
-                        <TextBlock Text="deafultUser" 
+                            <TextBlock Text="deafultUser" 
                                  Margin="8,0,0,0"
                                  Foreground="{StaticResource BirchBrush}"
                                  VerticalAlignment="Center"
                                  FontSize="14"/>
-                    </StackPanel>
-                </Grid>
-            </material:Card>
-
-            <!-- Main Content -->
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="320"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <!-- Projects Panel -->
-                <material:Card Grid.Column="0" 
-                              Style="{StaticResource ForestCard}"
-                              Margin="0,0,8,0">
-                    <Grid Margin="16">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <!-- Projects Header with Stats -->
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock Text="PROJECTS"
-                                     Style="{StaticResource MaterialDesignHeadline6TextBlock}"
-                                     FontWeight="Medium"
-                                     Foreground="{StaticResource ForestGreenBrush}"/>
-
-                            <TextBlock Grid.Column="1"
-                                     Text="{Binding Projects.Count, StringFormat='{}{0} Total'}"
-                                     Foreground="{StaticResource SageBrush}"
-                                     VerticalAlignment="Center"/>
-                        </Grid>
-
-                        
-
-                        <!-- Projects List -->
-                        <Border Grid.Row="2" 
-                                Background="#F8FAF7" 
-                                CornerRadius="12"
-                                Padding="8">
-                            <ListBox ItemsSource="{Binding Projects}"
-                                    SelectedItem="{Binding SelectedProject}"
-                                    BorderThickness="0"
-                                    Background="Transparent">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <material:Card Margin="0,4"
-                                                     UniformCornerRadius="8"
-                                                     Background="White">
-                                            <Grid Margin="12,8">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
-
-                                                <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                        BorderThickness="0"
-                                                        Background="Transparent"
-                                                        Foreground="{StaticResource ForestGreenBrush}"
-                                                        FontSize="14"/>
-
-                                                <StackPanel Grid.Column="1" 
-                                                          Orientation="Horizontal">
-                                                    <TextBlock Text="{Binding Tasks.Count}"
-                                                             Foreground="{StaticResource SageBrush}"
-                                                             VerticalAlignment="Center"
-                                                             Margin="8,0"/>
-                                                    <material:PackIcon Kind="ChevronRight"
-                                                                     Foreground="{StaticResource MossBrush}"/>
-                                                </StackPanel>
-                                            </Grid>
-                                        </material:Card>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                        </Border>
-
-                        <!-- Add Project -->
-                        <Grid Grid.Row="3" Margin="0,16,0,0">
-                            <TextBox Text="{Binding NewProjectName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                    Background="White"
-                                    Foreground="{StaticResource ForestGreenBrush}"
-                                    material:HintAssist.Hint="+ Add a new Project"
-                                    material:TextFieldAssist.HasClearButton="True"
-                                    KeyDown="ProjectNameTextBox_KeyDown"/>
-                        </Grid>
+                        </StackPanel>
                     </Grid>
                 </material:Card>
 
-                <!-- Tasks Panel -->
-                <material:Card Grid.Column="1" 
-                              Style="{StaticResource ForestCard}">
-                    <Grid Margin="24">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
 
-                        <!-- Project Header with Progress -->
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
+            <!-- Main Content Area -->
+<material:TransitioningContent Grid.Row="1" 
+                             OpeningEffect="{material:TransitionEffect FadeIn}">
+    <material:TransitioningContent.Style>
+        <Style TargetType="material:TransitioningContent">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ShowActiveTasks}" Value="True">
+                    <Setter Property="Content">
+                        <Setter.Value>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="320"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-                            <StackPanel>
-                                <TextBlock Text="{Binding SelectedProject.Name}"
-                  Style="{StaticResource MaterialDesignHeadline5TextBlock}"
-                  FontWeight="Medium"
-                  Foreground="{StaticResource ForestGreenBrush}"/>
+                                <!-- Projects Panel -->
+                                <material:Card Grid.Column="0" 
+                                             Style="{StaticResource ForestCard}"
+                                             Margin="0,0,8,0">
+                                    <Grid Margin="16">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
 
-                                <ProgressBar Value="{Binding SelectedProject.CompletionPercentage}"
-                    Maximum="100"
-                    Height="4"
-                    Margin="0,8,0,0"
-                    Foreground="{StaticResource SageBrush}"
-                    Background="{StaticResource MossBrush}"
-                    Style="{StaticResource MaterialDesignLinearProgressBar}"/>
-                            </StackPanel>
+                                        <!-- Projects Header with Stats -->
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
 
-                            <StackPanel Grid.Column="1" 
-                Orientation="Horizontal">
-                                <!-- Keep only this one percentage display -->
-                                <TextBlock Text="{Binding SelectedProject.CompletionPercentage, StringFormat={}{0:0}% Complete}"
-                  Foreground="{StaticResource SageBrush}"
-                  VerticalAlignment="Center"
-                  Margin="16,0"/>
-
-                                <!-- Expander for completed tasks -->
-                                <Expander Style="{StaticResource MaterialDesignExpander}"
-                  BorderThickness="0"
-                  Foreground="{StaticResource ForestGreenBrush}"
-                  Background="Transparent">
-                                    <Expander.Header>
-                                        <TextBlock Text="Completed Tasks" 
-                          Foreground="{StaticResource ForestGreenBrush}"/>
-                                    </Expander.Header>
-
-                                    <Expander.Content>
-                                        <material:Card Style="{StaticResource ForestCard}"
-                          Margin="0,8,0,0"
-                          MaxHeight="300">
-                                            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                                <ItemsControl ItemsSource="{Binding SelectedProject.CompletedTasks}"
-                                Margin="8">
-                                                    <ItemsControl.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <material:Card Margin="0,4"
-                                             UniformCornerRadius="8"
-                                             Background="White">
-                                                                <Grid Margin="12,8">
-                                                                    <Grid.ColumnDefinitions>
-                                                                        <ColumnDefinition Width="*"/>
-                                                                        <ColumnDefinition Width="Auto"/>
-                                                                    </Grid.ColumnDefinitions>
-
-                                                                    <StackPanel>
-                                                                        <TextBlock Text="{Binding Name}" 
+                                            <TextBlock Text="PROJECTS"
+                                                     Style="{StaticResource MaterialDesignHeadline6TextBlock}"
                                                      FontWeight="Medium"
                                                      Foreground="{StaticResource ForestGreenBrush}"/>
-                                                                        <TextBlock Text="{Binding ExpectedTime}" 
+
+                                            <TextBlock Grid.Column="1"
+                                                     Text="{Binding Projects.Count, StringFormat='{}{0} Total'}"
                                                      Foreground="{StaticResource SageBrush}"
-                                                     FontSize="12"
-                                                     Margin="0,4,0,0"/>
-                                                                    </StackPanel>
+                                                     VerticalAlignment="Center"/>
+                                        </Grid>
 
-                                                                    <material:PackIcon Grid.Column="1" 
-                                                         Kind="CheckCircle" 
-                                                         Foreground="{StaticResource SageBrush}"
-                                                         VerticalAlignment="Center"/>
-                                                                </Grid>
-                                                            </material:Card>
-                                                        </DataTemplate>
-                                                    </ItemsControl.ItemTemplate>
-                                                </ItemsControl>
-                                            </ScrollViewer>
-                                        </material:Card>
-                                    </Expander.Content>
-                                </Expander>
-                            </StackPanel>
-                        </Grid>
+                                        <!-- Projects List -->
+                                        <Border Grid.Row="2" 
+                                                Background="#F8FAF7" 
+                                                CornerRadius="12"
+                                                Padding="8">
+                                            <ListBox ItemsSource="{Binding Projects}"
+                                                    SelectedItem="{Binding SelectedProject}"
+                                                    BorderThickness="0"
+                                                    Background="Transparent">
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <material:Card Margin="0,4"
+                                                                     UniformCornerRadius="8"
+                                                                     Background="White">
+                                                            <Grid Margin="12,8">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                    <ColumnDefinition Width="Auto"/>
+                                                                </Grid.ColumnDefinitions>
 
-                        <!-- Summary Cards -->
-                        <UniformGrid Grid.Row="1" Columns="4" Margin="0,24">
-                            <material:Card Style="{StaticResource ForestCard}" 
-                                         Margin="4"
-                                         Background="{StaticResource SunlitLeafBrush}">
-                                <StackPanel Margin="16">
-                                    <TextBlock Text="Estimated Time"
-                                             Foreground="{StaticResource ForestGreenBrush}"/>
-                                    <TextBlock Text="{Binding SelectedProject.EstimatedTime}"
-                                             FontSize="24"
-                                             FontWeight="Medium"
-                                             Foreground="{StaticResource ForestGreenBrush}"/>
-                                </StackPanel>
-                            </material:Card>
+                                                                <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                        BorderThickness="0"
+                                                                        Background="Transparent"
+                                                                        Foreground="{StaticResource ForestGreenBrush}"
+                                                                        FontSize="14"/>
 
-                            <material:Card Style="{StaticResource ForestCard}" 
-                                         Margin="4"
-                                         Background="{StaticResource SunlitLeafBrush}">
-                                <StackPanel Margin="16">
-                                    <TextBlock Text="Tasks To Complete"
-                                             Foreground="{StaticResource ForestGreenBrush}"/>
-                                    <TextBlock Text="{Binding SelectedProject.Tasks.Count}"
-                                             FontSize="24"
-                                             FontWeight="Medium"
-                                             Foreground="{StaticResource ForestGreenBrush}"/>
-                                </StackPanel>
-                            </material:Card>
+                                                                <StackPanel Grid.Column="1" 
+                                                                          Orientation="Horizontal">
+                                                                    <TextBlock Text="{Binding Tasks.Count}"
+                                                                             Foreground="{StaticResource SageBrush}"
+                                                                             VerticalAlignment="Center"
+                                                                             Margin="8,0"/>
+                                                                    <material:PackIcon Kind="ChevronRight"
+                                                                                     Foreground="{StaticResource MossBrush}"/>
+                                                                </StackPanel>
+                                                            </Grid>
+                                                        </material:Card>
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                        </Border>
 
-                            <material:Card Style="{StaticResource ForestCard}" 
-                                         Margin="4"
-                                         Background="{StaticResource SunlitLeafBrush}">
-                                <StackPanel Margin="16">
-                                    <TextBlock Text="Elapsed Time"
-                                             Foreground="{StaticResource ForestGreenBrush}"/>
-                                    <TextBlock Text="{Binding SelectedProject.TimeSpent}"
-                                             FontSize="24"
-                                             FontWeight="Medium"
-                                             Foreground="{StaticResource ForestGreenBrush}"/>
-                                </StackPanel>
-                            </material:Card>
+                                        <!-- Add Project -->
+                                        <Grid Grid.Row="3" Margin="0,16,0,0">
+                                                        <TextBox Text="{Binding NewProjectName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                            Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                                            Background="White"
+                                                            Foreground="{StaticResource ForestGreenBrush}"
+                                                            material:HintAssist.Hint="+ Add a new Project"
+                                                            material:TextFieldAssist.HasClearButton="True">
+                                                            <TextBox.InputBindings>
+                                                                <KeyBinding Key="Return" Command="{Binding EnterKeyCommand}" CommandParameter="project"/>
+                                                            </TextBox.InputBindings>
+                                                        </TextBox>
+                                                    </Grid>
+                                    </Grid>
+                                </material:Card>
 
-                            <material:Card Style="{StaticResource ForestCard}" 
-                                         Margin="4"
-                                         Background="{StaticResource SunlitLeafBrush}">
-                                <StackPanel Margin="16">
-                                    <TextBlock Text="Completed Tasks"
-                                             Foreground="{StaticResource ForestGreenBrush}"/>
-                                    <TextBlock Text="{Binding SelectedProject.CompletedTasks.Count}"
-                                             FontSize="24"
-                                             FontWeight="Medium"
-                                             Foreground="{StaticResource ForestGreenBrush}"/>
-                                </StackPanel>
-                            </material:Card>
-                        </UniformGrid>
+                                <!-- Tasks Panel -->
+                                <material:Card Grid.Column="1" 
+                                             Style="{StaticResource ForestCard}">
+                                    <Grid Margin="24">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
 
-                        <!-- Add Task -->
-                        <Grid Grid.Row="2" Margin="0,0,0,16">
-                            <material:Card Style="{StaticResource ForestCard}"
-                                         Background="White">
-                                <Grid Margin="16,8">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="160"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
+                                        <!-- Project Header with Progress -->
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
 
-                                    <TextBox Text="{Binding NewTaskName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            Style="{StaticResource MaterialDesignTextBox}"
-                                            BorderThickness="0"
-                                            Background="Transparent"
-                                            Foreground="{StaticResource ForestGreenBrush}"
-                                            material:HintAssist.Hint="+ Add a task"
-                                            KeyDown="TaskNameTextBox_KeyDown"/>
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding SelectedProject.Name}"
+                                                         Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                                         FontWeight="Medium"
+                                                         Foreground="{StaticResource ForestGreenBrush}"/>
 
-                                    <TextBox Grid.Column="1"
-                                            Text="{Binding NewTaskExpectedTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            Style="{StaticResource MaterialDesignTextBox}"
-                                            BorderThickness="0"
-                                            Background="Transparent"
-                                            Foreground="{StaticResource ForestGreenBrush}"
-                                            material:HintAssist.Hint="Expected Time"
-                                            Margin="16,0"
-                                            KeyDown="TaskNameTextBox_KeyDown"/>
+                                                <ProgressBar Value="{Binding SelectedProject.CompletionPercentage}"
+                                                           Maximum="100"
+                                                           Height="4"
+                                                           Margin="0,8,0,0"
+                                                           Foreground="{StaticResource SageBrush}"
+                                                           Background="{StaticResource MossBrush}"
+                                                           Style="{StaticResource MaterialDesignLinearProgressBar}"/>
+                                            </StackPanel>
+                                        </Grid>
 
-                                    <Button Grid.Column="2"
-                                            Style="{StaticResource MaterialDesignFlatButton}"
-                                            Content="Add Task"
-                                            Foreground="{StaticResource ForestGreenBrush}"/>
-                                </Grid>
-                            </material:Card>
-                        </Grid>
+                                        <!-- Summary Cards -->
+                                        <UniformGrid Grid.Row="1" Columns="4" Margin="0,24">
+                                            <!-- Your existing summary cards -->
+                                        </UniformGrid>
 
-                        <!-- Task List -->
-                        <ScrollViewer Grid.Row="3" 
-                                    VerticalScrollBarVisibility="Auto" 
-                                    HorizontalScrollBarVisibility="Disabled">
-                            <ItemsControl ItemsSource="{Binding Tasks}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <material:Card Style="{StaticResource ForestCard}"
-                                                     Margin="0,4"
-                                                     Background="White">
-                                            <Grid Margin="16,8">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
+                                        <!-- Add Task -->
+                                        <Grid Grid.Row="2" Margin="0,0,0,16">
+                                            <material:Card Style="{StaticResource ForestCard}"
+                                                         Background="White">
+                                                <Grid Margin="16,8">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="160"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
 
-                                                <Button Grid.Column="0"
-                                                        Style="{StaticResource MaterialDesignFlatButton}"
-                                                        Command="{Binding DataContext.StartTaskCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                        CommandParameter="{Binding}"
-                                                        Background="{StaticResource SageBrush}"
-                                                        Foreground="White"
-                                                        Width="32" Height="32"
-                                                        Padding="0">
-                                                    <material:PackIcon Kind="Play" Width="16" Height="16"/>
-                                                </Button>
+                                                                <TextBox Text="{Binding NewTaskName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                     Style="{StaticResource MaterialDesignTextBox}"
+                                                                     BorderThickness="0"
+                                                                     Background="Transparent"
+                                                                     Foreground="{StaticResource ForestGreenBrush}"
+                                                                     material:HintAssist.Hint="+ Add a task">       
+                                                                    <TextBox.InputBindings>
+                                                                        <KeyBinding Key="Return" Command="{Binding EnterKeyCommand}" CommandParameter="task"/>
+                                                                    </TextBox.InputBindings>
+                                                                </TextBox>
 
-                                                <TextBox Grid.Column="1"
-                                                        Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                        Style="{StaticResource MaterialDesignTextBox}"
-                                                        BorderThickness="0"
-                                                        Background="Transparent"
-                                                        Foreground="{StaticResource ForestGreenBrush}"
-                                                        FontSize="14"
-                                                        Margin="16,0"/>
+                                                                <!-- Expected Time TextBox -->
+                                                                <TextBox Grid.Column="1"
+                                                                     Text="{Binding NewTaskExpectedTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                     Style="{StaticResource MaterialDesignTextBox}"
+                                                                     BorderThickness="0"
+                                                                     Background="Transparent"
+                                                                     Foreground="{StaticResource ForestGreenBrush}"
+                                                                     material:HintAssist.Hint="Expected Time"
+                                                                     Margin="16,0">
+                                                                    <TextBox.InputBindings>
+                                                                        <KeyBinding Key="Return" Command="{Binding EnterKeyCommand}" CommandParameter="task"/>
+                                                                    </TextBox.InputBindings>
+                                                                </TextBox>
+                                                                <Button Grid.Column="2"
+                                                            Content="Add Task"
+                                                            Command="{Binding AddTaskCommand}"
+                                                            Style="{StaticResource MaterialDesignFlatButton}"
+                                                            Foreground="{StaticResource ForestGreenBrush}"/>
+                                                </Grid>
+                                            </material:Card>
+                                        </Grid>
 
-                                                <TextBox Grid.Column="2"
-                                                        Text="{Binding ExpectedTime}"
-                                                        Style="{StaticResource MaterialDesignTextBox}"
-                                                        BorderThickness="0"
-                                                        Background="Transparent"
-                                                        Foreground="{StaticResource ForestGreenBrush}"
-                                                        Width="100"
-                                                        FontSize="14"
-                                                        Margin="8,0"/>
+                                        <!-- Task List -->
+                                        <ScrollViewer Grid.Row="3" 
+                                                    VerticalScrollBarVisibility="Auto" 
+                                                    HorizontalScrollBarVisibility="Disabled">
+                                            <ItemsControl ItemsSource="{Binding Tasks}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <material:Card Style="{StaticResource ForestCard}"
+                                                                     Margin="0,4"
+                                                                     Background="White">
+                                                            <Grid Margin="16,8">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="Auto"/>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                    <ColumnDefinition Width="Auto"/>
+                                                                    <ColumnDefinition Width="Auto"/>
+                                                                    <ColumnDefinition Width="Auto"/>
+                                                                </Grid.ColumnDefinitions>
 
-                                                <CheckBox Grid.Column="3"
-                                                         IsChecked="{Binding IsCompleted}"
-                                                         Style="{StaticResource MaterialDesignCheckBox}"
-                                                         Margin="16,0"/>
+                                                                <Button Grid.Column="0"
+                                                                        Style="{StaticResource MaterialDesignFlatButton}"
+                                                                        Command="{Binding DataContext.StartTaskCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                        CommandParameter="{Binding}"
+                                                                        Background="{StaticResource SageBrush}"
+                                                                        Foreground="White"
+                                                                        Width="32" Height="32"
+                                                                        Padding="0">
+                                                                    <material:PackIcon Kind="Play" Width="16" Height="16"/>
+                                                                </Button>
 
-                                                <Button Grid.Column="4"
-                                                        Style="{StaticResource MaterialDesignIconButton}"
-                                                        Command="{Binding DataContext.DeleteTaskCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                        CommandParameter="{Binding}"
-                                                        Foreground="{StaticResource WoodBrownBrush}">
-                                                    <material:PackIcon Kind="Delete" Width="20" Height="20"/>
-                                                </Button>
+                                                                <TextBox Grid.Column="1"
+                                                                        Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                        Style="{StaticResource MaterialDesignTextBox}"
+                                                                        BorderThickness="0"
+                                                                        Background="Transparent"
+                                                                        Foreground="{StaticResource ForestGreenBrush}"
+                                                                        FontSize="14"
+                                                                        Margin="16,0"/>
+
+                                                                <TextBox Grid.Column="2"
+                                                                        Text="{Binding ExpectedTime}"
+                                                                        Style="{StaticResource MaterialDesignTextBox}"
+                                                                        BorderThickness="0"
+                                                                        Background="Transparent"
+                                                                        Foreground="{StaticResource ForestGreenBrush}"
+                                                                        Width="100"
+                                                                        FontSize="14"
+                                                                        Margin="8,0"/>
+
+                                                                <CheckBox Grid.Column="3"
+                                                                         IsChecked="{Binding IsCompleted}"
+                                                                         Style="{StaticResource MaterialDesignCheckBox}"
+                                                                         Margin="16,0"/>
+
+                                                                <Button Grid.Column="4"
+                                                                        Style="{StaticResource MaterialDesignIconButton}"
+                                                                        Command="{Binding DataContext.DeleteTaskCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                        CommandParameter="{Binding}"
+                                                                        Foreground="{StaticResource WoodBrownBrush}">
+                                                                    <material:PackIcon Kind="Delete" Width="20" Height="20"/>
+                                                                </Button>
+                                                            </Grid>
+                                                        </material:Card>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </ScrollViewer>
+                                    </Grid>
+                                </material:Card>
+                            </Grid>
+                        </Setter.Value>
+                    </Setter>
+                    
+                </DataTrigger>
+                            <DataTrigger Binding="{Binding ShowCompletedTasks}" Value="True">
+                                <Setter Property="Content">
+                                    <Setter.Value>
+                                        <material:Card Style="{StaticResource ForestCard}">
+                                            <Grid Margin="24">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+
+                                                <!-- Header -->
+                                                <TextBlock Text="Completed Tasks &amp; Statistics"
+                             Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                             FontWeight="Medium"
+                             Foreground="{StaticResource ForestGreenBrush}"/>
+
+                                                <!-- Stats Cards -->
+                                                <UniformGrid Grid.Row="1" Columns="3" Margin="0,24">
+                                                    <!-- Total Completed Tasks -->
+                                                    <material:Card Style="{StaticResource ForestCard}" 
+                                     Margin="4"
+                                     Background="{StaticResource SunlitLeafBrush}">
+                                                        <StackPanel Margin="16">
+                                                            <TextBlock Text="Total Completed Tasks"
+                                         Foreground="{StaticResource ForestGreenBrush}"/>
+                                                            <TextBlock Text="{Binding AllCompletedTasks.Count}"
+                                         FontSize="24"
+                                         FontWeight="Medium"
+                                         Foreground="{StaticResource ForestGreenBrush}"/>
+                                                        </StackPanel>
+                                                    </material:Card>
+
+                                                    <!-- Total Time Spent -->
+                                                    <material:Card Style="{StaticResource ForestCard}" 
+                                     Margin="4"
+                                     Background="{StaticResource SunlitLeafBrush}">
+                                                        <StackPanel Margin="16">
+                                                            <TextBlock Text="Total Time Spent"
+                                         Foreground="{StaticResource ForestGreenBrush}"/>
+                                                            <TextBlock Text="{Binding TotalTimeSpent}"
+                                         FontSize="24"
+                                         FontWeight="Medium"
+                                         Foreground="{StaticResource ForestGreenBrush}"/>
+                                                        </StackPanel>
+                                                    </material:Card>
+
+                                                    <!-- Completion Rate -->
+                                                    <material:Card Style="{StaticResource ForestCard}" 
+                                     Margin="4"
+                                     Background="{StaticResource SunlitLeafBrush}">
+                                                        <StackPanel Margin="16">
+                                                            <TextBlock Text="Completion Rate"
+                                         Foreground="{StaticResource ForestGreenBrush}"/>
+                                                            <TextBlock Text="{Binding CompletionRate}"
+                                         FontSize="24"
+                                         FontWeight="Medium"
+                                         Foreground="{StaticResource ForestGreenBrush}"/>
+                                                        </StackPanel>
+                                                    </material:Card>
+                                                </UniformGrid>
+
+                                                <!-- Completed Tasks List -->
+                                                <ScrollViewer Grid.Row="2" 
+                                VerticalScrollBarVisibility="Auto"
+                                Margin="0,16,0,0">
+                                                    <ItemsControl ItemsSource="{Binding AllCompletedTasks}">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                    <material:Card Style="{StaticResource ForestCard}"
+                                                                     Margin="0,4"
+                                                                     Background="White">
+                                                                                        <Grid Margin="16,8">
+                                                                                            <Grid.ColumnDefinitions>
+                                                                                                <ColumnDefinition Width="*"/>
+                                                                                                <ColumnDefinition Width="Auto"/>
+                                                                                                <ColumnDefinition Width="Auto"/>
+                                                                                            </Grid.ColumnDefinitions>
+
+                                                                                                <TextBlock Text="{Binding Name}"
+                                                                             FontWeight="Medium"
+                                                                             Foreground="{StaticResource ForestGreenBrush}"/>
+
+                                                                                                <TextBlock Grid.Column="1"
+                                                                             Text="{Binding ExpectedTime}"
+                                                                             Foreground="{StaticResource SageBrush}"
+                                                                             Margin="16,0"/>
+
+                                                                                            <material:PackIcon Grid.Column="2"
+                                                                                     Kind="CheckCircle"
+                                                                                     Foreground="{StaticResource SageBrush}"
+                                                                                     Width="20"
+                                                                                     Height="20"/>
+                                                                                            </Grid>
+                                                                      </material:Card>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </ScrollViewer>
                                             </Grid>
                                         </material:Card>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </ScrollViewer>
-                    </Grid>
-                </material:Card>
-            </Grid>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+        </Style>
+    </material:TransitioningContent.Style>
+</material:TransitioningContent>
         </Grid>
+     
 
-        <!-- Timer Overlay -->
+<!-- Timer Overlay -->
         <Grid Visibility="{Binding IsTimerRunning, Converter={StaticResource BooleanToVisibilityConverter}}"
               Panel.ZIndex="999">
             <Grid.Background>

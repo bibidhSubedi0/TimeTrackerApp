@@ -132,11 +132,30 @@ namespace TimeTrackerApp.ViewModels
         public IAsyncRelayCommand SaveTasksCommand { get; }
         public IAsyncRelayCommand LoadTasksCommand { get; }
 
+        // In MainViewModel.cs
+
+    // Add at the top with other commands
+            public ICommand EnterKeyCommand { get; }
+
+
+
+            private void ExecuteEnterKey(string parameter)
+            {
+                if (parameter == "project")
+                {
+                    AddProject();
+                }
+                else if (parameter == "task")
+                {
+                    AddTask();
+                }
+            }
 
 
 
         public MainViewModel()
         {
+            EnterKeyCommand = new RelayCommand<string>(ExecuteEnterKey);
             NewTaskExpectedTime = "00:30:00";
 
             _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
@@ -152,6 +171,19 @@ namespace TimeTrackerApp.ViewModels
 
             SaveTasksCommand = new AsyncRelayCommand(SaveAsync);
             LoadTasksCommand = new AsyncRelayCommand(LoadAsync);
+
+            // Add property changed notifications for statistics
+            PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(Projects) ||
+                    e.PropertyName == nameof(Tasks))
+                {
+                    OnPropertyChanged(nameof(TotalTimeSpent));
+                    OnPropertyChanged(nameof(TotalCompletedTasks));
+                    OnPropertyChanged(nameof(CompletionRate));
+                    OnPropertyChanged(nameof(AllCompletedTasks));
+                }
+            };
 
             _ = LoadAsync();
 
@@ -414,18 +446,7 @@ namespace TimeTrackerApp.ViewModels
             SelectedProject.EstimatedTime = total.ToString(@"hh\:mm\:ss");
         }
 
-        private void UpdateCompletedTasks()
-        {
-            var completed = SelectedProject.Tasks
-                .Where(t => t.IsCompleted)
-                .ToList(); // Materialize the list before modifying
-
-            foreach (var task in completed)
-            {
-                SelectedProject.CompletedTasks.Add(task);
-                SelectedProject.Tasks.Remove(task);
-            }
-        }
+        
 
 
 
@@ -443,6 +464,119 @@ namespace TimeTrackerApp.ViewModels
                 }
             }
         }
+
+
+        private bool _showActiveTasks = true;
+        private bool _showCompletedTasks;
+
+        // Add these public properties with your other public properties
+        public bool ShowActiveTasks
+        {
+            get => _showActiveTasks;
+            set
+            {
+                if (_showActiveTasks != value)
+                {
+                    _showActiveTasks = value;
+                    OnPropertyChanged(nameof(ShowActiveTasks));
+                    if (value)
+                    {
+                        ShowCompletedTasks = false;
+                    }
+                }
+            }
+        }
+
+        public bool ShowCompletedTasks
+        {
+            get => _showCompletedTasks;
+            set
+            {
+                if (_showCompletedTasks != value)
+                {
+                    _showCompletedTasks = value;
+                    OnPropertyChanged(nameof(ShowCompletedTasks));
+                    if (value)
+                    {
+                        ShowActiveTasks = false;
+                    }
+                }
+            }
+        }
+
+        // Add these properties for statistics
+        public string TotalTimeSpent
+        {
+            get
+            {
+                TimeSpan total = TimeSpan.Zero;
+                foreach (var project in Projects)
+                {
+                    if (TimeSpan.TryParse(project.TimeSpent, out TimeSpan projectTime))
+                    {
+                        total += projectTime;
+                    }
+                }
+                return total.ToString(@"hh\:mm\:ss");
+            }
+        }
+
+        public int TotalCompletedTasks
+        {
+            get
+            {
+                return Projects.Sum(p => p.CompletedTasks.Count);
+            }
+        }
+
+        public string CompletionRate
+        {
+            get
+            {
+                int totalTasks = Projects.Sum(p => p.Tasks.Count + p.CompletedTasks.Count);
+                int completedTasks = Projects.Sum(p => p.CompletedTasks.Count);
+
+                if (totalTasks == 0) return "0%";
+                return $"{(completedTasks * 100.0 / totalTasks):F0}%";
+            }
+        }
+
+        public ObservableCollection<TaskItem> AllCompletedTasks
+        {
+            get
+            {
+                var completedTasks = new ObservableCollection<TaskItem>();
+                foreach (var project in Projects)
+                {
+                    foreach (var task in project.CompletedTasks)
+                    {
+                        completedTasks.Add(task);
+                    }
+                }
+                return completedTasks;
+            }
+        }
+
+
+
+        // Modify your UpdateCompletedTasks method to include statistics updates
+    private void UpdateCompletedTasks()
+    {
+        var completed = SelectedProject.Tasks
+            .Where(t => t.IsCompleted)
+            .ToList();
+
+        foreach (var task in completed)
+        {
+            SelectedProject.CompletedTasks.Add(task);
+            SelectedProject.Tasks.Remove(task);
+        }
+
+        // Update statistics
+        OnPropertyChanged(nameof(TotalCompletedTasks));
+        OnPropertyChanged(nameof(CompletionRate));
+        OnPropertyChanged(nameof(AllCompletedTasks));
+    }
 
     }
 }
