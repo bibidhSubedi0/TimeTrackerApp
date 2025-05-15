@@ -1,13 +1,39 @@
-# Time Tracking App [In Progress]
+# TimeTracker App
 
-A WPF-based application for managing projects and tasks, with a built-in timer to track time spent on each task. It provides a simple and efficient way to stay organized and focused.
+A modern time tracking application built with WPF and MVVM architecture, designed to help users manage projects and tasks efficiently.
 
-## How to Use
+## Features
 
-1. Download the app from the releases section.
-2. Open the app and start managing your tasks.
-3. Select a task to begin tracking time with the timer.
+- **Project Management**: Create and organize projects
+- **Task Tracking**: Add tasks with expected completion times
+- **Timer Functionality**: Built-in timer for task tracking
+- **Progress Monitoring**: Visual progress indicators and statistics
+- **Completed Tasks**: Track completed tasks with completion dates
+- **Data Persistence**: Automatic saving of projects and tasks
 
-   
-![image](https://github.com/user-attachments/assets/37946b4b-d664-491c-ba64-38739356cf41)
+## Technologies
 
+- C# / WPF
+- MVVM Architecture
+- MaterialDesign Framework
+- .NET Core 8.0
+
+## Getting Started
+
+1. Clone the repository
+2. Open the solution in Visual Studio
+3. Restore NuGet packages
+4. Build and run the application
+
+## Screenshots
+
+![alt text](image.png)
+![alt text](image-1.png)
+![alt text](image-2.png)
+## Author
+
+Created by Bibidh Subedi ([@bibidhSubedi0](https://github.com/bibidhSubedi0))
+
+## License
+
+---

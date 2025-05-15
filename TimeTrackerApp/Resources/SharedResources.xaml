@@ -1,0 +1,19 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Forest Theme Colors -->
+    <Color x:Key="ForestGreenColor">#2C5530</Color>
+    <Color x:Key="SageColor">#87A878</Color>
+    <Color x:Key="MossColor">#A4B494</Color>
+    <Color x:Key="BirchColor">#F2EFE9</Color>
+    <Color x:Key="WoodBrownColor">#6B4423</Color>
+    <Color x:Key="SunlitLeafColor">#D4E6B5</Color>
+
+    <!-- Brushes -->
+    <SolidColorBrush x:Key="ForestGreenBrush" Color="{StaticResource ForestGreenColor}"/>
+    <SolidColorBrush x:Key="SageBrush" Color="{StaticResource SageColor}"/>
+    <SolidColorBrush x:Key="MossBrush" Color="{StaticResource MossColor}"/>
+    <SolidColorBrush x:Key="BirchBrush" Color="{StaticResource BirchColor}"/>
+    <SolidColorBrush x:Key="WoodBrownBrush" Color="{StaticResource WoodBrownColor}"/>
+    <SolidColorBrush x:Key="SunlitLeafBrush" Color="{StaticResource SunlitLeafColor}"/>
+</ResourceDictionary>
