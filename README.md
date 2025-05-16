@@ -29,8 +29,9 @@ A modern time tracking application built with WPF and MVVM architecture, designe
 
 ![alt text](image.png)
 ![alt text](image-1.png)
-![alt text](image-2.png)
+![image-2](https://github.com/user-attachments/assets/b9068686-d83d-4da4-8666-6f6c359b45fa)
 ## Author
+
 
 Created by Bibidh Subedi ([@bibidhSubedi0](https://github.com/bibidhSubedi0))
 
