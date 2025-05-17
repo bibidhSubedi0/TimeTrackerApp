@@ -103,7 +103,7 @@
                                          Height="24" 
                                          Foreground="{StaticResource BirchBrush}"
                                          VerticalAlignment="Center"/>
-                        <TextBlock Text="Gatilo Time Tracker" 
+                        <TextBlock Text="Normids Time Tracker" 
                                  Margin="8,0,0,0"
                                  Style="{StaticResource MaterialDesignHeadline6TextBlock}"
                                  Foreground="{StaticResource BirchBrush}"
