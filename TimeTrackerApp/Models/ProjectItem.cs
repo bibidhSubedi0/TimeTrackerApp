@@ -5,11 +5,11 @@ namespace TimeTrackerApp.Models
 {
     public class ProjectItem : INotifyPropertyChanged
     {
-        // Project properties
         private string _name;
         private string _timeElapsed;
         private string _estimatedTime;
         private float _completionPercentage = 25;
+
         
         public string Name
         {
@@ -37,24 +37,6 @@ namespace TimeTrackerApp.Models
             }
         }
 
-        public float CompletionPercentage
-        {
-            get
-            {
-                if (Tasks == null || Tasks.Count == 0)
-                    return 0;
-
-                return CompletedTasks.Count / (Tasks.Count + CompletedTasks.Count) * 100;
-            }
-            set
-            {
-                if (_completionPercentage != value)
-                {
-                    _completionPercentage = value;
-                    OnPropertyChanged(nameof(CompletionPercentage));
-                }
-            }
-        }
         public string EstimatedTime
         {
             get => _estimatedTime;
@@ -68,10 +50,29 @@ namespace TimeTrackerApp.Models
             }
         }
 
+        public float CompletionPercentage
+        {
+            get
+            {
+                if ((Tasks?.Count ?? 0) + (CompletedTasks?.Count ?? 0) == 0)
+                    return 0;
+
+                return CompletedTasks.Count * 100f / (Tasks.Count + CompletedTasks.Count);
+            }
+            set
+            {
+                if (_completionPercentage != value)
+                {
+                    _completionPercentage = value;
+                    OnPropertyChanged(nameof(CompletionPercentage));
+                }
+            }
+        }
+
         public ObservableCollection<TaskItem> Tasks { get; set; } = new();
         public ObservableCollection<TaskItem> CompletedTasks { get; set; } = new();
 
-
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string propertyName)

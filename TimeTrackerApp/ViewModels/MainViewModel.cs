@@ -13,29 +13,109 @@ namespace TimeTrackerApp.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-        // Data saving and loading
         private readonly DataService _dataService = new();
         private readonly string _userId = "default_user";
         private UserData _userData = new();
-
-        // Timer purposes
         private DispatcherTimer _timer;
         private TimeSpan _timeLeft;
         private bool _isTimerRunning;
         private string _timerCountdown;
         private string _timerTaskName;
         private string _timerProjectName;
-        private TaskItem _currentTask;
+        private TaskItem _currentTask; 
+        private string _newProjectName;
+        private string _newTaskName;
+        private string _newTaskExpectedTime;
+        private double _timerProgress;
+        private TimeSpan _totalTime;
+        private bool _showActiveTasks = true;
+        private bool _showCompletedTasks;
 
-        // Other stuff
+
+        
         private ProjectItem _selectedProject;
         private ObservableCollection<ProjectItem> _projects = new();
         private ObservableCollection<TaskItem> _tasks = new();
         
 
         public event PropertyChangedEventHandler PropertyChanged;
+        public double TimerProgress
+        {
+            get => _timerProgress;
+            set
+            {
+                if (_timerProgress != value)
+                {
+                    _timerProgress = value;
+                    OnPropertyChanged(nameof(TimerProgress));
+                }
+            }
+        }
+        public bool ShowActiveTasks
+        {
+            get => _showActiveTasks;
+            set
+            {
+                if (_showActiveTasks != value)
+                {
+                    _showActiveTasks = value;
+                    OnPropertyChanged(nameof(ShowActiveTasks));
+                    if (value)
+                    {
+                        ShowCompletedTasks = false;
+                    }
+                }
+            }
+        }
+        public bool ShowCompletedTasks
+        {
+            get => _showCompletedTasks;
+            set
+            {
+                if (_showCompletedTasks != value)
+                {
+                    _showCompletedTasks = value;
+                    OnPropertyChanged(nameof(ShowCompletedTasks));
+                    if (value)
+                    {
+                        ShowActiveTasks = false;
+                    }
+                }
+            }
+        }
+        public string TotalTimeSpent
+        {
+            get
+            {
+                TimeSpan total = TimeSpan.Zero;
+                foreach (var project in Projects)
+                {
+                    if (TimeSpan.TryParse(project.TimeSpent, out TimeSpan projectTime))
+                    {
+                        total += projectTime;
+                    }
+                }
+                return total.ToString(@"hh\:mm\:ss");
+            }
+        }
+        public int TotalCompletedTasks
+        {
+            get
+            {
+                return Projects.Sum(p => p.CompletedTasks.Count);
+            }
+        }
+        public string CompletionRate
+        {
+            get
+            {
+                int totalTasks = Projects.Sum(p => p.Tasks.Count + p.CompletedTasks.Count);
+                int completedTasks = Projects.Sum(p => p.CompletedTasks.Count);
 
-
+                if (totalTasks == 0) return "0%";
+                return $"{(completedTasks * 100.0 / totalTasks):F0}%";
+            }
+        }
         public bool IsTimerRunning
         {
             get => _isTimerRunning;
@@ -121,37 +201,63 @@ namespace TimeTrackerApp.ViewModels
                 }
             }
         }
+        public string NewProjectName
+        {
+            get => _newProjectName;
+            set
+            {
+                _newProjectName = value;
+                OnPropertyChanged(nameof(_newProjectName));
+            }
+        }
+        public string NewTaskName
+        {
+            get => _newTaskName;
+            set
+            {
+                _newTaskName = value;
+                OnPropertyChanged(nameof(NewTaskName));
+            }
+        }
+        public string NewTaskExpectedTime
+        {
+            get => _newTaskExpectedTime;
+            set
+            {
+                _newTaskExpectedTime = value;
+                OnPropertyChanged(nameof(NewTaskExpectedTime));
+            }
+        }
+        public ObservableCollection<TaskItem> AllCompletedTasks
+        {
+            get
+            {
+                var completedTasks = new ObservableCollection<TaskItem>();
+                foreach (var project in Projects)
+                {
+                    foreach (var task in project.CompletedTasks)
+                    {
+                        completedTasks.Add(task);
+                    }
+                }
+                return completedTasks;
+            }
+        }
 
 
-        // UI Operations
+
         public ICommand AddProjectCommand { get; }
         public ICommand AddTaskCommand { get; }
         public ICommand DeleteTaskCommand { get; }
         public ICommand StartTaskCommand { get; }
         public ICommand StopTimerCommand { get; }
+
+        public ICommand EnterKeyCommand { get; }
         public IAsyncRelayCommand SaveTasksCommand { get; }
         public IAsyncRelayCommand LoadTasksCommand { get; }
 
-        // In MainViewModel.cs
-
-    // Add at the top with other commands
-            public ICommand EnterKeyCommand { get; }
-
-
-
-            private void ExecuteEnterKey(string parameter)
-            {
-                if (parameter == "project")
-                {
-                    AddProject();
-                }
-                else if (parameter == "task")
-                {
-                    AddTask();
-                }
-            }
-
-
+        
+        
 
         public MainViewModel()
         {
@@ -187,6 +293,19 @@ namespace TimeTrackerApp.ViewModels
 
             _ = LoadAsync();
 
+        }
+
+
+        private void ExecuteEnterKey(string parameter)
+        {
+            if (parameter == "project")
+            {
+                AddProject();
+            }
+            else if (parameter == "task")
+            {
+                AddTask();
+            }
         }
         private void Timer_Tick(object sender, EventArgs e)
         {
@@ -224,20 +343,6 @@ namespace TimeTrackerApp.ViewModels
 
             //IsTimerRunning = false;
         }
-
-
-        private string _newProjectName;
-        public string NewProjectName
-        {
-            get => _newProjectName;
-            set
-            {
-                _newProjectName = value;
-                OnPropertyChanged(nameof(_newProjectName));
-            }
-        }
-
-
         private async void AddProject()
         {
             var newProject = new ProjectItem
@@ -252,30 +357,6 @@ namespace TimeTrackerApp.ViewModels
             OnPropertyChanged(nameof(NewProjectName));
             await AutoSaveAsync();
         }
-
-
-        private string _newTaskName;
-        public string NewTaskName
-        {
-            get => _newTaskName;
-            set
-            {
-                _newTaskName = value;
-                OnPropertyChanged(nameof(NewTaskName));
-            }
-        }
-
-        private string _newTaskExpectedTime;
-        public string NewTaskExpectedTime
-        {
-            get => _newTaskExpectedTime;
-            set
-            {
-                _newTaskExpectedTime = value;
-                OnPropertyChanged(nameof(NewTaskExpectedTime));
-            }
-        }
-
         private async void AddTask()
         {
             if (SelectedProject == null)
@@ -354,9 +435,6 @@ namespace TimeTrackerApp.ViewModels
                 _timer.Start();
             }
         }
-
-
-
         private async Task SaveAsync()
         {
             _userData.UserId = _userId;
@@ -386,9 +464,6 @@ namespace TimeTrackerApp.ViewModels
 
             await _dataService.SaveUserDataAsync(data);
         }
-
-
-
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -432,8 +507,6 @@ namespace TimeTrackerApp.ViewModels
 
             };
         }
-
-
         private void RecalculateProjectTime()
         {
             TimeSpan total = TimeSpan.Zero;
@@ -445,138 +518,23 @@ namespace TimeTrackerApp.ViewModels
 
             SelectedProject.EstimatedTime = total.ToString(@"hh\:mm\:ss");
         }
-
-        
-
-
-
-        private double _timerProgress;
-        private TimeSpan _totalTime;
-        public double TimerProgress
+        private void UpdateCompletedTasks()
         {
-            get => _timerProgress;
-            set
+            var completed = SelectedProject.Tasks
+                .Where(t => t.IsCompleted)
+                .ToList();
+
+            foreach (var task in completed)
             {
-                if (_timerProgress != value)
-                {
-                    _timerProgress = value;
-                    OnPropertyChanged(nameof(TimerProgress));
-                }
+                SelectedProject.CompletedTasks.Add(task);
+                SelectedProject.Tasks.Remove(task);
             }
+
+            // Update statistics
+            OnPropertyChanged(nameof(TotalCompletedTasks));
+            OnPropertyChanged(nameof(CompletionRate));
+            OnPropertyChanged(nameof(AllCompletedTasks));
         }
-
-
-        private bool _showActiveTasks = true;
-        private bool _showCompletedTasks;
-
-        // Add these public properties with your other public properties
-        public bool ShowActiveTasks
-        {
-            get => _showActiveTasks;
-            set
-            {
-                if (_showActiveTasks != value)
-                {
-                    _showActiveTasks = value;
-                    OnPropertyChanged(nameof(ShowActiveTasks));
-                    if (value)
-                    {
-                        ShowCompletedTasks = false;
-                    }
-                }
-            }
-        }
-
-        public bool ShowCompletedTasks
-        {
-            get => _showCompletedTasks;
-            set
-            {
-                if (_showCompletedTasks != value)
-                {
-                    _showCompletedTasks = value;
-                    OnPropertyChanged(nameof(ShowCompletedTasks));
-                    if (value)
-                    {
-                        ShowActiveTasks = false;
-                    }
-                }
-            }
-        }
-
-        // Add these properties for statistics
-        public string TotalTimeSpent
-        {
-            get
-            {
-                TimeSpan total = TimeSpan.Zero;
-                foreach (var project in Projects)
-                {
-                    if (TimeSpan.TryParse(project.TimeSpent, out TimeSpan projectTime))
-                    {
-                        total += projectTime;
-                    }
-                }
-                return total.ToString(@"hh\:mm\:ss");
-            }
-        }
-
-        public int TotalCompletedTasks
-        {
-            get
-            {
-                return Projects.Sum(p => p.CompletedTasks.Count);
-            }
-        }
-
-        public string CompletionRate
-        {
-            get
-            {
-                int totalTasks = Projects.Sum(p => p.Tasks.Count + p.CompletedTasks.Count);
-                int completedTasks = Projects.Sum(p => p.CompletedTasks.Count);
-
-                if (totalTasks == 0) return "0%";
-                return $"{(completedTasks * 100.0 / totalTasks):F0}%";
-            }
-        }
-
-        public ObservableCollection<TaskItem> AllCompletedTasks
-        {
-            get
-            {
-                var completedTasks = new ObservableCollection<TaskItem>();
-                foreach (var project in Projects)
-                {
-                    foreach (var task in project.CompletedTasks)
-                    {
-                        completedTasks.Add(task);
-                    }
-                }
-                return completedTasks;
-            }
-        }
-
-
-
-        // Modify your UpdateCompletedTasks method to include statistics updates
-    private void UpdateCompletedTasks()
-    {
-        var completed = SelectedProject.Tasks
-            .Where(t => t.IsCompleted)
-            .ToList();
-
-        foreach (var task in completed)
-        {
-            SelectedProject.CompletedTasks.Add(task);
-            SelectedProject.Tasks.Remove(task);
-        }
-
-        // Update statistics
-        OnPropertyChanged(nameof(TotalCompletedTasks));
-        OnPropertyChanged(nameof(CompletionRate));
-        OnPropertyChanged(nameof(AllCompletedTasks));
-    }
 
     }
 }
