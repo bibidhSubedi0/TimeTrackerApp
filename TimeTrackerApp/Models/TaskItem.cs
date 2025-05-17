@@ -104,7 +104,7 @@ namespace TimeTrackerApp.Models
         }
 
         public string CompletedDateFormatted =>
-            CompletedDate?.ToString("yyyy-MM-dd HH:mm:ss") ?? string.Empty;
+            CompletedDate?.ToString("MM-dd HH:mm") ?? string.Empty;
 
         public event PropertyChangedEventHandler PropertyChanged;
 

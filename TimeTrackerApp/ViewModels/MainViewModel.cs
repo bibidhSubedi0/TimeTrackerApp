@@ -524,8 +524,11 @@ namespace TimeTrackerApp.ViewModels
                 .Where(t => t.IsCompleted)
                 .ToList();
 
+            
+
             foreach (var task in completed)
             {
+                task.CompletedDate = DateTime.Now;
                 SelectedProject.CompletedTasks.Add(task);
                 SelectedProject.Tasks.Remove(task);
             }

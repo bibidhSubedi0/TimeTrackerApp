@@ -546,6 +546,7 @@
                                                                             <ColumnDefinition Width="*"/>
                                                                             <ColumnDefinition Width="Auto"/>
                                                                             <ColumnDefinition Width="Auto"/>
+                                                                            <ColumnDefinition Width="Auto"/>
                                                                         </Grid.ColumnDefinitions>
 
                                                                         <TextBlock Text="{Binding Name}"
@@ -556,8 +557,10 @@
                                                                                  Text="{Binding ExpectedTime}"
                                                                                  Foreground="{StaticResource SageBrush}"
                                                                                  Margin="16,0"/>
+                                                                        <TextBlock Grid.Column="2" 
+                                                                                   Text="{Binding CompletedDate}" />
 
-                                                                        <material:PackIcon Grid.Column="2"
+                                                                        <material:PackIcon Grid.Column="3"
                                                                                          Kind="CheckCircle"
                                                                                          Foreground="{StaticResource SageBrush}"
                                                                                          Width="20"
