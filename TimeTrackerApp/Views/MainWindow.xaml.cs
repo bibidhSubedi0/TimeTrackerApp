@@ -8,15 +8,14 @@ namespace TimeTrackerApp
     {
         public MainWindow()
         {
-            InitializeComponent();  // This initializes the XAML components
+            InitializeComponent();
         }
 
         private void TaskNameTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                var vm = DataContext as MainViewModel;
-                if (vm?.AddTaskCommand.CanExecute(null) == true)
+                if (DataContext is MainViewModel vm && vm.AddTaskCommand.CanExecute(null))
                 {
                     vm.AddTaskCommand.Execute(null);
                 }
@@ -27,13 +26,11 @@ namespace TimeTrackerApp
         {
             if (e.Key == Key.Enter)
             {
-                var vm = DataContext as MainViewModel;
-                if (vm?.AddProjectCommand.CanExecute(null) == true)
+                if (DataContext is MainViewModel vm && vm.AddProjectCommand.CanExecute(null))
                 {
                     vm.AddProjectCommand.Execute(null);
                 }
             }
         }
-
     }
 }
