@@ -27,9 +27,10 @@ A modern time tracking application built with WPF and MVVM architecture, designe
 
 ## Screenshots
 
-![alt text](image.png)
-![alt text](image-1.png)
-![image-2](https://github.com/user-attachments/assets/b9068686-d83d-4da4-8666-6f6c359b45fa)
+![image](https://github.com/user-attachments/assets/8f6dbfd3-5727-4283-8bf7-7472117fa1d5)
+![image](https://github.com/user-attachments/assets/9b3a271d-fa26-41b7-8863-782aaa43fa6a)
+![image](https://github.com/user-attachments/assets/aac328c9-bc9a-45c6-950d-d11ba39c9d77)
+
 ## Author
 
 
