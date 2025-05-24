@@ -83,15 +83,31 @@ namespace TimeTrackerApp.ViewModels
                 TimeSpan total = TimeSpan.Zero;
                 foreach (var task in FilteredCompletedTasks)
                 {
-                    if (TimeSpan.TryParse(task.ExpectedTime, out TimeSpan taskTime))
+                    // This is not working cuz my dumb ass did ElapsedTime = Eastimated time or some shit
+                    if (TimeSpan.TryParse(task.TimeElapsed, out TimeSpan taskTime))
                     {
+
                         total += taskTime;
                     }
                 }
                 return total.ToString(@"hh\:mm\:ss");
             }
         }
-
+        public string TotalTimeSpent
+        {
+            get
+            {
+                TimeSpan total = TimeSpan.Zero;
+                foreach (var project in Projects)
+                {
+                    if (TimeSpan.TryParse(project.TimeSpent, out TimeSpan projectTime))
+                    {
+                        total += projectTime;
+                    }
+                }
+                return total.ToString(@"hh\:mm\:ss");
+            }
+        }
         public string FilteredCompletionRate
         {
             get
@@ -237,21 +253,7 @@ namespace TimeTrackerApp.ViewModels
                 }
             }
         }
-        public string TotalTimeSpent
-        {
-            get
-            {
-                TimeSpan total = TimeSpan.Zero;
-                foreach (var project in Projects)
-                {
-                    if (TimeSpan.TryParse(project.TimeSpent, out TimeSpan projectTime))
-                    {
-                        total += projectTime;
-                    }
-                }
-                return total.ToString(@"hh\:mm\:ss");
-            }
-        }
+
         public int TotalCompletedTasks
         {
             get
@@ -470,8 +472,20 @@ namespace TimeTrackerApp.ViewModels
             _temp = _temp.Add(TimeSpan.FromSeconds(1));
             SelectedProject.TimeSpent = _temp.ToString(@"hh\:mm\:ss");
 
+
             TimerCountdown = _timeLeft.ToString(@"hh\:mm\:ss");
-            _currentTask.ExpectedTime = TimerCountdown;
+            //_currentTask.ExpectedTime = TimerCountdown;
+            _temp= TimeSpan.Zero;
+            TimeSpan.TryParse(_currentTask.RemainingTime, out _temp);
+            _temp = _temp.Add(TimeSpan.FromSeconds(-1));
+            _currentTask.RemainingTime = _temp.ToString();
+
+            TimeSpan.TryParse(_currentTask.TimeElapsed, out _temp);
+            _temp = _temp.Add(TimeSpan.FromSeconds(1));
+            _currentTask.TimeElapsed = _temp.ToString();
+
+
+
 
             // Calculate and update progress
             double elapsedSeconds = (_totalTime - _timeLeft).TotalSeconds;
@@ -537,7 +551,8 @@ namespace TimeTrackerApp.ViewModels
                 Name = NewTaskName,
                 ExpectedTime = NewTaskExpectedTime,
                 IsCompleted = false,
-                TimeElapsed = "00:00:00"
+                TimeElapsed = "00:00:00",
+                RemainingTime = NewTaskExpectedTime
             };
 
             HookTaskEvents(newTask);
@@ -577,7 +592,8 @@ namespace TimeTrackerApp.ViewModels
             if (task == null || SelectedProject == null)
                 return;
 
-            if (TimeSpan.TryParse(task.ExpectedTime, out _timeLeft))
+
+            if(TimeSpan.TryParse(task.RemainingTime, out _timeLeft))
             {
                 _totalTime = _timeLeft;
                 TimerProjectName = $"Project: {SelectedProject.Name}";
@@ -648,6 +664,11 @@ namespace TimeTrackerApp.ViewModels
             {
                 if (e.PropertyName == nameof(TaskItem.Name))
                     await AutoSaveAsync();
+                if (e.PropertyName == nameof(TaskItem.RemainingTime))
+                {
+                    RecalculateProjectTime();
+                    await AutoSaveAsync();
+                }
                 if (e.PropertyName == nameof(TaskItem.ExpectedTime))
                 {
                     RecalculateProjectTime();

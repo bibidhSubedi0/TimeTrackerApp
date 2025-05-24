@@ -8,6 +8,7 @@ namespace TimeTrackerApp.Models
         private string _name;
         private string _estimatedTime;
         private string _timeElapsed;
+        private string _remainingTime;
         private int _priority;
         private bool _isCompleted;
         private DateTime? _completedDate;
@@ -47,6 +48,19 @@ namespace TimeTrackerApp.Models
                 {
                     _timeElapsed = value;
                     OnPropertyChanged(nameof(TimeElapsed));
+                }
+            }
+        }
+
+        public string RemainingTime
+        {
+            get => _remainingTime;
+            set
+            {
+                if (_remainingTime != value)
+                {
+                    _remainingTime = value;
+                    OnPropertyChanged(nameof(RemainingTime));
                 }
             }
         }

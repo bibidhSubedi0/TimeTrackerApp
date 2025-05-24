@@ -460,6 +460,7 @@
                                                                                 <ColumnDefinition Width="Auto"/>
                                                                                 <ColumnDefinition Width="Auto"/>
                                                                                 <ColumnDefinition Width="Auto"/>
+                                                                                <ColumnDefinition Width="Auto"/>
                                                                             </Grid.ColumnDefinitions>
 
                                                                             <Button Grid.Column="0"
@@ -491,13 +492,22 @@
                                                                                     Width="100"
                                                                                     FontSize="14"
                                                                                     Margin="8,0"/>
+                                                                            <TextBox Grid.Column="3"
+                                                                                    Text="{Binding RemainingTime}"
+                                                                                    Style="{StaticResource MaterialDesignTextBox}"
+                                                                                    BorderThickness="0"
+                                                                                    Background="Transparent"
+                                                                                    Foreground="{StaticResource ForestGreenBrush}"
+                                                                                    Width="100"
+                                                                                    FontSize="14"
+                                                                                    Margin="8,0"/>
 
-                                                                            <CheckBox Grid.Column="3"
+                                                                            <CheckBox Grid.Column="4"
                                                                                      IsChecked="{Binding IsCompleted}"
                                                                                      Style="{StaticResource MaterialDesignCheckBox}"
                                                                                      Margin="16,0"/>
 
-                                                                            <Button Grid.Column="4"
+                                                                            <Button Grid.Column="5"
                                                                                     Style="{StaticResource MaterialDesignIconButton}"
                                                                                     Command="{Binding DataContext.DeleteTaskCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                                                     CommandParameter="{Binding}"
@@ -531,25 +541,77 @@
 
                                                 <!-- Header -->
                                                 <TextBlock Text="Completed Tasks &amp; Statistics"
+                                                         Background="{StaticResource SunlitLeafBrush}"
                                                          Style="{StaticResource MaterialDesignHeadline5TextBlock}"
-                                                         FontWeight="Medium"
+                                                         VerticalAlignment="Center"
+                                                           Padding="15,15,15,15"
+                                                           FontWeight="Medium"
                                                          Foreground="{StaticResource ForestGreenBrush}"/>
 
-                                                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,16">
-                                                    <RadioButton Content="This Week" 
-                                                     IsChecked="{Binding ShowThisWeek}"
-                                                     Style="{StaticResource MaterialDesignRadioButton}"
-                                                     Margin="8,0"/>
-                                                                                        <RadioButton Content="Last Week" 
-                                                     IsChecked="{Binding ShowLastWeek}"
-                                                     Style="{StaticResource MaterialDesignRadioButton}"
-                                                     Margin="8,0"/>
-                                                                                    <RadioButton Content="All Time" 
-                                                     IsChecked="{Binding ShowAllTime}"
-                                                     Style="{StaticResource MaterialDesignRadioButton}"
-                                                     Margin="8,0"/>
-                                                </StackPanel>
 
+                                                <!-- Time Period Filter -->
+                                                <material:Card Grid.Row="0" 
+                                                  Margin="0,8,0,16" 
+                                                  Background="Transparent"
+                                                  UniformCornerRadius="8">
+                                                    <StackPanel Orientation="Horizontal" 
+                                                        HorizontalAlignment="Center" 
+                                                        Margin="16,8">
+                                                        <RadioButton Content="This Week" 
+                                                            IsChecked="{Binding ShowThisWeek}"
+                                                            Style="{StaticResource MaterialDesignChoiceChipPrimaryRadioButton}"
+                                                            GroupName="TimeFilter"
+                                                            Margin="8,0">
+                                                            <RadioButton.ContentTemplate>
+                                                                <DataTemplate>
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <material:PackIcon Kind="CalendarToday" 
+                                                                             Margin="0,0,8,0"
+                                                                             VerticalAlignment="Center"/>
+                                                                        <TextBlock Text="This Week" 
+                                                                           VerticalAlignment="Center"/>
+                                                                    </StackPanel>
+                                                                </DataTemplate>
+                                                            </RadioButton.ContentTemplate>
+                                                        </RadioButton>
+
+                                                        <RadioButton Content="Last Week" 
+                                                            IsChecked="{Binding ShowLastWeek}"
+                                                            Style="{StaticResource MaterialDesignChoiceChipPrimaryRadioButton}"
+                                                            GroupName="TimeFilter"
+                                                            Margin="8,0">   
+                                                            <RadioButton.ContentTemplate>
+                                                                <DataTemplate>
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <material:PackIcon Kind="CalendarWeek" 
+                                                                             Margin="0,0,8,0"
+                                                                             VerticalAlignment="Center"/>
+                                                                        <TextBlock Text="Last Week" 
+                                                                            VerticalAlignment="Center"/>
+                                                                    </StackPanel>
+                                                                </DataTemplate>
+                                                            </RadioButton.ContentTemplate>
+                                                        </RadioButton>
+
+                                                        <RadioButton Content="All Time" 
+                                                            IsChecked="{Binding ShowAllTime}"
+                                                            Style="{StaticResource MaterialDesignChoiceChipPrimaryRadioButton}"
+                                                            GroupName="TimeFilter"
+                                                            Margin="8,0">
+                                                            <RadioButton.ContentTemplate>
+                                                                <DataTemplate>
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <material:PackIcon Kind="CalendarMonth" 
+                                                                             Margin="0,0,8,0"
+                                                                             VerticalAlignment="Center"/>
+                                                                        <TextBlock Text="All Time" 
+                                                                            VerticalAlignment="Center"/>
+                                                                    </StackPanel>
+                                                                </DataTemplate>
+                                                            </RadioButton.ContentTemplate>
+                                                        </RadioButton>
+                                                    </StackPanel>
+                                                </material:Card>
 
                                                 <!-- Stats Cards -->
                                                 <UniformGrid Grid.Row="1" Columns="3" Margin="0,24">
