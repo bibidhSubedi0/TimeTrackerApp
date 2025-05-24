@@ -28,17 +28,171 @@ namespace TimeTrackerApp.ViewModels
         private string _newTaskExpectedTime;
         private double _timerProgress;
         private TimeSpan _totalTime;
-        private bool _showActiveTasks = true;
-        private bool _showCompletedTasks;
+        private bool _showActiveTasks = false;
+        private bool _showCompletedTasks = true;
+        private bool _showThisWeek = true;
+        private bool _showLastWeek;
+        private bool _showAllTime;
 
 
-        
+
         private ProjectItem _selectedProject;
         private ObservableCollection<ProjectItem> _projects = new();
         private ObservableCollection<TaskItem> _tasks = new();
         
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public ObservableCollection<TaskItem> FilteredCompletedTasks
+        {
+            get
+            {
+                var now = DateTime.Now;
+                var startOfWeek = now.Date.AddDays(-(int)now.DayOfWeek);
+                var startOfLastWeek = startOfWeek.AddDays(-7);
+                var endOfLastWeek = startOfWeek.AddSeconds(-1);
+
+                var tasks = new ObservableCollection<TaskItem>();
+                foreach (var project in Projects)
+                {
+                    foreach (var task in project.CompletedTasks)
+                    {
+                        if (ShowThisWeek && task.CompletedDate >= startOfWeek && task.CompletedDate <= now)
+                        {
+                            tasks.Add(task);
+                        }
+                        else if (ShowLastWeek && task.CompletedDate >= startOfLastWeek && task.CompletedDate <= endOfLastWeek)
+                        {
+                            tasks.Add(task);
+                        }
+                        else if (ShowAllTime)
+                        {
+                            tasks.Add(task);
+                        }
+                    }
+                }
+                return tasks;
+            }
+        }
+        public int FilteredCompletedTasksCount => FilteredCompletedTasks.Count;
+
+        public string FilteredTotalTimeSpent
+        {
+            get
+            {
+                TimeSpan total = TimeSpan.Zero;
+                foreach (var task in FilteredCompletedTasks)
+                {
+                    if (TimeSpan.TryParse(task.ExpectedTime, out TimeSpan taskTime))
+                    {
+                        total += taskTime;
+                    }
+                }
+                return total.ToString(@"hh\:mm\:ss");
+            }
+        }
+
+        public string FilteredCompletionRate
+        {
+            get
+            {
+                var now = DateTime.Now;
+                var startOfWeek = now.Date.AddDays(-(int)now.DayOfWeek);
+                var startOfLastWeek = startOfWeek.AddDays(-7);
+                var endOfLastWeek = startOfWeek.AddSeconds(-1);
+
+                int completedTasks = FilteredCompletedTasks.Count;
+                int totalTasks = 0;
+
+                foreach (var project in Projects)
+                {
+                    foreach (var task in project.Tasks)
+                    {
+                        if ((ShowThisWeek && task.CompletedDate >= startOfWeek) ||
+                            (ShowLastWeek && task.CompletedDate >= startOfLastWeek && task.CompletedDate <= endOfLastWeek) ||
+                            ShowAllTime)
+                        {
+                            totalTasks++;
+                        }
+                    }
+                    foreach (var task in project.CompletedTasks)
+                    {
+                        if ((ShowThisWeek && task.CompletedDate >= startOfWeek) ||
+                            (ShowLastWeek && task.CompletedDate >= startOfLastWeek && task.CompletedDate <= endOfLastWeek) ||
+                            ShowAllTime)
+                        {
+                            totalTasks++;
+                        }
+                    }
+                }
+
+                if (totalTasks == 0) return "0%";
+                return $"{(completedTasks * 100.0 / totalTasks):F0}%";
+            }
+        }
+        public bool ShowThisWeek
+        {
+            get => _showThisWeek;
+            set
+            {
+                if (_showThisWeek != value)
+                {
+                    _showThisWeek = value;
+                    if (value)
+                    {
+                        ShowLastWeek = false;
+                        ShowAllTime = false;
+                    }
+                    OnPropertyChanged(nameof(ShowThisWeek));
+                    OnPropertyChanged(nameof(FilteredCompletedTasks));
+                    OnPropertyChanged(nameof(FilteredCompletedTasksCount));
+                    OnPropertyChanged(nameof(FilteredTotalTimeSpent));
+                    OnPropertyChanged(nameof(FilteredCompletionRate));
+                }
+            }
+        }
+        public bool ShowLastWeek
+        {
+            get => _showLastWeek;
+            set
+            {
+                if (_showLastWeek != value)
+                {
+                    _showLastWeek = value;
+                    if (value)
+                    {
+                        ShowThisWeek = false;
+                        ShowAllTime = false;
+                    }
+                    OnPropertyChanged(nameof(ShowLastWeek));
+                    OnPropertyChanged(nameof(FilteredCompletedTasks));
+                    OnPropertyChanged(nameof(FilteredCompletedTasksCount));
+                    OnPropertyChanged(nameof(FilteredTotalTimeSpent));
+                    OnPropertyChanged(nameof(FilteredCompletionRate));
+                }
+            }
+        }
+        public bool ShowAllTime
+        {
+            get => _showAllTime;
+            set
+            {
+                if (_showAllTime != value)
+                {
+                    _showAllTime = value;
+                    if (value)
+                    {
+                        ShowThisWeek = false;
+                        ShowLastWeek = false;
+                    }
+                    OnPropertyChanged(nameof(ShowAllTime));
+                    OnPropertyChanged(nameof(FilteredCompletedTasks));
+                    OnPropertyChanged(nameof(FilteredCompletedTasksCount));
+                    OnPropertyChanged(nameof(FilteredTotalTimeSpent));
+                    OnPropertyChanged(nameof(FilteredCompletionRate));
+                }
+            }
+        }
         public double TimerProgress
         {
             get => _timerProgress;

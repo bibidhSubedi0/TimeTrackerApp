@@ -159,6 +159,8 @@
                 <material:TransitioningContent.Style>
                     <Style TargetType="material:TransitioningContent">
                         <Style.Triggers>
+                            
+                            <!-- Content to show when the active tasks-->
                             <DataTrigger Binding="{Binding ShowActiveTasks}" Value="True">
                                 <Setter Property="Content">
                                     <Setter.Value>
@@ -515,6 +517,7 @@
                                 </Setter>
                             </DataTrigger>
 
+                            <!-- Content to show when the completed tasks-->
                             <DataTrigger Binding="{Binding ShowCompletedTasks}" Value="True">
                                 <Setter Property="Content">
                                     <Setter.Value>
@@ -532,6 +535,22 @@
                                                          FontWeight="Medium"
                                                          Foreground="{StaticResource ForestGreenBrush}"/>
 
+                                                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,16">
+                                                    <RadioButton Content="This Week" 
+                                                     IsChecked="{Binding ShowThisWeek}"
+                                                     Style="{StaticResource MaterialDesignRadioButton}"
+                                                     Margin="8,0"/>
+                                                                                        <RadioButton Content="Last Week" 
+                                                     IsChecked="{Binding ShowLastWeek}"
+                                                     Style="{StaticResource MaterialDesignRadioButton}"
+                                                     Margin="8,0"/>
+                                                                                    <RadioButton Content="All Time" 
+                                                     IsChecked="{Binding ShowAllTime}"
+                                                     Style="{StaticResource MaterialDesignRadioButton}"
+                                                     Margin="8,0"/>
+                                                </StackPanel>
+
+
                                                 <!-- Stats Cards -->
                                                 <UniformGrid Grid.Row="1" Columns="3" Margin="0,24">
                                                     <!-- Total Completed Tasks -->
@@ -541,10 +560,10 @@
                                                         <StackPanel Margin="16">
                                                             <TextBlock Text="Total Completed Tasks"
                                                                      Foreground="{StaticResource ForestGreenBrush}"/>
-                                                            <TextBlock Text="{Binding AllCompletedTasks.Count}"
-                                                                     FontSize="24"
-                                                                     FontWeight="Medium"
-                                                                     Foreground="{StaticResource ForestGreenBrush}"/>
+                                                            <TextBlock Text="{Binding FilteredCompletedTasksCount}"
+                                                                 FontSize="24"
+                                                                 FontWeight="Medium"
+                                                                 Foreground="{StaticResource ForestGreenBrush}"/>
                                                         </StackPanel>
                                                     </material:Card>
 
@@ -555,7 +574,7 @@
                                                         <StackPanel Margin="16">
                                                             <TextBlock Text="Total Time Spent"
                                                                      Foreground="{StaticResource ForestGreenBrush}"/>
-                                                            <TextBlock Text="{Binding TotalTimeSpent}"
+                                                            <TextBlock Text="{Binding FilteredTotalTimeSpent}"
                                                                      FontSize="24"
                                                                      FontWeight="Medium"
                                                                      Foreground="{StaticResource ForestGreenBrush}"/>
@@ -569,7 +588,7 @@
                                                         <StackPanel Margin="16">
                                                             <TextBlock Text="Completion Rate"
                                                                      Foreground="{StaticResource ForestGreenBrush}"/>
-                                                            <TextBlock Text="{Binding CompletionRate}"
+                                                            <TextBlock Text="{Binding FilteredCompletionRate}"
                                                                      FontSize="24"
                                                                      FontWeight="Medium"
                                                                      Foreground="{StaticResource ForestGreenBrush}"/>
@@ -581,7 +600,7 @@
                                                 <ScrollViewer Grid.Row="2" 
                                                             VerticalScrollBarVisibility="Auto"
                                                             Margin="0,16,0,0">
-                                                    <ItemsControl ItemsSource="{Binding AllCompletedTasks}">
+                                                    <ItemsControl ItemsSource="{Binding FilteredCompletedTasks}">
                                                         <ItemsControl.ItemTemplate>
                                                             <DataTemplate>
                                                                 <material:Card Style="{StaticResource ForestCard}"
@@ -622,6 +641,7 @@
                                     </Setter.Value>
                                 </Setter>
                             </DataTrigger>
+                        
                         </Style.Triggers>
                     </Style>
                 </material:TransitioningContent.Style>
