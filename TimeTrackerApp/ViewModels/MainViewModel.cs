@@ -28,8 +28,8 @@ namespace TimeTrackerApp.ViewModels
         private string _newTaskExpectedTime;
         private double _timerProgress;
         private TimeSpan _totalTime;
-        private bool _showActiveTasks = false;
-        private bool _showCompletedTasks = true;
+        private bool _showActiveTasks = true;
+        private bool _showCompletedTasks;
         private bool _showThisWeek = true;
         private bool _showLastWeek;
         private bool _showAllTime;
@@ -86,9 +86,11 @@ namespace TimeTrackerApp.ViewModels
                     // This is not working cuz my dumb ass did ElapsedTime = Eastimated time or some shit
                     if (TimeSpan.TryParse(task.TimeElapsed, out TimeSpan taskTime))
                     {
-
                         total += taskTime;
                     }
+
+                    // Lets try to fix it for purano version as well
+                    // Note! Cant fix cuz for some reason i was modifying the elapsed time T^T
                 }
                 return total.ToString(@"hh\:mm\:ss");
             }
