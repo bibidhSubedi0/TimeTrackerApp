@@ -34,6 +34,47 @@ namespace TimeTrackerApp.ViewModels
         private bool _showLastWeek;
         private bool _showAllTime;
 
+        // Add these properties at the start of the MainViewModel class
+        private bool _showToday;
+        private string _todayStudyTime = "00:00:00";
+        private DateTime _lastResetDate = DateTime.UtcNow.Date;
+
+        public bool ShowToday
+        {
+            get => _showToday;
+            set
+            {
+                if (_showToday != value)
+                {
+                    _showToday = value;
+                    if (value)
+                    {
+                        ShowThisWeek = false;
+                        ShowLastWeek = false;
+                        ShowAllTime = false;
+                    }
+                    OnPropertyChanged(nameof(ShowToday));
+                    OnPropertyChanged(nameof(FilteredCompletedTasks));
+                    OnPropertyChanged(nameof(FilteredCompletedTasksCount));
+                    OnPropertyChanged(nameof(FilteredTotalTimeSpent));
+                    OnPropertyChanged(nameof(FilteredCompletionRate));
+                }
+            }
+        }
+
+        public string TodayStudyTime
+        {
+            get => _todayStudyTime;
+            set
+            {
+                if (_todayStudyTime != value)
+                {
+                    _todayStudyTime = value;
+                    OnPropertyChanged(nameof(TodayStudyTime));
+                }
+            }
+        }
+
 
 
         private ProjectItem _selectedProject;
@@ -51,13 +92,18 @@ namespace TimeTrackerApp.ViewModels
                 var startOfWeek = now.Date.AddDays(-(int)now.DayOfWeek);
                 var startOfLastWeek = startOfWeek.AddDays(-7);
                 var endOfLastWeek = startOfWeek.AddSeconds(-1);
+                var startOfToday = now.Date;
 
                 var tasks = new ObservableCollection<TaskItem>();
                 foreach (var project in Projects)
                 {
                     foreach (var task in project.CompletedTasks)
                     {
-                        if (ShowThisWeek && task.CompletedDate >= startOfWeek && task.CompletedDate <= now)
+                        if (ShowToday && task.CompletedDate >= startOfToday)
+                        {
+                            tasks.Add(task);
+                        }
+                        else if (ShowThisWeek && task.CompletedDate >= startOfWeek && task.CompletedDate <= now)
                         {
                             tasks.Add(task);
                         }
@@ -467,7 +513,21 @@ namespace TimeTrackerApp.ViewModels
         }
         private void Timer_Tick(object sender, EventArgs e)
         {
+            var currentDate = DateTime.UtcNow.Date;
+            if (currentDate != _lastResetDate)
+            {
+                _todayStudyTime = "00:00:00";
+                _lastResetDate = currentDate;
+            }
+
+
             _timeLeft = _timeLeft.Add(TimeSpan.FromSeconds(-1));
+
+            if (TimeSpan.TryParse(_todayStudyTime, out TimeSpan dailyTime))
+            {
+                dailyTime = dailyTime.Add(TimeSpan.FromSeconds(1));
+                TodayStudyTime = dailyTime.ToString(@"hh\:mm\:ss");
+            }
 
             TimeSpan _temp = TimeSpan.Zero;
             TimeSpan.TryParse(SelectedProject.TimeSpent, out _temp);
@@ -485,6 +545,7 @@ namespace TimeTrackerApp.ViewModels
             TimeSpan.TryParse(_currentTask.TimeElapsed, out _temp);
             _temp = _temp.Add(TimeSpan.FromSeconds(1));
             _currentTask.TimeElapsed = _temp.ToString();
+
 
 
 

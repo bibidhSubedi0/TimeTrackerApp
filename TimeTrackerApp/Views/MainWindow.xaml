@@ -347,25 +347,24 @@
                                                     <!-- Summary Cards -->
                                                     <UniformGrid Grid.Row="1" Columns="4" Margin="0,24">
                                                         <material:Card Style="{StaticResource ForestCard}" 
+                                                             Margin="4"
+                                                             Background="{StaticResource SunlitLeafBrush}">
+                                                             <StackPanel Margin="16">
+                                                                <TextBlock Text="Study Time Today"
+                                                                 Foreground="{StaticResource ForestGreenBrush}"/>
+                                                                <TextBlock Text="{Binding TodayStudyTime}"
+                                                                 FontSize="24"
+                                                                 FontWeight="Medium"
+                                                                 Foreground="{StaticResource ForestGreenBrush}"/>
+                                                            </StackPanel>
+                                                        </material:Card>
+                                                        <material:Card Style="{StaticResource ForestCard}" 
                                                                      Margin="4"
                                                                      Background="{StaticResource SunlitLeafBrush}">
                                                             <StackPanel Margin="16">
                                                                 <TextBlock Text="Estimated Time"
                                                                          Foreground="{StaticResource ForestGreenBrush}"/>
                                                                 <TextBlock Text="{Binding SelectedProject.EstimatedTime}"
-                                                                         FontSize="24"
-                                                                         FontWeight="Medium"
-                                                                         Foreground="{StaticResource ForestGreenBrush}"/>
-                                                            </StackPanel>
-                                                        </material:Card>
-
-                                                        <material:Card Style="{StaticResource ForestCard}" 
-                                                                     Margin="4"
-                                                                     Background="{StaticResource SunlitLeafBrush}">
-                                                            <StackPanel Margin="16">
-                                                                <TextBlock Text="Tasks To Complete"
-                                                                         Foreground="{StaticResource ForestGreenBrush}"/>
-                                                                <TextBlock Text="{Binding SelectedProject.Tasks.Count}"
                                                                          FontSize="24"
                                                                          FontWeight="Medium"
                                                                          Foreground="{StaticResource ForestGreenBrush}"/>
@@ -555,6 +554,24 @@
                                                     <StackPanel Orientation="Horizontal" 
                                                         HorizontalAlignment="Center" 
                                                         Margin="16,8">
+                                                        <RadioButton Content="Today" 
+                                                            IsChecked="{Binding ShowToday}"
+                                                            Style="{StaticResource MaterialDesignChoiceChipPrimaryRadioButton}"
+                                                            GroupName="TimeFilter"
+                                                            Margin="8,0">
+                                                            <RadioButton.ContentTemplate>
+                                                                <DataTemplate>
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <material:PackIcon Kind="CalendarToday" 
+                                                                             Margin="0,0,8,0"
+                                                                             VerticalAlignment="Center"/>
+                                                                        <TextBlock Text="Today" 
+                                                                            VerticalAlignment="Center"/>
+                                                                    </StackPanel>
+                                                                </DataTemplate>
+                                                            </RadioButton.ContentTemplate>
+                                                        </RadioButton>
+
                                                         <RadioButton Content="This Week" 
                                                             IsChecked="{Binding ShowThisWeek}"
                                                             Style="{StaticResource MaterialDesignChoiceChipPrimaryRadioButton}"
