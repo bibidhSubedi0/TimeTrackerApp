@@ -5,8 +5,8 @@ namespace TimeTrackerApp.Models
     public class UserData
     {
         public string UserId { get; set; }
-
-        // As projects contain task, this should be enough!
-        public List<ProjectItem> Projects { get; set; } = new();
+        public List<ProjectItem> Projects { get; set; }
+        public string TodayStudyTime { get; set; }
+        public DateTime LastResetDate { get; set; }
     }
 }
