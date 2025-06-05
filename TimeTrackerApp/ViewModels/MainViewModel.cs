@@ -672,6 +672,8 @@ namespace TimeTrackerApp.ViewModels
         {
             _userData.UserId = _userId;
             _userData.Projects = Projects.ToList();
+            _userData.TodayStudyTime = TodayStudyTime;
+            _userData.LastResetDate = _lastResetDate;
             await _dataService.SaveUserDataAsync(_userData);
         }
         private async Task LoadAsync()
@@ -685,17 +687,27 @@ namespace TimeTrackerApp.ViewModels
                 Projects.Add(project);
             }
 
+            // Load daily study time
+            if (_userData.LastResetDate.Date == DateTime.UtcNow.Date)
+            {
+                TodayStudyTime = _userData.TodayStudyTime ?? "00:00:00";
+                _lastResetDate = _userData.LastResetDate;
+            }
+            else
+            {
+                TodayStudyTime = "00:00:00";
+                _lastResetDate = DateTime.UtcNow.Date;
+            }
+
             SelectedProject = Projects?.FirstOrDefault() ?? new ProjectItem();
         }
         private async Task AutoSaveAsync()
         {
-            var data = new UserData
-            {
-                UserId = _userId,
-                Projects = Projects.ToList()
-            };
-
-            await _dataService.SaveUserDataAsync(data);
+            _userData.UserId = _userId;
+            _userData.Projects = Projects.ToList();
+            _userData.TodayStudyTime = TodayStudyTime;
+            _userData.LastResetDate = _lastResetDate;
+            await _dataService.SaveUserDataAsync(_userData);
         }
         protected void OnPropertyChanged(string propertyName)
         {
