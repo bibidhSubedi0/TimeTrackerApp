@@ -6,64 +6,128 @@
         xmlns:vm="clr-namespace:TimeTrackerApp.ViewModels"
         xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Time Tracker"
-        Height="700"
-        Width="1250"
-        MinWidth="1250" MinHeight="700"
-        WindowStyle="SingleBorderWindow"
-        AllowsTransparency="False"
-        FontFamily="Segoe UI">
+        Title="Tempo - Time Tracker Pro"
+        Height="800"
+        Width="1400"
+        MinWidth="1200" MinHeight="700"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        FontFamily="Inter, Segoe UI Variable Display, Segoe UI">
 
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Brown.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
-            <!-- Brown Theme Colors -->
-            <Color x:Key="ForestGreenColor">#4A3728</Color>
-            <Color x:Key="SageColor">#8B7355</Color>
-            <Color x:Key="MossColor">#A89078</Color>
-            <Color x:Key="BirchColor">#F5F0EB</Color>
-            <Color x:Key="WoodBrownColor">#5C4033</Color>
-            <Color x:Key="SunlitLeafColor">#E6DFD5</Color>
-            <!-- Very Light Brown -->
+            <!-- Modern Color Palette -->
+            <Color x:Key="PrimaryColor">#6366F1</Color>
+            <Color x:Key="SecondaryColor">#8B5CF6</Color>
+            <Color x:Key="AccentColor">#06B6D4</Color>
+            <Color x:Key="SurfaceColor">#1E1B23</Color>
+            <Color x:Key="SurfaceVariantColor">#2A2831</Color>
+            <Color x:Key="BackgroundColor">#0F0D15</Color>
+            <Color x:Key="OnSurfaceColor">#E4E4E7</Color>
+            <Color x:Key="OnSurfaceVariantColor">#A1A1AA</Color>
+            <Color x:Key="SuccessColor">#10B981</Color>
+            <Color x:Key="WarningColor">#F59E0B</Color>
+            <Color x:Key="ErrorColor">#EF4444</Color>
 
             <!-- Brushes -->
-            <SolidColorBrush x:Key="ForestGreenBrush" Color="{StaticResource ForestGreenColor}"/>
-            <SolidColorBrush x:Key="SageBrush" Color="{StaticResource SageColor}"/>
-            <SolidColorBrush x:Key="MossBrush" Color="{StaticResource MossColor}"/>
-            <SolidColorBrush x:Key="BirchBrush" Color="{StaticResource BirchColor}"/>
-            <SolidColorBrush x:Key="WoodBrownBrush" Color="{StaticResource WoodBrownColor}"/>
-            <SolidColorBrush x:Key="SunlitLeafBrush" Color="{StaticResource SunlitLeafColor}"/>
+            <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}"/>
+            <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource SecondaryColor}"/>
+            <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}"/>
+            <SolidColorBrush x:Key="SurfaceBrush" Color="{StaticResource SurfaceColor}"/>
+            <SolidColorBrush x:Key="SurfaceVariantBrush" Color="{StaticResource SurfaceVariantColor}"/>
+            <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}"/>
+            <SolidColorBrush x:Key="OnSurfaceBrush" Color="{StaticResource OnSurfaceColor}"/>
+            <SolidColorBrush x:Key="OnSurfaceVariantBrush" Color="{StaticResource OnSurfaceVariantColor}"/>
+            <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource SuccessColor}"/>
+            <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource WarningColor}"/>
+            <SolidColorBrush x:Key="ErrorBrush" Color="{StaticResource ErrorColor}"/>
 
-            <!-- Styles -->
-            <Style x:Key="ForestCard" TargetType="material:Card">
-                <Setter Property="material:ElevationAssist.Elevation" Value="Dp1"/>
-                <Setter Property="Background" Value="{StaticResource BirchBrush}"/>
-                <Setter Property="Margin" Value="8"/>
-                <Setter Property="UniformCornerRadius" Value="16"/>
-                <Setter Property="Opacity" Value="1"/>
-                <!-- 
+            <!-- Gradient Brushes -->
+            <LinearGradientBrush x:Key="PrimaryGradientBrush" StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#6366F1" Offset="0"/>
+                <GradientStop Color="#8B5CF6" Offset="1"/>
+            </LinearGradientBrush>
+
+            <LinearGradientBrush x:Key="AccentGradientBrush" StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#06B6D4" Offset="0"/>
+                <GradientStop Color="#0891B2" Offset="1"/>
+            </LinearGradientBrush>
+
+            <LinearGradientBrush x:Key="BackgroundGradientBrush" StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#0F0D15" Offset="0"/>
+                <GradientStop Color="#1A1625" Offset="1"/>
+            </LinearGradientBrush>
+
+            <!-- Modern Card Style with Glassmorphism -->
+            <Style x:Key="GlassCard" TargetType="Border">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <SolidColorBrush Color="#1E1B23" Opacity="0.8"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="BorderBrush">
+                    <Setter.Value>
+                        <SolidColorBrush Color="#3C3C3C" Opacity="0.3"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="CornerRadius" Value="16"/>
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect ShadowDepth="0" BlurRadius="20" Opacity="0.3" Color="#000000"/>
+                    </Setter.Value>
+                </Setter>
                 <Style.Triggers>
-                    
-                    <EventTrigger RoutedEvent="Loaded">
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation 
-                        Storyboard.TargetProperty="Opacity"
-                        From="0" To="1" 
-                        Duration="0:0:0.2"/>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </EventTrigger>
-                    
                     <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="material:ElevationAssist.Elevation" Value="Dp3"/>
+                        <Trigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)" 
+                                                   To="30" Duration="0:0:0.2"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.EnterActions>
+                        <Trigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)" 
+                                                   To="20" Duration="0:0:0.2"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.ExitActions>
                     </Trigger>
-                    
-                </Style.Triggers>-->
+                </Style.Triggers>
+            </Style>
+
+            <!-- Modern Button Style -->
+            <Style x:Key="ModernButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
+                <Setter Property="Background" Value="{StaticResource PrimaryGradientBrush}"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Height" Value="48"/>
+                <Setter Property="Padding" Value="24,0"/>
+                <Setter Property="material:ButtonAssist.CornerRadius" Value="12"/>
+                <Setter Property="FontWeight" Value="Medium"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="{StaticResource AccentGradientBrush}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <!-- Modern TextBox Style -->
+            <Style x:Key="ModernTextBox" TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
+                <Setter Property="Background" Value="{StaticResource SurfaceVariantBrush}"/>
+                <Setter Property="Foreground" Value="{StaticResource OnSurfaceBrush}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="BorderBrush" Value="{StaticResource OnSurfaceVariantBrush}"/>
+                <Setter Property="Padding" Value="16,12"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="material:TextFieldAssist.UnderlineBrush" Value="{StaticResource PrimaryBrush}"/>
             </Style>
         </ResourceDictionary>
     </Window.Resources>
@@ -72,681 +136,565 @@
         <vm:MainViewModel />
     </Window.DataContext>
 
-    <Grid>
-        <Grid.Background>
-            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                <GradientStop Color="#F5F0EB" Offset="0"/>
-                <!-- Light warm brown -->
-                <GradientStop Color="#E6DFD5" Offset="1"/>
-                <!-- Slightly darker warm brown -->
-            </LinearGradientBrush>
-        </Grid.Background>
-
-        <Grid Margin="16">
+    <!-- Window Chrome -->
+    <Border Background="{StaticResource BackgroundGradientBrush}" CornerRadius="12">
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- Header Bar -->
-            <material:Card Style="{StaticResource ForestCard}"
-                          Margin="0,0,0,16"
-                          Background="{StaticResource ForestGreenBrush}">
-                <Grid Margin="16,8">
+            <!-- Custom Title Bar -->
+            <Border Grid.Row="0" Height="60" Background="Transparent" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                <Grid Margin="24,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- App Logo/Name -->
-                    <StackPanel Orientation="Horizontal">
-                        <material:PackIcon Kind="Clock" 
-                                         Width="24" 
-                                         Height="24" 
-                                         Foreground="{StaticResource BirchBrush}"
-                                         VerticalAlignment="Center"/>
-                        <TextBlock Text="Normids Time Tracker" 
-                                 Margin="8,0,0,0"
-                                 Style="{StaticResource MaterialDesignHeadline6TextBlock}"
-                                 Foreground="{StaticResource BirchBrush}"
-                                 VerticalAlignment="Center"/>
+                    <!-- App Branding -->
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border Width="32" Height="32" CornerRadius="8" Background="{StaticResource PrimaryGradientBrush}">
+                            <material:PackIcon Kind="TimerSand" Width="20" Height="20" Foreground="White" 
+                                             HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Text="Tempo" Margin="12,0,0,0" FontSize="20" FontWeight="SemiBold" 
+                                 Foreground="{StaticResource OnSurfaceBrush}" VerticalAlignment="Center"/>
                     </StackPanel>
 
-                    <!-- Navigation -->
-                    <material:ColorZone Grid.Column="1" 
-                                       Mode="Standard" 
-                                       Margin="8" 
-                                       CornerRadius="2" 
-                                       Panel.ZIndex="1"
-                                       Background="Transparent"
-                                       HorizontalAlignment="Center">
-                        <StackPanel Orientation="Horizontal">
-                            <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
-                                       Margin="4"
-                                       IsChecked="{Binding ShowActiveTasks}"
-                                       Content="ACTIVE TASKS"
-                                       Foreground="{StaticResource BirchBrush}"/>
-                            <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
-                                       Margin="4"
-                                       IsChecked="{Binding ShowCompletedTasks}"
-                                       Content="COMPLETED &amp; STATS"
-                                       Foreground="{StaticResource BirchBrush}"/>
-                        </StackPanel>
-                    </material:ColorZone>
+                    <!-- Navigation Tabs -->
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <RadioButton x:Name="ActiveTasksTab" Style="{StaticResource MaterialDesignTabRadioButton}"
+                                   IsChecked="{Binding ShowActiveTasks}" Content="Active Tasks" Margin="20,0"
+                                   Foreground="{StaticResource OnSurfaceBrush}" FontWeight="Medium"/>
+                        <RadioButton x:Name="CompletedTasksTab" Style="{StaticResource MaterialDesignTabRadioButton}"
+                                   IsChecked="{Binding ShowCompletedTasks}" Content="Analytics" Margin="20,0"
+                                   Foreground="{StaticResource OnSurfaceBrush}" FontWeight="Medium"/>
+                    </StackPanel>
 
-                    <!-- User Info -->
-                    <StackPanel Grid.Column="2" 
-                              Orientation="Horizontal"
-                              Margin="16,0,0,0">
-                        <material:PackIcon Kind="Account" 
-                                         Width="24" 
-                                         Height="24"
-                                         Foreground="{StaticResource BirchBrush}"
-                                         VerticalAlignment="Center"/>
-                        <TextBlock Text="deafultUser" 
-                                 Margin="8,0,0,0"
-                                 Foreground="{StaticResource BirchBrush}"
-                                 VerticalAlignment="Center"
-                                 FontSize="14"/>
+                    <!-- Window Controls -->
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button Style="{StaticResource MaterialDesignIconForegroundButton}" Width="32" Height="32" 
+                              Click="MinimizeButton_Click" Foreground="{StaticResource OnSurfaceVariantBrush}">
+                            <material:PackIcon Kind="WindowMinimize" Width="16" Height="16"/>
+                        </Button>
+                        <Button Style="{StaticResource MaterialDesignIconForegroundButton}" Width="32" Height="32" 
+                              Click="CloseButton_Click" Foreground="{StaticResource ErrorBrush}" Margin="8,0,0,0">
+                            <material:PackIcon Kind="Close" Width="16" Height="16"/>
+                        </Button>
                     </StackPanel>
                 </Grid>
-            </material:Card>
+            </Border>
 
-            <!-- Main Content Area -->
-            <material:TransitioningContent Grid.Row="1" 
-                OpeningEffect="{material:TransitionEffect FadeIn}">
-                <material:TransitioningContent.Style>
-                    <Style TargetType="material:TransitioningContent">
-                        <Style.Triggers>
-                            
-                            <!-- Content to show when the active tasks-->
-                            <DataTrigger Binding="{Binding ShowActiveTasks}" Value="True">
-                                <Setter Property="Content">
-                                    <Setter.Value>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="320"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
+            <!-- Main Content -->
+            <Grid Grid.Row="1" Margin="24,0,24,24">
+                <material:TransitioningContent OpeningEffect="{material:TransitionEffect FadeIn}">
+                    <material:TransitioningContent.Style>
+                        <Style TargetType="material:TransitioningContent">
+                            <Style.Triggers>
+                                <!-- Active Tasks View -->
+                                <DataTrigger Binding="{Binding ShowActiveTasks}" Value="True">
+                                    <Setter Property="Content">
+                                        <Setter.Value>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="380"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
 
-                                            <!-- Projects Panel -->
-                                            <material:Card Grid.Column="0" 
-                                                 Style="{StaticResource ForestCard}"
-                                                 Background="#EADDCA"
-                                                 Margin="0,0,16,0">
-                                                <Grid Margin="16">
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="Auto"/>
-                                                        <RowDefinition Height="*"/>
-                                                        <RowDefinition Height="Auto"/>
-                                                    </Grid.RowDefinitions>
+                                                <!-- Projects Sidebar -->
+                                                <Border Grid.Column="0" Style="{StaticResource GlassCard}" Margin="0,0,12,0">
+                                                    <Grid Margin="24">
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="*"/>
+                                                            <RowDefinition Height="Auto"/>
+                                                        </Grid.RowDefinitions>
 
-                                                    <Grid Margin="0,0,0,16">
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="*"/>
-                                                            <ColumnDefinition Width="Auto"/>
-                                                        </Grid.ColumnDefinitions>
+                                                        <!-- Projects Header -->
+                                                        <Grid Margin="0,0,0,24">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Text="Projects" FontSize="24" FontWeight="Bold" 
+                                                                     Foreground="{StaticResource OnSurfaceBrush}"/>
+                                                            <Border Grid.Column="1" Background="{StaticResource PrimaryBrush}" CornerRadius="12" Padding="12,6">
+                                                                <TextBlock Text="{Binding Projects.Count}" Foreground="White" FontWeight="Medium"/>
+                                                            </Border>
+                                                        </Grid>
 
-                                                        <TextBlock Text="PROJECTS"
-                                                             Style="{StaticResource MaterialDesignHeadline6TextBlock}"
-                                                             FontWeight="Bold"
-                                                                   FontSize="20"
-                                                             Foreground="{StaticResource ForestGreenBrush}"/>
+                                                        <!-- Projects List -->
+                                                        <ScrollViewer Grid.Row="1" Style="{StaticResource MaterialDesignScrollViewer}">
+                                                            <ListBox ItemsSource="{Binding Projects}" 
+                                                                     SelectedItem="{Binding SelectedProject}"
+                                                                     Background="Transparent"
+                                                                     BorderThickness="0"
+                                                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                                                <ListBox.ItemContainerStyle>
+                                                                    <Style TargetType="ListBoxItem">
+                                                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                                                        <Setter Property="Padding" Value="0"/>
+                                                                        <Setter Property="Margin" Value="0,0,0,12"/>
+                                                                        <Setter Property="Template">
+                                                                            <Setter.Value>
+                                                                                <ControlTemplate TargetType="ListBoxItem">
+                                                                                    <Border x:Name="border" Background="{StaticResource SurfaceVariantBrush}" 
+                                                                                          CornerRadius="12" Cursor="Hand">
+                                                                                        <ContentPresenter Margin="20,16"/>
+                                                                                    </Border>
+                                                                                    <ControlTemplate.Triggers>
+                                                                                        <Trigger Property="IsSelected" Value="True">
+                                                                                            <Setter TargetName="border" Property="Background" Value="{StaticResource PrimaryBrush}"/>
+                                                                                        </Trigger>
+                                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                                            <Setter TargetName="border" Property="Background">
+                                                                                                <Setter.Value>
+                                                                                                    <SolidColorBrush Color="{StaticResource PrimaryColor}" Opacity="0.7"/>
+                                                                                                </Setter.Value>
+                                                                                            </Setter>
+                                                                                        </Trigger>
+                                                                                    </ControlTemplate.Triggers>
+                                                                                </ControlTemplate>
+                                                                            </Setter.Value>
+                                                                        </Setter>
+                                                                    </Style>
+                                                                </ListBox.ItemContainerStyle>
+                                                                <ListBox.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <Grid>
+                                                                            <Grid.RowDefinitions>
+                                                                                <RowDefinition Height="Auto"/>
+                                                                                <RowDefinition Height="Auto"/>
+                                                                                <RowDefinition Height="Auto"/>
+                                                                            </Grid.RowDefinitions>
 
-                                                        <TextBlock Grid.Column="1"
-                                                                Text="{Binding Projects.Count, StringFormat='{}{0} Total'}"
-                                                                Foreground="{StaticResource SageBrush}"
-                                                                FontWeight="Medium"
-                                                                VerticalAlignment="Center"/>   
-                                                       
-                                                    </Grid>
+                                                                            <Grid>
+                                                                                <Grid.ColumnDefinitions>
+                                                                                    <ColumnDefinition Width="*"/>
+                                                                                    <ColumnDefinition Width="Auto"/>
+                                                                                </Grid.ColumnDefinitions>
+                                                                                <TextBox Text="{Binding Name}" Style="{StaticResource ModernTextBox}"
+                                                                                       FontSize="16" FontWeight="Medium" Background="Transparent" 
+                                                                                       BorderThickness="0" Foreground="{StaticResource OnSurfaceBrush}"/>
+                                                                                <Border Grid.Column="1" Background="{StaticResource AccentBrush}" 
+                                                                                      Width="24" Height="24" CornerRadius="12">
+                                                                                    <TextBlock Text="{Binding Tasks.Count}" Foreground="White" 
+                                                                                             FontSize="12" FontWeight="Bold" HorizontalAlignment="Center" 
+                                                                                             VerticalAlignment="Center"/>
+                                                                                </Border>
+                                                                            </Grid>
 
-                                                    <ListBox Grid.Row="1"
-                                                         ItemsSource="{Binding Projects}"
-                                                         SelectedItem="{Binding SelectedProject}"
-                                                         BorderThickness="0"
-                                                         Background="Transparent"
-                                                         ScrollViewer.VerticalScrollBarVisibility="Hidden">
-                                                        <ListBox.ItemTemplate>
-                                                            <DataTemplate>
+                                                                            <TextBlock Grid.Row="1" Text="{Binding TimeSpent}" 
+                                                                                     Foreground="{StaticResource OnSurfaceVariantBrush}" 
+                                                                                     FontSize="13" Margin="0,8,0,0"/>
 
-                                                                <material:Card UniformCornerRadius="4" 
-                                                                    Margin="4"
-                                                                    Background="{StaticResource BirchBrush}">
-                                                                    <Grid Height="64">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="Auto"/>
-                                                                            <ColumnDefinition Width="*"/>
-                                                                            <ColumnDefinition Width="Auto"/>
-                                                                        </Grid.ColumnDefinitions>
-
-                                                                       
-
-                                                                        <!-- Project Info -->
-                                                                        <StackPanel Grid.Column="1" 
-                                                                          Margin="12,0,0,0" 
-                                                                          VerticalAlignment="Center">
-                                                                            <TextBox Text="{Binding Name}"
-                                                                                Style="{StaticResource MaterialDesignTextBox}"
-                                                                                FontSize="16"
-                                                                                FontWeight="Medium"
-                                                                                BorderThickness="0"
-                                                                                Background="Transparent"/>
-                                                                            <TextBlock Text="{Binding TimeSpent, StringFormat='Total: {0}'}"
-                                                                                 Foreground="{StaticResource SageBrush}"
-                                                                                 FontSize="12"
-                                                                                 Margin="0,4,0,0"/>     
-                                                                        </StackPanel>
-
-                                                                        <!-- Task Count with Circle Background -->
-                                                                        <Grid Grid.Column="2" 
-                                                                              Margin="8,0,16,0" 
-                                                                              VerticalAlignment="Center">
-                                                                            <Ellipse Fill="{StaticResource SageBrush}" 
-                                                                                  Width="32" Height="32"/>
-                                                                            <TextBlock Text="{Binding Tasks.Count}"
-                                                                                 Foreground="White"
-                                                                                 HorizontalAlignment="Center"
-                                                                                 VerticalAlignment="Center"/>
+                                                                            <ProgressBar Grid.Row="2" Value="{Binding CompletionPercentage}" 
+                                                                                       Maximum="100" Height="6" Margin="0,12,0,0" 
+                                                                                       Background="{StaticResource SurfaceVariantBrush}"
+                                                                                       Foreground="{StaticResource PrimaryGradientBrush}"
+                                                                                       Style="{StaticResource MaterialDesignLinearProgressBar}"/>
                                                                         </Grid>
-                                                                    </Grid>
-                                                                </material:Card>
-                                                            
-                                                            </DataTemplate>
-                                                        </ListBox.ItemTemplate>
-                                                    </ListBox>
+                                                                    </DataTemplate>
+                                                                </ListBox.ItemTemplate>
+                                                            </ListBox>
+                                                        </ScrollViewer>
 
-
-                                                </Grid>
-                                            </material:Card>
-                                            
-                                            
-                                            <!-- Tasks Panel -->
-                                            <material:Card Grid.Column="1" 
-                                                         Style="{StaticResource ForestCard}">
-                                                <Grid Margin="24">
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="Auto"/>
-                                                        <RowDefinition Height="Auto"/>
-                                                        <RowDefinition Height="Auto"/>
-                                                        <RowDefinition Height="*"/>
-                                                    </Grid.RowDefinitions>
-
-                                                    <!-- Project Header with Progress -->
-                                                    <Grid>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="*"/>
-                                                            <ColumnDefinition Width="Auto"/>
-                                                        </Grid.ColumnDefinitions>
-
-                                                        <StackPanel>
-                                                            <Grid>
-                                                                <Grid.RowDefinitions>
-                                                                    <RowDefinition Height="Auto"/>
-                                                                    <RowDefinition Height="Auto"/>
-                                                                </Grid.RowDefinitions>
-
-                                                                <TextBlock Grid.Row="0" Grid.Column="1" 
-                                                                         Text="{Binding SelectedProject.Name}"
-                                                                         Style="{StaticResource MaterialDesignHeadline5TextBlock}"
-                                                                         FontWeight="Medium"
-                                                                         Foreground="{StaticResource ForestGreenBrush}"/>
-
-                                                                <ProgressBar Grid.Row="1" 
-                                                                           Value="{Binding SelectedProject.CompletionPercentage}"
-                                                                           Maximum="100"
-                                                                           Height="4"
-                                                                           Margin="0,8,0,0"
-                                                                           
-                                                                           Background="{StaticResource MossBrush}"
-                                                                           Style="{StaticResource MaterialDesignLinearProgressBar}"/>
-                                                            </Grid>
-                                                        </StackPanel>
+                                                        <!-- Add Project Button -->
+                                                        <Button Grid.Row="2" Content="+ New Project" Style="{StaticResource ModernButton}" 
+                                                              Margin="0,16,0,0" Command="{Binding AddProjectCommand}"/>
                                                     </Grid>
+                                                </Border>
 
-                                                    <!-- Summary Cards -->
-                                                    <UniformGrid Grid.Row="1" Columns="4" Margin="0,24">
-                                                        <material:Card Style="{StaticResource ForestCard}" 
-                                                             Margin="4"
-                                                             Background="{StaticResource SunlitLeafBrush}">
-                                                             <StackPanel Margin="16">
-                                                                <TextBlock Text="Study Time Today"
-                                                                 Foreground="{StaticResource ForestGreenBrush}"/>
-                                                                <TextBlock Text="{Binding TodayStudyTime}"
-                                                                 FontSize="24"
-                                                                 FontWeight="Medium"
-                                                                 Foreground="{StaticResource ForestGreenBrush}"/>
-                                                            </StackPanel>
-                                                        </material:Card>
-                                                        <material:Card Style="{StaticResource ForestCard}" 
-                                                                     Margin="4"
-                                                                     Background="{StaticResource SunlitLeafBrush}">
-                                                            <StackPanel Margin="16">
-                                                                <TextBlock Text="Estimated Time"
-                                                                         Foreground="{StaticResource ForestGreenBrush}"/>
-                                                                <TextBlock Text="{Binding SelectedProject.EstimatedTime}"
-                                                                         FontSize="24"
-                                                                         FontWeight="Medium"
-                                                                         Foreground="{StaticResource ForestGreenBrush}"/>
-                                                            </StackPanel>
-                                                        </material:Card>
+                                                <!-- Tasks Main Panel -->
+                                                <Border Grid.Column="1" Style="{StaticResource GlassCard}" Margin="12,0,0,0">
+                                                    <Grid Margin="32">
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="*"/>
+                                                        </Grid.RowDefinitions>
 
-                                                        <material:Card Style="{StaticResource ForestCard}" 
-                                                                     Margin="4"
-                                                                     Background="{StaticResource SunlitLeafBrush}">
-                                                            <StackPanel Margin="16">
-                                                                <TextBlock Text="Elapsed Time"
-                                                                         Foreground="{StaticResource ForestGreenBrush}"/>
-                                                                <TextBlock Text="{Binding SelectedProject.TimeSpent}"
-                                                                         FontSize="24"
-                                                                         FontWeight="Medium"
-                                                                         Foreground="{StaticResource ForestGreenBrush}"/>
+                                                        <!-- Project Header -->
+                                                        <Grid Margin="0,0,0,24">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <StackPanel>
+                                                                <TextBlock Text="{Binding SelectedProject.Name}" FontSize="28" FontWeight="Bold" 
+                                                                         Foreground="{StaticResource OnSurfaceBrush}"/>
+                                                                <ProgressBar Value="{Binding SelectedProject.CompletionPercentage}" Maximum="100" 
+                                                                           Height="8" Margin="0,12,0,0"
+                                                                           Background="{StaticResource SurfaceVariantBrush}"
+                                                                           Foreground="{StaticResource PrimaryGradientBrush}"/>
                                                             </StackPanel>
-                                                        </material:Card>
+                                                            <Border Grid.Column="1" Background="{StaticResource SuccessBrush}" CornerRadius="16" 
+                                                                  Padding="16,8" VerticalAlignment="Top">
+                                                                <TextBlock Text="{Binding SelectedProject.CompletionPercentage, StringFormat='{}{0}% Complete'}" 
+                                                                         Foreground="White" FontWeight="Medium"/>
+                                                            </Border>
+                                                        </Grid>
 
-                                                        <material:Card Style="{StaticResource ForestCard}" 
-                                                                     Margin="4"
-                                                                     Background="{StaticResource SunlitLeafBrush}">
-                                                            <StackPanel Margin="16">
-                                                                <TextBlock Text="Completed Tasks"
-                                                                         Foreground="{StaticResource ForestGreenBrush}"/>
-                                                                <TextBlock Text="{Binding SelectedProject.CompletedTasks.Count}"
-                                                                         FontSize="24"
-                                                                         FontWeight="Medium"
-                                                                         Foreground="{StaticResource ForestGreenBrush}"/>
-                                                            </StackPanel>
-                                                        </material:Card>
-                                                    </UniformGrid>
+                                                        <!-- Stats Cards -->
+                                                        <UniformGrid Grid.Row="1" Columns="4" Margin="0,0,0,32">
+                                                            <!-- Today's Time -->
+                                                            <Border Background="{StaticResource SurfaceVariantBrush}" CornerRadius="16" 
+                                                                  Margin="0,0,8,0" Padding="20,16">
+                                                                <StackPanel>
+                                                                    <material:PackIcon Kind="TrendingUp" Foreground="{StaticResource SuccessBrush}" 
+                                                                                     Width="24" Height="24" Margin="0,0,0,8"/>
+                                                                    <TextBlock Text="Today's Focus" Foreground="{StaticResource OnSurfaceVariantBrush}" 
+                                                                             FontSize="12" Margin="0,0,0,4"/>
+                                                                    <TextBlock Text="{Binding TodayStudyTime}" Foreground="{StaticResource OnSurfaceBrush}" 
+                                                                             FontSize="20" FontWeight="Bold"/>
+                                                                </StackPanel>
+                                                            </Border>
 
-                                                    <!-- Add Task -->
-                                                    <Grid Grid.Row="2" Margin="0,0,0,16">
-                                                        <material:Card Style="{StaticResource ForestCard}"
-                                                                     Background="White">
-                                                            <Grid Margin="16,8">
+                                                            <!-- Estimated Time -->
+                                                            <Border Background="{StaticResource SurfaceVariantBrush}" CornerRadius="16" 
+                                                                  Margin="4,0" Padding="20,16">
+                                                                <StackPanel>
+                                                                    <material:PackIcon Kind="ClockOutline" Foreground="{StaticResource AccentBrush}" 
+                                                                                     Width="24" Height="24" Margin="0,0,0,8"/>
+                                                                    <TextBlock Text="Estimated" Foreground="{StaticResource OnSurfaceVariantBrush}" 
+                                                                             FontSize="12" Margin="0,0,0,4"/>
+                                                                    <TextBlock Text="{Binding SelectedProject.EstimatedTime}" 
+                                                                             Foreground="{StaticResource OnSurfaceBrush}" FontSize="20" FontWeight="Bold"/>
+                                                                </StackPanel>
+                                                            </Border>
+
+                                                            <!-- Time Spent -->
+                                                            <Border Background="{StaticResource SurfaceVariantBrush}" CornerRadius="16" 
+                                                                  Margin="4,0" Padding="20,16">
+                                                                <StackPanel>
+                                                                    <material:PackIcon Kind="Timer" Foreground="{StaticResource WarningBrush}" 
+                                                                                     Width="24" Height="24" Margin="0,0,0,8"/>
+                                                                    <TextBlock Text="Time Spent" Foreground="{StaticResource OnSurfaceVariantBrush}" 
+                                                                             FontSize="12" Margin="0,0,0,4"/>
+                                                                    <TextBlock Text="{Binding SelectedProject.TimeSpent}" 
+                                                                             Foreground="{StaticResource OnSurfaceBrush}" FontSize="20" FontWeight="Bold"/>
+                                                                </StackPanel>
+                                                            </Border>
+
+                                                            <!-- Completed Tasks -->
+                                                            <Border Background="{StaticResource SurfaceVariantBrush}" CornerRadius="16" 
+                                                                  Margin="8,0,0,0" Padding="20,16">
+                                                                <StackPanel>
+                                                                    <material:PackIcon Kind="CheckCircle" Foreground="{StaticResource PrimaryBrush}" 
+                                                                                     Width="24" Height="24" Margin="0,0,0,8"/>
+                                                                    <TextBlock Text="Completed" Foreground="{StaticResource OnSurfaceVariantBrush}" 
+                                                                             FontSize="12" Margin="0,0,0,4"/>
+                                                                    <TextBlock Text="{Binding SelectedProject.CompletedTasks.Count}" 
+                                                                             Foreground="{StaticResource OnSurfaceBrush}" FontSize="20" FontWeight="Bold"/>
+                                                                </StackPanel>
+                                                            </Border>
+                                                        </UniformGrid>
+
+                                                        <!-- Add Task Input -->
+                                                        <Border Grid.Row="2" Background="{StaticResource SurfaceVariantBrush}" 
+                                                              CornerRadius="16" Padding="24,20" Margin="0,0,0,24">
+                                                            <Grid>
                                                                 <Grid.ColumnDefinitions>
                                                                     <ColumnDefinition Width="*"/>
-                                                                    <ColumnDefinition Width="160"/>
+                                                                    <ColumnDefinition Width="200"/>
                                                                     <ColumnDefinition Width="Auto"/>
                                                                 </Grid.ColumnDefinitions>
 
-                                                                <TextBox Text="{Binding NewTaskName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                         Style="{StaticResource MaterialDesignTextBox}"
-                                                                         BorderThickness="0"
-                                                                         Background="Transparent"
-                                                                         Foreground="{StaticResource ForestGreenBrush}"
-                                                                         material:HintAssist.Hint="+ Add a task">
+                                                                <TextBox Text="{Binding NewTaskName}" Style="{StaticResource ModernTextBox}"
+                                                                       material:HintAssist.Hint="Add a new task..." FontSize="16"
+                                                                       Background="Transparent" BorderThickness="0">
                                                                     <TextBox.InputBindings>
                                                                         <KeyBinding Key="Return" Command="{Binding EnterKeyCommand}" CommandParameter="task"/>
                                                                     </TextBox.InputBindings>
                                                                 </TextBox>
 
-                                                                <!-- Expected Time TextBox -->
-                                                                <TextBox Grid.Column="1"
-                                                                         Text="{Binding NewTaskExpectedTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                         Style="{StaticResource MaterialDesignTextBox}"
-                                                                         BorderThickness="0"
-                                                                         Background="Transparent"
-                                                                         Foreground="{StaticResource ForestGreenBrush}"
-                                                                         material:HintAssist.Hint="Expected Time"
-                                                                         Margin="16,0">
+                                                                <TextBox Grid.Column="1" Text="{Binding NewTaskExpectedTime}" 
+                                                                       Style="{StaticResource ModernTextBox}" Margin="16,0"
+                                                                       material:HintAssist.Hint="Expected time" Background="Transparent" 
+                                                                       BorderThickness="0">
                                                                     <TextBox.InputBindings>
                                                                         <KeyBinding Key="Return" Command="{Binding EnterKeyCommand}" CommandParameter="task"/>
                                                                     </TextBox.InputBindings>
                                                                 </TextBox>
-                                                                <Button Grid.Column="2"
-                                                                        Content="Add Task"
-                                                                        Command="{Binding AddTaskCommand}"
-                                                                        Style="{StaticResource MaterialDesignFlatButton}"
-                                                                        Foreground="{StaticResource ForestGreenBrush}"/>
+
+                                                                <Button Grid.Column="2" Content="Add Task" Style="{StaticResource ModernButton}"
+                                                                      Command="{Binding AddTaskCommand}" MinWidth="120"/>
                                                             </Grid>
-                                                        </material:Card>
+                                                        </Border>
+
+                                                        <!-- Tasks List -->
+                                                        <ScrollViewer Grid.Row="3" Style="{StaticResource MaterialDesignScrollViewer}">
+                                                            <ItemsControl ItemsSource="{Binding Tasks}">
+                                                                <ItemsControl.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <Border Background="{StaticResource SurfaceVariantBrush}" CornerRadius="16" 
+                                                                              Margin="0,0,0,16" Padding="24,20">
+                                                                            <Grid>
+                                                                                <Grid.ColumnDefinitions>
+                                                                                    <ColumnDefinition Width="Auto"/>
+                                                                                    <ColumnDefinition Width="*"/>
+                                                                                    <ColumnDefinition Width="Auto"/>
+                                                                                </Grid.ColumnDefinitions>
+
+                                                                                <!-- Play Button with Progress Ring -->
+                                                                                <Grid Width="56" Height="56">
+                                                                                    <Border Background="{StaticResource PrimaryGradientBrush}" 
+                                                                                          Width="56" Height="56" CornerRadius="28" Opacity="0.2"/>
+                                                                                    <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                                                                               Value="{Binding Progress}" Maximum="100" Width="56" Height="56"
+                                                                                               Foreground="{StaticResource PrimaryBrush}"/>
+                                                                                    <Button Style="{StaticResource MaterialDesignFloatingActionButton}"
+                                                                                          Background="{StaticResource PrimaryGradientBrush}" Width="40" Height="40"
+                                                                                          Command="{Binding DataContext.StartTaskCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                                          CommandParameter="{Binding}">
+                                                                                        <material:PackIcon Kind="Play" Width="20" Height="20" Foreground="White"/>
+                                                                                    </Button>
+                                                                                </Grid>
+
+                                                                                <!-- Task Details -->
+                                                                                <StackPanel Grid.Column="1" Margin="20,0" VerticalAlignment="Center">
+                                                                                    <TextBox Text="{Binding Name}" Style="{StaticResource ModernTextBox}"
+                                                                                           FontSize="16" FontWeight="Medium" Background="Transparent" 
+                                                                                           BorderThickness="0" Foreground="{StaticResource OnSurfaceBrush}"/>
+                                                                                    <Grid Margin="0,8,0,0">
+                                                                                        <Grid.ColumnDefinitions>
+                                                                                            <ColumnDefinition Width="Auto"/>
+                                                                                            <ColumnDefinition Width="Auto"/>
+                                                                                            <ColumnDefinition Width="*"/>
+                                                                                        </Grid.ColumnDefinitions>
+                                                                                        <Border Background="{StaticResource AccentBrush}" CornerRadius="8" 
+                                                                                              Padding="8,4" Margin="0,0,12,0">
+                                                                                            <TextBlock Text="{Binding ExpectedTime}" Foreground="White" 
+                                                                                                     FontSize="11" FontWeight="Medium"/>
+                                                                                        </Border>
+                                                                                        <TextBlock Grid.Column="1" Text="{Binding RemainingTime}" 
+                                                                                                 Foreground="{StaticResource OnSurfaceVariantBrush}" FontSize="13"/>
+                                                                                    </Grid>
+                                                                                </StackPanel>
+
+                                                                                <!-- Actions -->
+                                                                                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                                                                    <CheckBox IsChecked="{Binding IsCompleted}" 
+                                                                                            Style="{StaticResource MaterialDesignCheckBox}" Margin="0,0,16,0"/>
+                                                                                    <Button Style="{StaticResource MaterialDesignIconForegroundButton}"
+                                                                                          Foreground="{StaticResource ErrorBrush}"
+                                                                                          Command="{Binding DataContext.DeleteTaskCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                                          CommandParameter="{Binding}">
+                                                                                        <material:PackIcon Kind="Delete" Width="20" Height="20"/>
+                                                                                    </Button>
+                                                                                </StackPanel>
+                                                                            </Grid>
+                                                                        </Border>
+                                                                    </DataTemplate>
+                                                                </ItemsControl.ItemTemplate>
+                                                            </ItemsControl>
+                                                        </ScrollViewer>
+                                                    </Grid>
+                                                </Border>
+                                            </Grid>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+
+                                <!-- Analytics View -->
+                                <DataTrigger Binding="{Binding ShowCompletedTasks}" Value="True">
+                                    <Setter Property="Content">
+                                        <Setter.Value>
+                                            <Border Style="{StaticResource GlassCard}">
+                                                <Grid Margin="32">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="*"/>
+                                                    </Grid.RowDefinitions>
+
+                                                    <!-- Analytics Header -->
+                                                    <Grid Margin="0,0,0,32">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <StackPanel>
+                                                            <TextBlock Text="Performance Analytics" FontSize="28" FontWeight="Bold" 
+                                                                     Foreground="{StaticResource OnSurfaceBrush}"/>
+                                                            <TextBlock Text="Track your productivity and completed tasks" 
+                                                                     Foreground="{StaticResource OnSurfaceVariantBrush}" FontSize="14" Margin="0,4,0,0"/>
+                                                        </StackPanel>
                                                     </Grid>
 
-                                                    <!-- Task List -->
-                                                    <ScrollViewer Grid.Row="3" 
-                                                                VerticalScrollBarVisibility="Auto" 
-                                                                HorizontalScrollBarVisibility="Disabled">
-                                                        <ItemsControl ItemsSource="{Binding Tasks}">
+                                                    <!-- Time Filters -->
+                                                    <Border Grid.Row="1" Background="{StaticResource SurfaceVariantBrush}" 
+                                                          CornerRadius="16" Padding="24,16" Margin="0,0,0,32">
+                                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                            <RadioButton Content="Today" IsChecked="{Binding ShowToday}" GroupName="TimeFilter"
+                                                                       Style="{StaticResource MaterialDesignChoiceChipSecondaryRadioButton}" Margin="0,0,16,0"/>
+                                                            <RadioButton Content="This Week" IsChecked="{Binding ShowThisWeek}" GroupName="TimeFilter"
+                                                                       Style="{StaticResource MaterialDesignChoiceChipSecondaryRadioButton}" Margin="0,0,16,0"/>
+                                                            <RadioButton Content="Last Week" IsChecked="{Binding ShowLastWeek}" GroupName="TimeFilter"
+                                                                       Style="{StaticResource MaterialDesignChoiceChipSecondaryRadioButton}" Margin="0,0,16,0"/>
+                                                            <RadioButton Content="All Time" IsChecked="{Binding ShowAllTime}" GroupName="TimeFilter"
+                                                                       Style="{StaticResource MaterialDesignChoiceChipSecondaryRadioButton}"/>
+                                                        </StackPanel>
+                                                    </Border>
+
+                                                    <!-- Stats Overview -->
+                                                    <UniformGrid Grid.Row="2" Columns="3" Margin="0,0,0,32">
+                                                        <Border Background="{StaticResource SurfaceVariantBrush}" CornerRadius="20" 
+                                                              Margin="0,0,12,0" Padding="28,24">
+                                                            <StackPanel>
+                                                                <Border Background="{StaticResource SuccessBrush}" Width="48" Height="48" 
+                                                                      CornerRadius="24" Margin="0,0,0,16">
+                                                                    <material:PackIcon Kind="CheckCircle" Width="24" Height="24" 
+                                                                                     Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                                </Border>
+                                                                <TextBlock Text="Tasks Completed" Foreground="{StaticResource OnSurfaceVariantBrush}" 
+                                                                         FontSize="14" Margin="0,0,0,8"/>
+                                                                <TextBlock Text="{Binding FilteredCompletedTasksCount}" 
+                                                                         Foreground="{StaticResource OnSurfaceBrush}" FontSize="32" FontWeight="Bold"/>
+                                                            </StackPanel>
+                                                        </Border>
+
+                                                        <Border Background="{StaticResource SurfaceVariantBrush}" CornerRadius="20" 
+                                                              Margin="6,0" Padding="28,24">
+                                                            <StackPanel>
+                                                                <Border Background="{StaticResource AccentBrush}" Width="48" Height="48" 
+                                                                      CornerRadius="24" Margin="0,0,0,16">
+                                                                    <material:PackIcon Kind="ClockOutline" Width="24" Height="24" 
+                                                                                     Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                                </Border>
+                                                                <TextBlock Text="Total Time" Foreground="{StaticResource OnSurfaceVariantBrush}" 
+                                                                         FontSize="14" Margin="0,0,0,8"/>
+                                                                <TextBlock Text="{Binding FilteredTotalTimeSpent}" 
+                                                                         Foreground="{StaticResource OnSurfaceBrush}" FontSize="32" FontWeight="Bold"/>
+                                                            </StackPanel>
+                                                        </Border>
+
+                                                        <Border Background="{StaticResource SurfaceVariantBrush}" CornerRadius="20" 
+                                                              Margin="12,0,0,0" Padding="28,24">
+                                                            <StackPanel>
+                                                                <Border Background="{StaticResource PrimaryBrush}" Width="48" Height="48" 
+                                                                      CornerRadius="24" Margin="0,0,0,16">
+                                                                    <material:PackIcon Kind="TrendingUp" Width="24" Height="24" 
+                                                                                     Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                                </Border>
+                                                                <TextBlock Text="Success Rate" Foreground="{StaticResource OnSurfaceVariantBrush}" 
+                                                                         FontSize="14" Margin="0,0,0,8"/>
+                                                                <TextBlock Text="{Binding FilteredCompletionRate}" 
+                                                                         Foreground="{StaticResource OnSurfaceBrush}" FontSize="32" FontWeight="Bold"/>
+                                                            </StackPanel>
+                                                        </Border>
+                                                    </UniformGrid>
+
+                                                    <!-- Completed Tasks List -->
+                                                    <ScrollViewer Grid.Row="3" Style="{StaticResource MaterialDesignScrollViewer}">
+                                                        <ItemsControl ItemsSource="{Binding FilteredCompletedTasks}">
                                                             <ItemsControl.ItemTemplate>
                                                                 <DataTemplate>
-                                                                    <material:Card Style="{StaticResource ForestCard}"
-                                                                        Margin="0,4"
-                                                                        Background="White">
+                                                                    <Border Background="{StaticResource SurfaceVariantBrush}" CornerRadius="16" 
+                                                                          Margin="0,0,0,16" Padding="24,20">
                                                                         <Grid>
                                                                             <Grid.ColumnDefinitions>
                                                                                 <ColumnDefinition Width="Auto"/>
                                                                                 <ColumnDefinition Width="*"/>
                                                                                 <ColumnDefinition Width="Auto"/>
+                                                                                <ColumnDefinition Width="Auto"/>
                                                                             </Grid.ColumnDefinitions>
 
-                                                                            <!-- Left Side: Play Button and Progress -->
-                                                                            <Grid Width="64" Height="64">
-                                                                                <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
-                                                                                       Value="{Binding Progress}"
-                                                                                       Maximum="100"
-                                                                                       Margin="8"/>
-                                                                                <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-                                                                                    Command="{Binding DataContext.StartTaskCommand, 
-                                                                                             RelativeSource={RelativeSource AncestorType=Window}}"
-                                                                                    CommandParameter="{Binding}"
-                                                                                    Background="{StaticResource SageBrush}"
-                                                                                    Width="32" Height="32">
-                                                                                    <material:PackIcon Kind="Play" Width="20" Height="20"/>
-                                                                                </Button>
-                                                                            </Grid>
+                                                                            <Border Background="{StaticResource SuccessBrush}" Width="40" Height="40" 
+                                                                                  CornerRadius="20" VerticalAlignment="Center">
+                                                                                <material:PackIcon Kind="Check" Width="20" Height="20" 
+                                                                                                 Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                                            </Border>
 
-                                                                            <!-- Middle: Task Details -->
-                                                                            <StackPanel Grid.Column="1" 
-                                                                               Margin="16,8"
-                                                                               VerticalAlignment="Center">
-                                                                                <TextBox Text="{Binding Name}"
-                                                                                     Style="{StaticResource MaterialDesignTextBox}"
-                                                                                     FontSize="14"
-                                                                                     BorderThickness="0"/>
-                                                                                <Grid Margin="0,4,0,0">
-                                                                                    <Grid.ColumnDefinitions>
-                                                                                        <ColumnDefinition Width="Auto"/>
-                                                                                        <ColumnDefinition Width="Auto"/>
-                                                                                        <ColumnDefinition Width="*"/>
-                                                                                    </Grid.ColumnDefinitions>
-                                                                                    <TextBlock Text="{Binding ExpectedTime}"
-                                                                                         Foreground="{StaticResource SageBrush}"
-                                                                                         FontSize="12"/>
-                                                                                    <TextBlock Text="{Binding RemainingTime}"
-                                                                                     Grid.Column="1"
-                                                                                     Margin="16,0,0,0"
-                                                                                     Foreground="{StaticResource SageBrush}"
-                                                                                     FontSize="12"/>
-                                                                                </Grid>
+                                                                            <StackPanel Grid.Column="1" Margin="20,0" VerticalAlignment="Center">
+                                                                                <TextBlock Text="{Binding Name}" FontSize="16" FontWeight="Medium" 
+                                                                                         Foreground="{StaticResource OnSurfaceBrush}"/>
+                                                                                <TextBlock Text="{Binding CompletedDate}" 
+                                                                                         Foreground="{StaticResource OnSurfaceVariantBrush}" FontSize="13" Margin="0,4,0,0"/>
                                                                             </StackPanel>
 
-                                                                            <!-- Right Side: Actions -->
-                                                                            <StackPanel Grid.Column="2" 
-                                                                                   Orientation="Horizontal"
-                                                                                   Margin="0,0,8,0">
-                                                                                <CheckBox IsChecked="{Binding IsCompleted}"
-                                                                                     Style="{StaticResource MaterialDesignCheckBox}"
-                                                                                     Margin="8,0"/>
-                                                                                <Button Style="{StaticResource MaterialDesignIconForegroundButton}"
-                                                                                    Command="{Binding DataContext.DeleteTaskCommand, 
-                                                                                                RelativeSource={RelativeSource AncestorType=Window}}"
-                                                                                    CommandParameter="{Binding}">
-                                                                                    <material:PackIcon Kind="Delete"/>
-                                                                                </Button>
-                                                                            </StackPanel>
+                                                                            <Border Grid.Column="2" Background="{StaticResource AccentBrush}" CornerRadius="12" 
+                                                                                  Padding="12,6" Margin="0,0,16,0" VerticalAlignment="Center">
+                                                                                <TextBlock Text="{Binding ExpectedTime}" Foreground="White" 
+                                                                                         FontSize="12" FontWeight="Medium"/>
+                                                                            </Border>
+
+                                                                            <Border Grid.Column="3" Background="{StaticResource PrimaryBrush}" CornerRadius="12" 
+                                                                                  Padding="12,6" VerticalAlignment="Center">
+                                                                                <TextBlock Text="Completed" Foreground="White" 
+                                                                                         FontSize="12" FontWeight="Medium"/>
+                                                                            </Border>
                                                                         </Grid>
-                                                                    </material:Card>
+                                                                    </Border>
                                                                 </DataTemplate>
                                                             </ItemsControl.ItemTemplate>
                                                         </ItemsControl>
                                                     </ScrollViewer>
                                                 </Grid>
-                                            </material:Card>
-                                        </Grid>
-                                    </Setter.Value>
-                                </Setter>
-                            </DataTrigger>
+                                            </Border>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </material:TransitioningContent.Style>
+                </material:TransitioningContent>
+            </Grid>
 
-                            <!-- Content to show when the completed tasks-->
-                            <DataTrigger Binding="{Binding ShowCompletedTasks}" Value="True">
-                                <Setter Property="Content">
-                                    <Setter.Value>
-                                        <material:Card Style="{StaticResource ForestCard}">
-                                            <Grid Margin="24">
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="*"/>
-                                                </Grid.RowDefinitions>
+            <!-- Timer Overlay with Modern Design -->
+            <Grid Grid.RowSpan="2" Background="#000000" Opacity="0.8" 
+                Visibility="{Binding IsTimerRunning, Converter={StaticResource BooleanToVisibilityConverter}}"
+                Panel.ZIndex="1000">
+                <Border Background="{StaticResource SurfaceBrush}" CornerRadius="32" 
+                      HorizontalAlignment="Center" VerticalAlignment="Center" 
+                      MinWidth="500" MinHeight="400" Padding="48">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-                                                <!-- Header -->
-                                                <TextBlock Text="Completed Tasks &amp; Statistics"
-                                                         Background="{StaticResource SunlitLeafBrush}"
-                                                         Style="{StaticResource MaterialDesignHeadline5TextBlock}"
-                                                         VerticalAlignment="Center"
-                                                           Padding="15,15,15,15"
-                                                           FontWeight="Medium"
-                                                         Foreground="{StaticResource ForestGreenBrush}"/>
+                        <!-- Timer Header -->
+                        <TextBlock Text="Focus Session" FontSize="20" FontWeight="Medium" 
+                                 Foreground="{StaticResource OnSurfaceBrush}" HorizontalAlignment="Center" Margin="0,0,0,24"/>
 
+                        <!-- Circular Timer -->
+                        <Grid Width="280" Height="280" Grid.Row="1">
+                            <Border Background="{StaticResource SurfaceVariantBrush}" Width="280" Height="280" 
+                                  CornerRadius="140" Opacity="0.3"/>
+                            <ProgressBar Value="{Binding TimerProgress}" Maximum="100" 
+                                       Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                       Width="280" Height="280" Foreground="{StaticResource PrimaryGradientBrush}"
+                                       IsIndeterminate="False"/>
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding TimerCountdown}" FontSize="48" FontWeight="Bold" 
+                                         Foreground="{StaticResource OnSurfaceBrush}" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Remaining" FontSize="14" 
+                                         Foreground="{StaticResource OnSurfaceVariantBrush}" HorizontalAlignment="Center" Margin="0,8,0,0"/>
+                            </StackPanel>
+                        </Grid>
 
-                                                <!-- Time Period Filter -->
-                                                <material:Card Grid.Row="0" 
-                                                  Margin="0,8,0,16" 
-                                                  Background="Transparent"
-                                                  UniformCornerRadius="8">
-                                                    <StackPanel Orientation="Horizontal" 
-                                                        HorizontalAlignment="Center" 
-                                                        Margin="16,8">
-                                                        <RadioButton Content="Today" 
-                                                            IsChecked="{Binding ShowToday}"
-                                                            Style="{StaticResource MaterialDesignChoiceChipPrimaryRadioButton}"
-                                                            GroupName="TimeFilter"
-                                                            Margin="8,0">
-                                                            <RadioButton.ContentTemplate>
-                                                                <DataTemplate>
-                                                                    <StackPanel Orientation="Horizontal">
-                                                                        <material:PackIcon Kind="CalendarToday" 
-                                                                             Margin="0,0,8,0"
-                                                                             VerticalAlignment="Center"/>
-                                                                        <TextBlock Text="Today" 
-                                                                            VerticalAlignment="Center"/>
-                                                                    </StackPanel>
-                                                                </DataTemplate>
-                                                            </RadioButton.ContentTemplate>
-                                                        </RadioButton>
+                        <!-- Task Name -->
+                        <TextBlock Grid.Row="2" Text="{Binding TimerTaskName}" FontSize="18" FontWeight="Medium" 
+                                 Foreground="{StaticResource OnSurfaceBrush}" HorizontalAlignment="Center" 
+                                 TextAlignment="Center" TextWrapping="Wrap" Margin="0,32,0,24"/>
 
-                                                        <RadioButton Content="This Week" 
-                                                            IsChecked="{Binding ShowThisWeek}"
-                                                            Style="{StaticResource MaterialDesignChoiceChipPrimaryRadioButton}"
-                                                            GroupName="TimeFilter"
-                                                            Margin="8,0">
-                                                            <RadioButton.ContentTemplate>
-                                                                <DataTemplate>
-                                                                    <StackPanel Orientation="Horizontal">
-                                                                        <material:PackIcon Kind="CalendarToday" 
-                                                                             Margin="0,0,8,0"
-                                                                             VerticalAlignment="Center"/>
-                                                                        <TextBlock Text="This Week" 
-                                                                           VerticalAlignment="Center"/>
-                                                                    </StackPanel>
-                                                                </DataTemplate>
-                                                            </RadioButton.ContentTemplate>
-                                                        </RadioButton>
-
-                                                        <RadioButton Content="Last Week" 
-                                                            IsChecked="{Binding ShowLastWeek}"
-                                                            Style="{StaticResource MaterialDesignChoiceChipPrimaryRadioButton}"
-                                                            GroupName="TimeFilter"
-                                                            Margin="8,0">   
-                                                            <RadioButton.ContentTemplate>
-                                                                <DataTemplate>
-                                                                    <StackPanel Orientation="Horizontal">
-                                                                        <material:PackIcon Kind="CalendarWeek" 
-                                                                             Margin="0,0,8,0"
-                                                                             VerticalAlignment="Center"/>
-                                                                        <TextBlock Text="Last Week" 
-                                                                            VerticalAlignment="Center"/>
-                                                                    </StackPanel>
-                                                                </DataTemplate>
-                                                            </RadioButton.ContentTemplate>
-                                                        </RadioButton>
-
-                                                        <RadioButton Content="All Time" 
-                                                            IsChecked="{Binding ShowAllTime}"
-                                                            Style="{StaticResource MaterialDesignChoiceChipPrimaryRadioButton}"
-                                                            GroupName="TimeFilter"
-                                                            Margin="8,0">
-                                                            <RadioButton.ContentTemplate>
-                                                                <DataTemplate>
-                                                                    <StackPanel Orientation="Horizontal">
-                                                                        <material:PackIcon Kind="CalendarMonth" 
-                                                                             Margin="0,0,8,0"
-                                                                             VerticalAlignment="Center"/>
-                                                                        <TextBlock Text="All Time" 
-                                                                            VerticalAlignment="Center"/>
-                                                                    </StackPanel>
-                                                                </DataTemplate>
-                                                            </RadioButton.ContentTemplate>
-                                                        </RadioButton>
-                                                    </StackPanel>
-                                                </material:Card>
-
-                                                <!-- Stats Cards -->
-                                                <UniformGrid Grid.Row="1" Columns="3" Margin="0,24">
-                                                    <!-- Total Completed Tasks -->
-                                                    <material:Card Style="{StaticResource ForestCard}" 
-                                                                 Margin="4"
-                                                                 Background="{StaticResource SunlitLeafBrush}">
-                                                        <StackPanel Margin="16">
-                                                            <TextBlock Text="Total Completed Tasks"
-                                                                     Foreground="{StaticResource ForestGreenBrush}"/>
-                                                            <TextBlock Text="{Binding FilteredCompletedTasksCount}"
-                                                                 FontSize="24"
-                                                                 FontWeight="Medium"
-                                                                 Foreground="{StaticResource ForestGreenBrush}"/>
-                                                        </StackPanel>
-                                                    </material:Card>
-
-                                                    <!-- Total Time Spent -->
-                                                    <material:Card Style="{StaticResource ForestCard}" 
-                                                                 Margin="4"
-                                                                 Background="{StaticResource SunlitLeafBrush}">
-                                                        <StackPanel Margin="16">
-                                                            <TextBlock Text="Total Time Spent"
-                                                                     Foreground="{StaticResource ForestGreenBrush}"/>
-                                                            <TextBlock Text="{Binding FilteredTotalTimeSpent}"
-                                                                     FontSize="24"
-                                                                     FontWeight="Medium"
-                                                                     Foreground="{StaticResource ForestGreenBrush}"/>
-                                                        </StackPanel>
-                                                    </material:Card>
-
-                                                    <!-- Completion Rate -->
-                                                    <material:Card Style="{StaticResource ForestCard}" 
-                                                                 Margin="4"
-                                                                 Background="{StaticResource SunlitLeafBrush}">
-                                                        <StackPanel Margin="16">
-                                                            <TextBlock Text="Completion Rate"
-                                                                     Foreground="{StaticResource ForestGreenBrush}"/>
-                                                            <TextBlock Text="{Binding FilteredCompletionRate}"
-                                                                     FontSize="24"
-                                                                     FontWeight="Medium"
-                                                                     Foreground="{StaticResource ForestGreenBrush}"/>
-                                                        </StackPanel>
-                                                    </material:Card>
-                                                </UniformGrid>
-
-                                                <!-- Completed Tasks List -->
-                                                <ScrollViewer Grid.Row="2" 
-                                                            VerticalScrollBarVisibility="Auto"
-                                                            Margin="0,16,0,0">
-                                                    <ItemsControl ItemsSource="{Binding FilteredCompletedTasks}">
-                                                        <ItemsControl.ItemTemplate>
-                                                            <DataTemplate>
-                                                                <material:Card Style="{StaticResource ForestCard}"
-                                                                             Margin="0,4"
-                                                                             Background="White">
-                                                                    <Grid Margin="16,8">
-                                                                        <Grid.ColumnDefinitions>
-                                                                            <ColumnDefinition Width="*"/>
-                                                                            <ColumnDefinition Width="Auto"/>
-                                                                            <ColumnDefinition Width="Auto"/>
-                                                                            <ColumnDefinition Width="Auto"/>
-                                                                        </Grid.ColumnDefinitions>
-
-                                                                        <TextBlock Text="{Binding Name}"
-                                                                                 FontWeight="Medium"
-                                                                                 Foreground="{StaticResource ForestGreenBrush}"/>
-
-                                                                        <TextBlock Grid.Column="1"
-                                                                                 Text="{Binding ExpectedTime}"
-                                                                                 Foreground="{StaticResource SageBrush}"
-                                                                                 Margin="16,0"/>
-                                                                        <TextBlock Grid.Column="2" 
-                                                                                   Text="{Binding CompletedDate}" />
-
-                                                                        <material:PackIcon Grid.Column="3"
-                                                                                         Kind="CheckCircle"
-                                                                                         Foreground="{StaticResource SageBrush}"
-                                                                                         Width="20"
-                                                                                         Height="20"/>
-                                                                    </Grid>
-                                                                </material:Card>
-                                                            </DataTemplate>
-                                                        </ItemsControl.ItemTemplate>
-                                                    </ItemsControl>
-                                                </ScrollViewer>
-                                            </Grid>
-                                        </material:Card>
-                                    </Setter.Value>
-                                </Setter>
-                            </DataTrigger>
-                        
-                        </Style.Triggers>
-                    </Style>
-                </material:TransitioningContent.Style>
-            </material:TransitioningContent>
-        </Grid>
-
-        <!-- Timer Overlay -->
-        <Grid Visibility="{Binding IsTimerRunning, Converter={StaticResource BooleanToVisibilityConverter}}"
-              Panel.ZIndex="999">
-            <Grid.Background>
-                <SolidColorBrush Color="{StaticResource ForestGreenColor}" Opacity="0.9"/>
-            </Grid.Background>
-
-            <material:Card VerticalAlignment="Center"
-                         HorizontalAlignment="Center"
-                         UniformCornerRadius="24"
-                         Background="{StaticResource SageBrush}"
-                         MaxWidth="600">
-                <Grid Margin="48">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-
-                    <Grid Width="300" Height="300">
-                        <Ellipse Fill="Transparent"
-                                Stroke="{StaticResource MossBrush}"
-                                StrokeThickness="8"/>
-
-                        <ProgressBar Value="{Binding TimerProgress}"
-                                   Maximum="100"
-                                   Style="{StaticResource MaterialDesignCircularProgressBar}"
-                                   IsIndeterminate="False"
-                                     Width="300"
-                                     Height="300"
-                                   Foreground="{StaticResource BirchBrush}"/>
-
-                        <TextBlock Text="{Binding TimerCountdown}"
-                                 Style="{StaticResource MaterialDesignHeadline2TextBlock}"
-                                 Foreground="{StaticResource BirchBrush}"
-                                   FontSize="40"
-                                 HorizontalAlignment="Center"
-                                 VerticalAlignment="Center"/>
+                        <!-- Control Buttons -->
+                        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Button Content="Pause" Style="{StaticResource ModernButton}" Margin="0,0,16,0" 
+                                  Background="{StaticResource WarningBrush}" MinWidth="120"/>
+                            <Button Content="Stop" Command="{Binding StopTimerCommand}" Style="{StaticResource ModernButton}"
+                                  Background="{StaticResource ErrorBrush}" MinWidth="120"/>
+                        </StackPanel>
                     </Grid>
-
-                    <TextBlock Grid.Row="1"
-                             Text="{Binding TimerTaskName}"
-                             Style="{StaticResource MaterialDesignHeadline5TextBlock}"
-                             Foreground="{StaticResource BirchBrush}"
-                             TextAlignment="Center"
-                             TextWrapping="Wrap"
-                             Margin="0,32"/>
-
-                    <Button Grid.Row="2"
-                            Content="STOP TIMER"
-                            Command="{Binding StopTimerCommand}"
-                            Style="{StaticResource MaterialDesignFlatButton}"
-                            Background="{StaticResource BirchBrush}"
-                            Foreground="{StaticResource ForestGreenBrush}"
-                            Height="48"
-                            material:ButtonAssist.CornerRadius="24"/>
-                </Grid>
-            </material:Card>
+                </Border>
+            </Grid>
         </Grid>
-    </Grid>
+    </Border>
 </Window>

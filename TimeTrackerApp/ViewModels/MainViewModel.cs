@@ -22,7 +22,7 @@ namespace TimeTrackerApp.ViewModels
         private string _timerCountdown;
         private string _timerTaskName;
         private string _timerProjectName;
-        private TaskItem _currentTask; 
+        private TaskItem _currentTask;
         private string _newProjectName;
         private string _newTaskName;
         private string _newTaskExpectedTime;
@@ -80,7 +80,7 @@ namespace TimeTrackerApp.ViewModels
         private ProjectItem _selectedProject;
         private ObservableCollection<ProjectItem> _projects = new();
         private ObservableCollection<TaskItem> _tasks = new();
-        
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -460,8 +460,8 @@ namespace TimeTrackerApp.ViewModels
         public IAsyncRelayCommand SaveTasksCommand { get; }
         public IAsyncRelayCommand LoadTasksCommand { get; }
 
-        
-        
+
+
 
         public MainViewModel()
         {
@@ -537,7 +537,7 @@ namespace TimeTrackerApp.ViewModels
 
             TimerCountdown = _timeLeft.ToString(@"hh\:mm\:ss");
             //_currentTask.ExpectedTime = TimerCountdown;
-            _temp= TimeSpan.Zero;
+            _temp = TimeSpan.Zero;
             TimeSpan.TryParse(_currentTask.RemainingTime, out _temp);
             _temp = _temp.Add(TimeSpan.FromSeconds(-1));
             _currentTask.RemainingTime = _temp.ToString();
@@ -636,7 +636,7 @@ namespace TimeTrackerApp.ViewModels
             if (task == null || SelectedProject == null)
                 return;
 
-            
+
 
             foreach (var t in SelectedProject.Tasks)
             {
@@ -656,7 +656,7 @@ namespace TimeTrackerApp.ViewModels
                 return;
 
 
-            if(TimeSpan.TryParse(task.RemainingTime, out _timeLeft))
+            if (TimeSpan.TryParse(task.RemainingTime, out _timeLeft))
             {
                 _totalTime = _timeLeft;
                 TimerProjectName = $"Project: {SelectedProject.Name}";
@@ -749,7 +749,7 @@ namespace TimeTrackerApp.ViewModels
                     RecalculateProjectTime();
                     await AutoSaveAsync();
                 }
-                if(e.PropertyName == nameof(TaskItem.IsCompleted))
+                if (e.PropertyName == nameof(TaskItem.IsCompleted))
                 {
                     UpdateCompletedTasks();
                     await AutoSaveAsync();
@@ -774,7 +774,7 @@ namespace TimeTrackerApp.ViewModels
                 .Where(t => t.IsCompleted)
                 .ToList();
 
-            
+
 
             foreach (var task in completed)
             {
