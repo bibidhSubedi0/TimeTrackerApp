@@ -25,12 +25,11 @@ A modern time tracking application built with WPF and MVVM architecture, designe
 3. Restore NuGet packages
 4. Build and run the application
 
+
 ## Screenshots
 
-![image](https://github.com/user-attachments/assets/8f6dbfd3-5727-4283-8bf7-7472117fa1d5)
-![image](https://github.com/user-attachments/assets/9b3a271d-fa26-41b7-8863-782aaa43fa6a)
-![image](https://github.com/user-attachments/assets/aac328c9-bc9a-45c6-950d-d11ba39c9d77)
-
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/169590f7-c64f-4813-9c21-28e6b99d8647" />
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/d31545b1-abd3-4e39-8b3d-20fe370080bb" />
 ## Author
 
 
